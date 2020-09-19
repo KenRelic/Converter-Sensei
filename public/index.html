@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensei Converter</title>
+    <link rel="stylesheet" href="./all.css">
+    <link rel="stylesheet" href="./menu-bar.css">
+    <link rel="stylesheet" href="./dashboard.css">
+
+</head>
+
+<body>
+    <!-- MENU BAR -->
+    <div id="menu-bar">
+        <div class="menu-bar-icon-wrapper" id="pickup-icon">
+            <a href="#">
+                <div class="menu-icon"><i class="fa fa-sign-out-alt"></i></div><span id="pickup-icon-title">Exit</span>
+            </a>
+        </div>
+        <div class="menu-bar-icon-wrapper" id="wallet-icon">
+            <a href="#">
+                <div class="menu-icon"><i class="fa fa-history"></i></div><span id="wallet-icon-title">History</span>
+            </a>
+
+        </div>
+        <div class="menu-bar-icon-wrapper current-page" id="home-icon">
+            <a href="./index.html">
+                <div class="menu-icon" id="current-page"><i class="fa fa-home"></i></div><span
+                    id="home-icon-title">Home</span>
+            </a>
+
+        </div>
+        <div class="menu-bar-icon-wrapper" id="profile-icon">
+            <a href="#">
+                <div class="menu-icon"><i class="fa fa-exchange-alt"></i></div><span
+                    id="profile-icon-title">Switch</span>
+            </a>
+        </div>
+
+        <div class="menu-bar-icon-wrapper" id="toggle-icon">
+            <a href="#">
+                <div class="menu-icon"><i class="fa fa-toggle-on" id="toggle-switch"></i></div><span
+                    id="signout-icon-title">Mode</span>
+            </a>
+        </div>
+    </div>
+    <!-- END OF MENU BAR -->
+    <main id="main">
+        <div id="unit-conv" class="card" tabindex="0">
+            <span class="fa fa-arrow-circle-left back-btn"></span>
+            <!-- <span class="fa fa-weight"></span> -->
+            <!-- <header>Unit Converter</header>
+            <div class="loader">
+                <div class="circle1 loader-el"></div>
+                <div class="circle2 loader-el"></div>
+                <div class="circle3 loader-el"></div>
+            </div> -->
+            <section class="section" id="unit-conv-page">
+                <header class="page-title">Conversion type</header>
+                <!-- <div class="conv-type-wrapper">
+                    <div class="conv-type" data-unit="length">
+                        <span class="fa fa-arrow-circle-left"></span>
+                        <p>Length</p>
+                    </div>
+                    <div class="conv-type">
+                        <span class="fa fa-arrow-circle-left"></span>
+                        <p>Area</p>
+                    </div>
+                    <div class="conv-type">
+                        <span class="fa fa-arrow-circle-left"></span>
+                        <p>Volume</p>
+                    </div>
+                    <div class="conv-type">
+                        <span class="fa fa-arrow-circle-left"></span>
+                        <p>Time</p>
+                    </div>
+                    <div class="conv-type">
+                        <span class="fa fa-arrow-circle-left"></span>
+                        <p>Weight</p>
+                    </div>
+                    <div class="conv-type">
+                        <span class="fa fa-arrow-circle-left"></span>
+                        <p>Pressure</p>
+                    </div>
+                    <div class="conv-type">
+                        <span class="fa fa-arrow-circle-left"></span>
+                        <p>Pressure</p>
+                    </div>
+                </div> -->
+                <div id="unit-page">
+                    <div class="unit-intro-note">
+                        <header>WEIGHT</header>
+                        <p class="unit-note">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit id a veniam
+                            mollitia eum aliquid, culpa optio voluptatem tempore tenetur itaque sapiente quas, deserunt
+                            ullam accusantium, error modi fugit. Magnam.</p>
+                    </div>
+                    <div class="conversion-section">
+                        <div class="from-unit-wrapper">
+                            <span class="unit-icon">Kg</span>
+                            <p class="from-unit" data-from-name="kilogram">Kilogram 
+                                <span class="fa fa-caret-down"></span></p>
+                              <input type="number" class="conv-value">
+                        </div>
+                        <div class="switch-conv fa fa-exchange-alt"></div>
+                        <div class="to-unit-wrapper">
+                          <span class="unit-icon">g</span>
+                          <p class="to-unit" data-from-name="Gram">Gram 
+                              <span class="fa fa-caret-down"></span></p>
+                            <input type="number" class="result-value" aria-label="resultgoeshere">
+                      </div>
+                    </div>                    
+                </div>
+               
+            </section>
+           
+            <style>
+                #unit-conv-page {
+                    width: 100%;
+                    height: 100%;
+                    display: block;
+                    text-align: start;
+                    padding-top: 2em;
+                    transition: all 0.3s ease;
+                }
+
+                .page-title {
+                    margin: 1em auto;
+                    text-align: center;
+                    padding: 1em;
+                    background-color: var(--page-title);
+                    color: var(--text);
+                    border-radius: 2em;
+                    transition: all 0.3s ease;
+                }
+               .unit-intro-note{
+                background-color: var(--unit-bg);
+                color: var(--unit-text);
+                padding:1em;
+                border-radius: 1em;
+                box-shadow: 0 5px 0  #2d12015a;
+                margin-bottom: 2em;
+               }
+               .unit-intro-note header{
+                 font-weight: bold;
+                 color:orange;
+                 margin-bottom: 0.5em;
+               }
+               .conversion-section{
+                 width: 100%;
+                 margin: 2em auto;
+                 display: flex;
+                 justify-content: center;
+                 align-items: center;
+                 /* flex-direction: column; */
+                 /* row for larger screen */
+               }
+               .from-unit-wrapper,
+               .to-unit-wrapper{
+                 text-align: center;
+                 width: 45%;
+                 /* width: 100%; */
+                 /* 45% for wider screen */
+                 background-color: orangered;
+                 border-radius: 1em;
+                 box-shadow: 0 5px 0  #c73e045a;
+                 padding: 2.5em 1em 1em 1em;
+                 color: #fff;
+                 position: relative;
+                 flex: 1;
+               }
+               .to-unit-wrapper{
+                 background-color: #fcf7f3;
+                 color:#000 !important;
+               }
+               .from-unit-wrapper .unit-icon,
+               .to-unit-wrapper .unit-icon{
+                 font-size: 1.5em;
+                 color:#fff;
+                 background-color: orangered;
+                 border: 3px solid orange;
+                 display: block;
+                 width: 2.5em;
+                 height: 2.5em;
+                 line-height: 2.5;
+                 border-radius: 50%;
+                 position: absolute;
+                 top: -1em;
+                 right: 0.5em;                 
+               }
+               .to-unit-wrapper .unit-icon{
+                background-color: #fcf7f3;
+               }
+               .from-unit > span,
+               .to-unit > span{
+                margin-left: 0.5em;
+               }
+               .switch-conv{
+                 height: 3em;
+                 width: 3em;
+                 background-color: #fff;
+                 /* color: ; */
+                 text-align: center;
+                 border-radius: 50%;
+                 margin: 0.5em;
+                 line-height: 3;
+                 /* transform: rotateZ(90deg); */
+                 /* 0deg for larger screen */
+               }
+               .from-unit-wrapper input,
+               .to-unit-wrapper input{
+                 width: 90%;
+                 display: block;
+                 margin: 1em auto;
+                 padding: 0.5em;
+                 border: none;
+                 color: #fff;
+                 background-color: #ff050141;
+                 border-bottom: 2px solid #ffffff;
+               }
+               .to-unit-wrapper input{
+                background-color: #e3bc5c41;
+               }
+                .conv-type-wrapper {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: space-around;
+                    align-items: center;
+                    transition: all 0.3s ease;
+                }
+
+                #unit-conv-page .conv-type {
+                    background-color: var(--unit-bg);
+                    color: var(--unit-text) !important;
+                    padding: 1em;
+                    border-radius: 10px;
+                    width: 30%;
+                    max-height: 30%;
+                    margin: 0.2em;
+                    flex: 1;
+                    cursor: pointer;
+                    box-shadow: 5px 5px 15px #2d12015a;
+                    transition: all 0.3s ease;
+                }
+            </style>
+        </div>
+        <div class="units-section">
+          <p class="selectable-unit">Kilogram</p>
+          <p class="selectable-unit">Gram</p>
+          <p class="selectable-unit">Ounce</p>
+          <p class="selectable-unit">Tonne</p>
+          <p class="selectable-unit">Gram</p>
+          <p class="selectable-unit">Ounce</p>
+          <p class="selectable-unit">Tonne</p>
+          <style>
+            .units-section{
+              width: 95%;
+              background-color: var(--unit-bg);
+              border-radius: 2em;
+              display: flex;
+              flex-wrap: wrap;
+              justify-content: center;
+              position: absolute;
+              /* min-height: 50%; */
+              box-shadow: -5px -5px 25px #2d12015a;
+              padding: 1em 1em 4em 1em;
+              bottom: 3em;
+
+            }
+            .selectable-unit{
+              height: 80px;
+              width: 80px;
+              background-color: orange;
+              text-align: center;
+              line-height: 80px;
+              border-radius: 50%;
+              margin: 0.3em;
+              font-size: 1.2em;
+              font-weight: bold;
+              cursor: pointer;
+            }
+          </style>
+        </div>
+        <div id="rom-conv" class="card" tabindex="0">
+            <span class="fa fa-arrow-circle-left back-btn"></span>
+            <span class="fa fa-hourglass"></span>
+            <header>Roman Numerals Converter</header>
+            <div class="loader">
+                <div class="circle1 loader-el"></div>
+                <div class="circle2 loader-el"></div>
+                <div class="circle3 loader-el"></div>
+            </div>
+        </div>
+        <div id="base-conv" class="card" tabindex="0">
+            <span class="fa fa-arrow-circle-left back-btn"></span>
+            <span class="fa fa-calculator"></span>
+            <header>Number Base Converter</header>
+            <div class="loader">
+                <div class="circle1 loader-el"></div>
+                <div class="circle2 loader-el"></div>
+                <div class="circle3 loader-el"></div>
+            </div>
+        </div>
+        <div id="time-conv" class="card" tabindex="0">
+            <span class="fa fa-arrow-circle-left back-btn"></span>
+            <span class="fa fa-clock"></span>
+            <header>Time Converter</header>
+            <div class="loader">
+                <div class="circle1 loader-el"></div>
+                <div class="circle2 loader-el"></div>
+                <div class="circle3 loader-el"></div>
+            </div>
+        </div>
+        <div id="date-conv" class="card" tabindex="0">
+            <span class="fa fa-arrow-circle-left back-btn"></span>
+            <span class="fa fa-calendar"></span>
+            <header>Date Converter</header>
+            <div class="loader">
+                <div class="circle1 loader-el"></div>
+                <div class="circle2 loader-el"></div>
+                <div class="circle3 loader-el"></div>
+            </div>
+        </div>
+        <div id="other" class="card" tabindex="0">
+            <span class="fa fa-arrow-circle-left back-btn"></span>
+            <span class="fa fa-cog"></span>
+            <header>Other Converter</header>
+            <div class="loader">
+                <div class="circle1 loader-el"></div>
+                <div class="circle2 loader-el"></div>
+                <div class="circle3 loader-el"></div>
+            </div>
+        </div>
+    </main>
+    <style>
+        :root {
+            /* --bg-light: #fff; */
+            --bg: #000031;
+            --text-light: #fff;
+            --text: #000;
+            --page-title: #fff;
+            --unit-bg: #611d00;
+            --unit-text: #fff;
+        }
+
+        html,
+        *,
+        body {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            width: 100vw;
+            font-size: 10px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            background-color: #000013;
+        }
+
+        main {
+            height: 100vh;
+            width: 100vw;
+            background-color: var(--bg);
+            font-size: 1.3em;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-around;
+            padding: 1em 1em 64px 1em;
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .card {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            padding: 1em;
+            margin: 0.5em;
+            height: 30%;
+            width: 45%;
+            border-radius: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            flex: auto;
+        }
+
+        .back-btn {
+            font-size: 1.3em !important;
+            position: absolute;
+            top: 1em;
+            left: 1em;
+            cursor: pointer;
+            z-index: 100;
+            display: none;
+        }
+
+        .loader {
+            display: none;
+            margin-top: 2em;
+        }
+
+        .loader div {
+            width: 1em;
+            height: 1em;
+            background-color: #ffffff00;
+            border: 1px solid #fff;
+            border-radius: 50%;
+            margin: auto 0.2em;
+        }
+
+        .circle1 {
+            animation: disappear1 1s linear infinite;
+        }
+
+        .circle2 {
+            animation: disappear2 1s linear infinite;
+        }
+
+        .circle3 {
+            animation: disappear3 1s linear infinite;
+        }
+
+        @keyframes disappear1 {
+            30% {
+                background-color: #fff;
+            }
+        }
+
+        @keyframes disappear2 {
+            30% {
+                background-color: #ffffff00;
+            }
+
+            70% {
+                background-color: #fff;
+            }
+        }
+
+        @keyframes disappear3 {
+
+            70% {
+                background-color: #ffffff00;
+            }
+
+            100% {
+                background-color: #fff;
+            }
+        }
+
+        .card * {
+            pointer-events: none;
+            /* so on click the pointer passes through and bubble to the parent div*/
+        }
+
+        .card > span {
+            color: #fff;
+            font-size: 3em;
+            margin-bottom: 1em;
+        }
+
+        #unit-conv {
+            background-color: orange;
+            width: 100%;
+            height: 100%;
+        }
+
+        .card:hover {
+            width: 48%;
+            height: 33%;
+        }
+
+        #date-conv {
+            background-color: rgb(94, 255, 0);
+        }
+
+        #other {
+            background-color: rgb(0, 255, 251);
+        }
+
+        #rom-conv {
+            background-color: rgb(255, 0, 72);
+        }
+
+        #time-conv {
+            background-color: rgb(81, 0, 255);
+        }
+
+        #base-conv {
+            background-color: rgb(0, 106, 255);
+        }
+    </style>
+    <script>
+        //get the id of the clicked card div and increase size n width..
+        //hide the other ones
+        let allCards = document.querySelectorAll('.card');
+        let mainArea = document.getElementById('main');
+        let backBtns = document.querySelectorAll('.back-btn');
+
+        let toggleSwitch = document.getElementById('toggle-icon');
+        toggleSwitch.addEventListener('click', toggleMode);
+
+        function growDiv(div) {
+            div.style = `width:100%; height: 97%; display: flex; cursor: unset`;
+            // div.children[0].style = 'display:initial; pointer-events:visible';
+            div.children[3].style.display = 'flex';
+            setTimeout(() => {
+                showConversionPage(div)
+            }, 3000);
+        };
+        function normalize(div) {
+            div.style = `width:45%; height: 30%; display: flex; cursor:pointer;`;
+            div.children[0].style = 'display:none;pointer-events:none';
+            div.children[3].style.display = 'none';
+            mainArea.style.padding = '1em 1em 64px 1em';
+            // setTimeout(()=>{div.style.flex = 'none'},5000)
+        };
+        function shrinkDiv(div) {
+            div.style = `width:0%; height: 0%; display: none; `;
+        };
+
+        function goBack() {
+            allCards.forEach(card => normalize(card));
+        };
+
+        backBtns.forEach(btn => btn.addEventListener('click', goBack));
+        mainArea.addEventListener('click', (event) => {
+            let id = event.target.id;
+            console.log(event.target.classList.contains('back-btn'))
+            if (id !== 'main' && !event.target.classList.contains('back-btn')) {
+                allCards.forEach(card => {
+                    if (card.id !== id) shrinkDiv(card);
+                });
+                growDiv(document.getElementById(id));
+            }
+        });
+        function showConversionPage(div) {
+            mainArea.style.padding = '0';
+            div.children[0].style = 'display:initial; pointer-events:visible';
+            div.children[3].style.display = 'none';
+        }
+
+        function toggleMode() {
+            let rootEl = document.querySelector(':root');
+            let toggleSwitch = document.getElementById('toggle-switch');
+            let currentMode = toggleSwitch.classList.contains('fa-toggle-on');
+            if (currentMode) {
+                toggleSwitch.classList.replace('fa-toggle-on', 'fa-toggle-off')
+                return rootEl.style = `--page-title: #000; --text:#fff;
+                --unit-bg:#fff; --unit-text:#000; --bg: #fff;`
+            }
+            toggleSwitch.classList.replace('fa-toggle-off', 'fa-toggle-on')
+            return rootEl.style = `--page-title: #fff;--text:#000;
+            --unit-bg:#611d00;   --unit-text:#fff;      --bg: #000031;`
+        }
+
+    </script>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="/__/firebase/7.21.0/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="/__/firebase/7.21.0/firebase-analytics.js"></script>
+
+<!-- Initialize Firebase -->
+<script src="/__/firebase/init.js"></script>
+</body>
+
+</html>
