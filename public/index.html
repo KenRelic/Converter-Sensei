@@ -50,8 +50,8 @@
     <main id="main">
         <div id="unit-conv" class="card" tabindex="0">
             <span class="fa fa-arrow-circle-left back-btn"></span>
-            <!-- <span class="fa fa-weight"></span> -->
-            <!-- <header>Unit Converter</header>
+            <!-- <span class="fa fa-weight"></span>
+            <header>Unit Converter</header>
             <div class="loader">
                 <div class="circle1 loader-el"></div>
                 <div class="circle2 loader-el"></div>
@@ -59,7 +59,7 @@
             </div> -->
             <section class="section" id="unit-conv-page">
                 <header class="page-title">Conversion type</header>
-                <!-- <div class="conv-type-wrapper">
+                <div class="conv-type-wrapper">
                     <div class="conv-type" data-unit="length">
                         <span class="fa fa-arrow-circle-left"></span>
                         <p>Length</p>
@@ -88,7 +88,7 @@
                         <span class="fa fa-arrow-circle-left"></span>
                         <p>Pressure</p>
                     </div>
-                </div> -->
+                </div>
                 <div id="unit-page">
                     <div class="unit-intro-note">
                         <header>WEIGHT</header>
@@ -121,12 +121,12 @@
                     height: 100%;
                     display: block;
                     text-align: start;
-                    padding-top: 2em;
+                    /* padding-top: 2em; */
                     transition: all 0.3s ease;
                 }
 
                 .page-title {
-                    margin: 1em auto;
+                    margin: 0 auto 1em auto;
                     text-align: center;
                     padding: 1em;
                     background-color: var(--page-title);
@@ -170,10 +170,7 @@
                  position: relative;
                  flex: 1;
                }
-               .to-unit-wrapper{
-                 background-color: #fcf7f3;
-                 color:#000 !important;
-               }
+              
                .from-unit-wrapper .unit-icon,
                .to-unit-wrapper .unit-icon{
                  font-size: 1.5em;
@@ -191,6 +188,11 @@
                }
                .to-unit-wrapper .unit-icon{
                 background-color: #fcf7f3;
+                color:#000;
+               }
+               .to-unit-wrapper{
+                 background-color: #fcf7f3;
+                 color:#000 !important;
                }
                .from-unit > span,
                .to-unit > span{
@@ -200,14 +202,13 @@
                  height: 3em;
                  width: 3em;
                  background-color: #fff;
-                 /* color: ; */
                  text-align: center;
                  border-radius: 50%;
                  margin: 0.5em;
                  line-height: 3;
-                 /* transform: rotateZ(90deg); */
-                 /* 0deg for larger screen */
+                 transform: rotateZ(0deg);
                }
+
                .from-unit-wrapper input,
                .to-unit-wrapper input{
                  width: 90%;
@@ -246,13 +247,14 @@
             </style>
         </div>
         <div class="units-section">
+          <span class="fa fa-times close-unit-section-btn"></span>
           <p class="selectable-unit">Kilogram</p>
           <p class="selectable-unit">Gram</p>
           <p class="selectable-unit">Ounce</p>
           <p class="selectable-unit">Tonne</p>
           <p class="selectable-unit">Gram</p>
           <p class="selectable-unit">Ounce</p>
-          <p class="selectable-unit">Tonne</p>
+          <p class="selectable-unit" data-unit="tonne">Tonne</p>
           <style>
             .units-section{
               width: 95%;
@@ -264,10 +266,23 @@
               position: absolute;
               /* min-height: 50%; */
               box-shadow: -5px -5px 25px #2d12015a;
-              padding: 1em 1em 4em 1em;
+              padding: 3em 1em 4em 1em;
               bottom: 3em;
-
+              bottom: -100%;
             }
+            .close-unit-section-btn{
+              position: absolute;
+              top:1em;
+              right: 1em;
+              background-color: #fff;
+              height: 30px;
+              width: 30px;
+              border-radius: 50%;
+              text-align: center;
+              line-height: 30px;
+              cursor: pointer;
+            }
+
             .selectable-unit{
               height: 80px;
               width: 80px;
@@ -279,6 +294,26 @@
               font-size: 1.2em;
               font-weight: bold;
               cursor: pointer;
+            }
+            @media screen and (max-width:525px){
+              .switch-conv{
+                 transform: rotateZ(90deg);
+                 /* 0deg for larger screen */
+               }
+               .conversion-section{
+                 align-items: center;
+                 flex-direction: column;
+                 /* row for larger screen */
+               }
+               .from-unit-wrapper,
+               .to-unit-wrapper{
+                 width: 100%;
+                 min-height: 30vw;
+                 /* 45% for wider screen */
+               }
+               .to-unit,.from-unit{
+                 margin-bottom: 3em;
+               }
             }
           </style>
         </div>
@@ -357,6 +392,8 @@
             font-size: 10px;
             font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
             background-color: #000013;
+            height: 100vh;
+            overflow: hidden;
         }
 
         main {
@@ -371,6 +408,7 @@
             padding: 1em 1em 64px 1em;
             overflow-x: hidden;
             transition: all 0.3s ease;
+            overflow: hidden;
         }
 
         .card {
@@ -388,16 +426,19 @@
             text-align: center;
             position: relative;
             flex: auto;
+            overflow: auto;
         }
 
         .back-btn {
-            font-size: 1.3em !important;
+            font-size: 1.5em !important;
             position: absolute;
-            top: 1em;
+            top: 1.3em;
             left: 1em;
             cursor: pointer;
             z-index: 100;
-            display: none;
+            /* display: none; */
+            color: #000 !important;
+            
         }
 
         .loader {
@@ -454,7 +495,7 @@
         }
 
         .card * {
-            pointer-events: none;
+            /* pointer-events: none; */
             /* so on click the pointer passes through and bubble to the parent div*/
         }
 
@@ -561,14 +602,14 @@
 
     </script>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="/__/firebase/7.21.0/firebase-app.js"></script>
+<!-- <script src="/__/firebase/7.21.0/firebase-app.js"></script> -->
 
 <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
-<script src="/__/firebase/7.21.0/firebase-analytics.js"></script>
+<!-- <script src="/__/firebase/7.21.0/firebase-analytics.js"></script> -->
 
 <!-- Initialize Firebase -->
-<script src="/__/firebase/init.js"></script>
+<!-- <script src="/__/firebase/init.js"></script> -->
 </body>
 
 </html>
