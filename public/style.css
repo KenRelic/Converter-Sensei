@@ -8,6 +8,7 @@
   --unit-text: #fff;
 }
 
+
 html,
 *,
 body {
@@ -22,7 +23,7 @@ html {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   background-color: #000013;
   height: 100vh;
-  overflow: auto;
+  overflow: hidden;
 }
 
 main {
@@ -38,6 +39,31 @@ main {
   overflow-x: hidden;
   transition: all 0.3s ease;
   overflow-y: auto;
+  /* overflow: hidden; */
+}
+
+@media screen and (max-width: 1024px){
+ main::-webkit-scrollbar{
+  width: 0;
+  display: none;
+  background: #0404d2;
+}
+main::-webkit-scrollbar-thumb{
+  width: 0;
+  background: #000013;
+  display: none;
+}
+.card::-webkit-scrollbar{
+  width: 0.5em;
+  display: none;
+  background: var(--bg);
+}
+.card::-webkit-scrollbar-thumb{
+  width: 0;
+  display: none;
+  background: var(--text);
+  border-radius: 1rem;
+} 
 }
 
 .card {
@@ -207,6 +233,7 @@ main {
   border-radius: 1em;
   box-shadow: 0 5px 0 #2d12015a;
   margin: 1em auto 2em auto;
+  overflow: hidden;
 }
 
 .unit-intro-note header {
@@ -243,18 +270,19 @@ main {
 
 .from-unit-wrapper .unit-icon,
 .to-unit-wrapper .unit-icon {
-  font-size: 1.5em;
+  font-size: 1.3em;
   color: #fff;
   background-color: orangered;
   border: 3px solid orange;
   display: block;
   width: 2.5em;
   height: 2.5em;
-  line-height: 2.5;
+  line-height: 2;
   border-radius: 50%;
   position: absolute;
   top: -1em;
   right: 0.5em;
+  text-align: center;
 }
 
 .to-unit-wrapper .unit-icon {
@@ -268,10 +296,20 @@ main {
 }
 .from-unit,.to-unit{
   cursor: pointer;
+  background-color: var(--unit-bg);
+  color: var(--unit-text);
+  padding: 0.5em;
+  border-radius: 1em;
+  line-height: 1.5;
+}
+.to-unit{
+  color: #000;
+  background-color: rgb(193, 193, 193);
 }
 .from-unit>span,
 .to-unit>span {
   margin-left: 0.5em;
+  pointer-events: none;
 }
 
 .switch-conv {
@@ -283,6 +321,7 @@ main {
   margin: 0.5em;
   line-height: 3;
   transform: rotateZ(0deg);
+  cursor: pointer;
 }
 
 .from-unit-wrapper input,
@@ -295,12 +334,16 @@ main {
   color: #fff;
   background-color: #ff050141;
   border-bottom: 2px solid #ffffff;
+  appearance: text;
+  text-align: center;
+  font-weight: 600;
 }
 .from-unit-wrapper input:focus{
   outline: 1px solid #fff;
 }
 .to-unit-wrapper input {
   background-color: #e3bc5c41;
+  color:#000;
 }
 
 .conv-type-wrapper {
@@ -316,7 +359,7 @@ main {
   color: var(--unit-text) !important;
   padding: 1em;
   border-radius: 10px;
-  width: 30%;
+  width: 35%;
   max-height: 30%;
   margin: 0.2em;
   flex: 1;
@@ -363,8 +406,8 @@ main {
   line-height: 80px;
   border-radius: 50%;
   margin: 0.3em;
-  font-size: 1.2em;
-  font-weight: bold;
+  font-size: 1.1em;
+  font-weight: 400;
   cursor: pointer;
   overflow: hidden;
 }
