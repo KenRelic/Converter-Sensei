@@ -88,7 +88,7 @@ main::-webkit-scrollbar-thumb{
 .back-btn {
   font-size: 1.5em !important;
   position: absolute;
-  top: 1.3em;
+  top: 1.5em;
   left: 1em;
   cursor: pointer;
   z-index: 100;
@@ -270,7 +270,7 @@ main::-webkit-scrollbar-thumb{
 
 .from-unit-wrapper .unit-icon,
 .to-unit-wrapper .unit-icon {
-  font-size: 1.3em;
+  font-size: 1.1em;
   color: #fff;
   background-color: orangered;
   border: 3px solid orange;
@@ -383,6 +383,7 @@ main::-webkit-scrollbar-thumb{
   bottom: -102%;
   display: none;
   transition: all 0.3s ease;
+  z-index: 200;
 }
 
 .close-unit-section-btn {
@@ -410,6 +411,7 @@ main::-webkit-scrollbar-thumb{
   font-weight: 400;
   cursor: pointer;
   overflow: hidden;
+  word-wrap: break-word;
 }
 
 .opacity{
@@ -445,5 +447,15 @@ main::-webkit-scrollbar-thumb{
 @media screen and (max-height:510px) {
   .card>span {
     font-size: 2em;
+  }
+}
+
+
+@media screen and (max-height:583px) and (max-width: 312px) {
+  .selectable-unit {
+    height: 60px;
+    width: 60px;
+    font-size: 1em;
+    line-height: 60px;
   }
 }
