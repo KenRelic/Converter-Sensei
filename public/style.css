@@ -344,6 +344,10 @@ input[data-name="base-hex"] {
   color: #000;
   background-color: rgb(193, 193, 193);
 }
+#rom-conv .to-unit,#rom-conv .from-unit {
+  cursor: none;
+  pointer-events: none;
+}
 .from-unit>span,
 .to-unit>span {
   margin-left: 0.5em;
@@ -425,7 +429,7 @@ input[data-name="base-hex"] {
 
 .units-section {
   width: 95%;
-  background-color: var(--unit-bg);
+  background-color: #002f61;
   border-radius: 2em;
   flex-wrap: wrap;
   justify-content: center;
@@ -454,7 +458,7 @@ input[data-name="base-hex"] {
 .selectable-unit {
   height: 80px;
   width: 80px;
-  background-color: orange;
+  background-color:#3597ff;
   text-align: center;
   line-height: 80px;
   border-radius: 50%;
@@ -469,7 +473,31 @@ input[data-name="base-hex"] {
 .opacity{
   opacity: 0.3;
 }
+.base-color{
+  background-color:#002f61;
+}
+.base-color .selectable-unit{
+  background-color:#93c7ff;
+}
+.rom-color{
+  background-color:#610027;
+}
+.rom-color .selectable-unit{
+  background-color:#ff5599;
+}
+.unit-color{
+  background-color: #611d00;
+}
+.unit-color .selectable-unit{
+  background-color: orange;
+}
 
+.light-mode{
+  background-color: #fff;
+}
+.light-mode .selectable-unit{
+  background-color: #cacaca;
+}
 @media screen and (max-width:525px) {
   .switch-conv {
     transform: rotateZ(90deg);

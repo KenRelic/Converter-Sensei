@@ -24,6 +24,7 @@ let unitConversonType = document.querySelector('.conv-type-wrapper');
 let unitToSelect = '';
 let selectedUnitType = '';
 let currentRomConv = 'num2Rom';
+let currentConverter = 'base-conv';
 
 unitUnitFrom.addEventListener('click', showListOfUnits);
 unitUnitTo.addEventListener('click', showListOfUnits);
@@ -43,13 +44,16 @@ window.onload = function () {
 function toggleMode() {
   let rootEl = document.querySelector(':root');
   let toggleSwitch = document.getElementById('toggle-switch');
-  let currentMode = toggleSwitch.classList.contains('fa-toggle-on');
-  if (currentMode) {
-    toggleSwitch.classList.replace('fa-toggle-on', 'fa-toggle-off')
+  let currentMode = toggleSwitch.classList.contains('fa-toggle-on'); //dark mode by default
+  if (currentMode) {    
+    toggleSwitch.classList.replace('fa-toggle-on', 'fa-toggle-off');
+    unitsSection.classList.replace(unitsSection.classList[1],'light-mode');
+
     return rootEl.style = `--page-title: #fff; --text:#000;
               --unit-bg:#fff; --rom-bg:#fff;  --base-bg: #fff; --unit-text:#000; --bg: #fff;`
   }
-  toggleSwitch.classList.replace('fa-toggle-off', 'fa-toggle-on')
+  toggleSwitch.classList.replace('fa-toggle-off', 'fa-toggle-on');
+  unitsSection.classList.replace('light-mode',`${currentConverter.replace('conv','color')}`);
   return rootEl.style = `--page-title: #000;--text:#fff;
           --unit-bg:#611d00;--rom-bg:#610027;  --base-bg: #002f61;  --unit-text:#fff;      --bg: #000031;`
 };
@@ -92,7 +96,10 @@ function selectConverter(event) {
       if (card.id !== id) shrinkDiv(card);
     });
     // if(id == 'base-conv') createConvTypeUnits('base-conv');
-    mainArea.removeEventListener('click', selectConverter)
+    mainArea.removeEventListener('click', selectConverter);
+    unitsSection.classList.replace(`${currentConverter.replace('conv','color')}`,`${id.replace('conv','color')}`);
+    currentConverter = id;
+  
     return growDiv(document.getElementById(id));
   }
 };
@@ -219,6 +226,7 @@ function createConvTypeUnits(convType) {
 
       } else {
         document.querySelector(`#base-conv .${unitToSelect}`).firstChild.replaceWith(`${el.textContent}`);
+        
       }
 
       return closeUnitSelectionWrapper();
