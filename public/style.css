@@ -8,7 +8,7 @@
   --rom-bg: #610027;
   --base-bg: #002f61;
   --unit-text: #fff;
-  --back-btn:#fff;
+  --back-btn: #fff;
 }
 
 
@@ -24,9 +24,12 @@ html {
   width: 100vw;
   font-size: 10px;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
   background-color: #000013;
   height: 100vh;
   overflow: hidden;
+  font-family: 'Montserrat', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 main {
@@ -45,28 +48,31 @@ main {
   /* overflow: hidden; */
 }
 
-@media screen and (max-width: 1024px){
- main::-webkit-scrollbar{
-  width: 0;
-  display: none;
-  background: #0404d2;
-}
-main::-webkit-scrollbar-thumb{
-  width: 0;
-  background: #000013;
-  display: none;
-}
-.card::-webkit-scrollbar{
-  width: 0.5em;
-  display: none;
-  background: var(--bg);
-}
-.card::-webkit-scrollbar-thumb{
-  width: 0;
-  display: none;
-  background: var(--text);
-  border-radius: 1rem;
-} 
+@media screen and (max-width: 1024px) {
+  main::-webkit-scrollbar {
+    width: 0;
+    display: none;
+    background: #0404d2;
+  }
+
+  main::-webkit-scrollbar-thumb {
+    width: 0;
+    background: #000013;
+    display: none;
+  }
+
+  .card::-webkit-scrollbar {
+    width: 0.5em;
+    display: none;
+    background: var(--bg);
+  }
+
+  .card::-webkit-scrollbar-thumb {
+    width: 0;
+    display: none;
+    background: var(--text);
+    border-radius: 1rem;
+  }
 }
 
 .card {
@@ -159,6 +165,9 @@ main::-webkit-scrollbar-thumb{
   pointer-events: none;
   /* so on click the pointer passes through and bubble to the parent div*/
 }
+.card>header{
+  font-weight:600;
+}
 
 .card>span {
   color: #fff;
@@ -208,7 +217,9 @@ main::-webkit-scrollbar-thumb{
   pointer-events: none; */
 }
 
-#unit-conv-page, #rom-conv-page,#base-conv-page {
+#unit-conv-page,
+#rom-conv-page,
+#base-conv-page {
   width: 100%;
   height: 100%;
   display: block;
@@ -229,7 +240,9 @@ main::-webkit-scrollbar-thumb{
   transition: all 0.3s ease;
 }
 
-.unit-intro-note,.rom-intro-note,.base-intro-note {
+.unit-intro-note,
+.rom-intro-note,
+.base-intro-note {
   background-color: var(--unit-bg);
   color: var(--unit-text);
   padding: 1em;
@@ -238,16 +251,19 @@ main::-webkit-scrollbar-thumb{
   margin: 1em auto 2em auto;
   overflow: hidden;
 }
-.rom-intro-note{
+
+.rom-intro-note {
   background-color: var(--rom-bg);
   color: var(--unit-text) !important;
   box-shadow: 5px 5px 15px #2d12015a;
 }
+
 .base-intro-note {
   background-color: var(--base-bg);
   color: var(--unit-text) !important;
   box-shadow: 5px 5px 15px #010c2d5a;
 }
+
 .unit-intro-note header {
   text-transform: uppercase;
   font-weight: bold;
@@ -280,15 +296,17 @@ main::-webkit-scrollbar-thumb{
   flex: 1;
 }
 
-#rom-page .from-unit-wrapper{
+#rom-page .from-unit-wrapper {
   background-color: #ff437b;
   box-shadow: 0 5px 0 #c5004f;
 }
-#base-page .from-unit-wrapper{
+
+#base-page .from-unit-wrapper {
   background-color: #0946ff;
   box-shadow: 0 5px 0 #0048c5;
 }
-#base-page .from-unit-wrapper input{
+
+#base-page .from-unit-wrapper input {
   background-color: #cae4ff10;
 }
 
@@ -296,6 +314,7 @@ input[data-name="rom-roman"],
 input[data-name="base-hex"] {
   text-transform: uppercase;
 }
+
 .from-unit-wrapper .unit-icon,
 .to-unit-wrapper .unit-icon {
   font-size: 1.1em;
@@ -322,7 +341,9 @@ input[data-name="base-hex"] {
   background-color: #fcf7f3;
   color: #000 !important;
 }
-.from-unit,.to-unit{
+
+.from-unit,
+.to-unit {
   cursor: pointer;
   background-color: var(--unit-bg);
   color: var(--unit-text);
@@ -331,23 +352,27 @@ input[data-name="base-hex"] {
   line-height: 1.5;
 }
 
-#rom-page .from-unit{
+#rom-page .from-unit {
   background-color: var(--rom-bg);
   color: var(--unit-text);
 }
-#base-page .from-unit{
+
+#base-page .from-unit {
   background-color: var(--base-bg);
   color: var(--unit-text);
 }
 
-.to-unit{
+.to-unit {
   color: #000;
   background-color: rgb(193, 193, 193);
 }
-#rom-conv .to-unit,#rom-conv .from-unit {
+
+#rom-conv .to-unit,
+#rom-conv .from-unit {
   cursor: none;
   pointer-events: none;
 }
+
 .from-unit>span,
 .to-unit>span {
   margin-left: 0.5em;
@@ -380,12 +405,14 @@ input[data-name="base-hex"] {
   text-align: center;
   font-weight: 600;
 }
-.from-unit-wrapper input:focus{
+
+.from-unit-wrapper input:focus {
   outline: 1px solid #fff;
 }
+
 .to-unit-wrapper input {
   background-color: #e3bc5c41;
-  color:#000;
+  color: #000;
 }
 
 .conv-type-wrapper {
@@ -412,18 +439,19 @@ input[data-name="base-hex"] {
   transition: all 0.3s ease;
 }
 
-#rom-conv-page .conv-type{
+#rom-conv-page .conv-type {
   background-color: var(--rom-bg);
   color: var(--unit-text) !important;
   box-shadow: 5px 5px 15px #2d12015a;
 }
 
-#base-conv-page .conv-type{
+#base-conv-page .conv-type {
   background-color: var(--base-bg);
   color: var(--unit-text) !important;
   box-shadow: 5px 5px 15px #07012d5a;
 }
-.conv-type *{
+
+.conv-type * {
   pointer-events: none;
 }
 
@@ -458,7 +486,7 @@ input[data-name="base-hex"] {
 .selectable-unit {
   height: 80px;
   width: 80px;
-  background-color:#3597ff;
+  background-color: #3597ff;
   text-align: center;
   line-height: 80px;
   border-radius: 50%;
@@ -470,34 +498,42 @@ input[data-name="base-hex"] {
   word-wrap: break-word;
 }
 
-.opacity{
+.opacity {
   opacity: 0.3;
 }
-.base-color{
-  background-color:#002f61;
+
+.base-color {
+  background-color: #002f61;
 }
-.base-color .selectable-unit{
-  background-color:#93c7ff;
+
+.base-color .selectable-unit {
+  background-color: #93c7ff;
 }
-.rom-color{
-  background-color:#610027;
+
+.rom-color {
+  background-color: #610027;
 }
-.rom-color .selectable-unit{
-  background-color:#ff5599;
+
+.rom-color .selectable-unit {
+  background-color: #ff5599;
 }
-.unit-color{
+
+.unit-color {
   background-color: #611d00;
 }
-.unit-color .selectable-unit{
+
+.unit-color .selectable-unit {
   background-color: orange;
 }
 
-.light-mode{
+.light-mode {
   background-color: #fff;
 }
-.light-mode .selectable-unit{
+
+.light-mode .selectable-unit {
   background-color: #cacaca;
 }
+
 @media screen and (max-width:525px) {
   .switch-conv {
     transform: rotateZ(90deg);
@@ -531,16 +567,7 @@ input[data-name="base-hex"] {
 }
 
 
-@media screen  and  (max-width: 320px) {
-  .selectable-unit {
-    height: 60px;
-    width: 60px;
-    font-size: 1em;
-    line-height: 60px;
-  } 
-}
-
-@media screen  and  (max-height: 480px) {
+@media screen and (max-width: 320px) {
   .selectable-unit {
     height: 60px;
     width: 60px;
@@ -549,7 +576,16 @@ input[data-name="base-hex"] {
   }
 }
 
-@media screen  and  (max-height: 320px) {
+@media screen and (max-height: 480px) {
+  .selectable-unit {
+    height: 60px;
+    width: 60px;
+    font-size: 1em;
+    line-height: 60px;
+  }
+}
+
+@media screen and (max-height: 320px) {
   .selectable-unit {
     height: 40px;
     width: 40px;
