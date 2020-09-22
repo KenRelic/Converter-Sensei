@@ -3,7 +3,8 @@
       width: 100%;
       height: 56px;
       background-color: #020c72;
-      background-color: #df3f05;
+      /* background-color: #df3f05;
+      background-color: #c40038; */
       display: flex;
       padding: 8px;
       justify-content: space-around;
@@ -52,7 +53,8 @@
       border-radius: 50%;
       border: 2px solid #fff;
       color: #020c72;
-       color: #df3f05;
+       /* color: #df3f05;
+        color: #c40038; */
       background: linear-gradient(320deg, #ccc 30%, #fff 70%);
       box-shadow: 0 5px 15px rgba(2, 14, 46, 0.7);
       position: absolute;

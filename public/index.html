@@ -2,483 +2,247 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sensei Converter</title>
-  <link rel="stylesheet" href="./all.css">
-  <link rel="stylesheet" href="./menu-bar.css">
-  <link rel="stylesheet" href="./style.css">
-  <link rel="stylesheet" href="./dashboard.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensei Converter</title>
+    <link rel="stylesheet" href="./all.css">
+    <link rel="stylesheet" href="./menu-bar.css">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./dashboard.css">
 
 </head>
 
 <body>
-  <!-- MENU BAR -->
-  <div id="menu-bar">
-    <div class="menu-bar-icon-wrapper" id="pickup-icon">
-      <a href="#">
-        <div class="menu-icon"><i class="fa fa-sign-out-alt"></i></div><span id="pickup-icon-title">Exit</span>
-      </a>
-    </div>
-    <div class="menu-bar-icon-wrapper" id="wallet-icon">
-      <a href="#">
-        <div class="menu-icon"><i class="fa fa-history"></i></div><span id="wallet-icon-title">History</span>
-      </a>
-
-    </div>
-    <div class="menu-bar-icon-wrapper current-page" id="home-icon">
-      <a href="./index.html">
-        <div class="menu-icon" id="current-page"><i class="fa fa-home"></i></div><span id="home-icon-title">Home</span>
-      </a>
-
-    </div>
-    <div class="menu-bar-icon-wrapper" id="profile-icon">
-      <a href="#">
-        <div class="menu-icon"><i class="fa fa-exchange-alt"></i></div><span id="profile-icon-title">Switch</span>
-      </a>
-    </div>
-
-    <div class="menu-bar-icon-wrapper" id="toggle-icon">
-      <a href="#">
-        <div class="menu-icon"><i class="fa fa-toggle-on" id="toggle-switch"></i></div><span
-          id="signout-icon-title">Mode</span>
-      </a>
-    </div>
-  </div>
-  <!-- END OF MENU BAR -->
-  <main id="main">
-    <div id="unit-conv" class="card" tabindex="0">
-      <span class="fa fa-arrow-circle-left back-btn"></span>
-      <span class="fa fa-weight"></span>
-      <header>Unit Converter</header>
-      <div class="loader">
-        <div class="circle1 loader-el"></div>
-        <div class="circle2 loader-el"></div>
-        <div class="circle3 loader-el"></div>
-      </div>
-      <section class="section" id="unit-conv-page">
-        <header class="page-title">Unit Converter</header>
-        <div class="conv-type-wrapper">
-          <div class="conv-type" data-conv-type="length">
-            <span class="fa fa-arrow-circle-left"></span>
-            <p>Length</p>
-          </div>
-          <div class="conv-type" data-conv-type="area">
-            <span class="fa fa-arrow-circle-left"></span>
-            <p>Area</p>
-          </div>
-          <div class="conv-type" data-conv-type="volume">
-            <span class="fa fa-arrow-circle-left"></span>
-            <p>Volume</p>
-          </div>
-          <div class="conv-type" data-conv-type="time">
-            <span class="fa fa-arrow-circle-left"></span>
-            <p>Time</p>
-          </div>
-          <div class="conv-type" data-conv-type="mass">
-            <span class="fa fa-arrow-circle-left"></span>
-            <p>Mass</p>
-          </div>
-          <div class="conv-type" data-conv-type="pressure">
-            <span class="fa fa-arrow-circle-left"></span>
-            <p>Pressure</p>
-          </div>
-          <div class="conv-type" data-conv-type="temperature">
-            <span class="fa fa-arrow-circle-left"></span>
-            <p>Temperature</p>
-          </div>
-          <div class="conv-type" data-conv-type="energy">
-            <span class="fa fa-arrow-circle-left"></span>
-            <p>Energy</p>
-          </div>
-          <div class="conv-type" data-conv-type="storage">
-            <span class="fa fa-arrow-circle-left"></span>
-            <p>Storage</p>
-          </div>
+    <!-- MENU BAR -->
+    <div id="menu-bar">
+        <div class="menu-bar-icon-wrapper" id="pickup-icon">
+            <a href="#">
+                <div class="menu-icon"><i class="fa fa-sign-out-alt"></i></div><span id="pickup-icon-title">Exit</span>
+            </a>
         </div>
-        <div id="unit-page">
-          <div class="unit-intro-note">
-            <header>MASS</header>
-            <p class="unit-note">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit id a veniam
-              mollitia eum aliquid, culpa optio voluptatem tempore tenetur itaque sapiente quas, deserunt
-              ullam accusantium, error modi fugit. Magnam.</p>
-          </div>
-          <div class="conversion-section">
-            <div class="from-unit-wrapper">
-              <span class="unit-icon">Kg</span>
-              <p class="from-unit" data-from-name="kilogram">Kilogram
-                <span class="fa fa-caret-down"></span></p>
-              <input type="number" min="1" class="conv-value" aria-label="conversion value">
-            </div>
-            <div class="switch-conv fa fa-exchange-alt"></div>
-            <div class="to-unit-wrapper">
-              <span class="unit-icon">g</span>
-              <p class="to-unit" data-to-name="Gram">Gram
-                <span class="fa fa-caret-down"></span></p>
-              <input type="number" class="result-value" aria-label="resultgoeshere" readonly>
-            </div>
-          </div>
+        <div class="menu-bar-icon-wrapper" id="wallet-icon">
+            <a href="#">
+                <div class="menu-icon"><i class="fa fa-history"></i></div><span id="wallet-icon-title">History</span>
+            </a>
+
+        </div>
+        <div class="menu-bar-icon-wrapper current-page" id="home-icon">
+            <a href="./index.html">
+                <div class="menu-icon" id="current-page"><i class="fa fa-home"></i></div><span
+                    id="home-icon-title">Home</span>
+            </a>
+
+        </div>
+        <div class="menu-bar-icon-wrapper" id="profile-icon">
+            <a href="#">
+                <div class="menu-icon"><i class="fa fa-exchange-alt"></i></div><span
+                    id="profile-icon-title">Switch</span>
+            </a>
         </div>
 
-      </section>
+        <div class="menu-bar-icon-wrapper" id="toggle-icon">
+            <a href="#">
+                <div class="menu-icon"><i class="fa fa-toggle-on" id="toggle-switch"></i></div><span
+                    id="signout-icon-title">Mode</span>
+            </a>
+        </div>
     </div>
+    <!-- END OF MENU BAR -->
+    <main id="main">
+        <div id="unit-conv" class="card" tabindex="0">
+            <span class="fa fa-arrow-circle-left back-btn"></span>
+            <span class="fa fa-weight"></span>
+            <header>Unit Converter</header>
+            <div class="loader">
+                <div class="circle1 loader-el"></div>
+                <div class="circle2 loader-el"></div>
+                <div class="circle3 loader-el"></div>
+            </div>
+            <section class="section" id="unit-conv-page">
+                <header class="page-title">Unit Converter</header>
+                <div class="conv-type-wrapper">
+                    <div class="conv-type" data-conv-type="length">
+                        <span class="fa fa-ruler-horizontal"></span>
+                        <p>Length</p>
+                    </div>
+                    <div class="conv-type" data-conv-type="area">
+                        <span class="fa fa-chart-area"></span>
+                        <p>Area</p>
+                    </div>
+                    <div class="conv-type" data-conv-type="volume">
+                        <span class="fa fa-flask"></span>
+                        <p>Volume</p>
+                    </div>
+                    <div class="conv-type" data-conv-type="time">
+                        <span class="fa fa-clock"></span>
+                        <p>Time</p>
+                    </div>
+                    <div class="conv-type" data-conv-type="mass">
+                        <span class="fa fa-weight"></span>
+                        <p>Mass</p>
+                    </div>
+                    <div class="conv-type" data-conv-type="pressure">
+                        <span class="fa fa-tachometer-alt"></span>
+                        <p>Pressure</p>
+                    </div>
+                    <div class="conv-type" data-conv-type="temperature">
+                        <span class="fa fa-temperature-high"></span>
+                        <p>Temperature</p>
+                    </div>
+                    <div class="conv-type" data-conv-type="energy">
+                        <span class="fa fa-sun"></span>
+                        <p>Energy</p>
+                    </div>
+                    <div class="conv-type" data-conv-type="storage">
+                        <span class="fa fa-database"></span>
+                        <p>Storage</p>
+                    </div>
+                </div>
+                <div id="unit-page">
+                    <div class="unit-intro-note">
+                        <header>MASS</header>
+                        <p class="unit-note"></p>
+                    </div>
+                    <div class="conversion-section">
+                        <div class="from-unit-wrapper">
+                            <span class="unit-icon">Kg</span>
+                            <p class="from-unit" data-from-name="kilogram">Kilogram
+                                <span class="fa fa-caret-down"></span></p>
+                            <input type="number" min="1" class="conv-value" aria-label="conversion value">
+                        </div>
+                        <div class="switch-conv fa fa-exchange-alt"></div>
+                        <div class="to-unit-wrapper">
+                            <span class="unit-icon">g</span>
+                            <p class="to-unit" data-to-name="Gram">Gram
+                                <span class="fa fa-caret-down"></span></p>
+                            <input type="number" class="result-value" aria-label="resultgoeshere" readonly>
+                        </div>
+                    </div>
+                </div>
 
-    <div id="rom-conv" class="card" tabindex="0">
-      <span class="fa fa-arrow-circle-left back-btn"></span>
-      <span class="fa fa-hourglass"></span>
-      <header>Roman Numerals Converter</header>
-      <div class="loader">
-        <div class="circle1 loader-el"></div>
-        <div class="circle2 loader-el"></div>
-        <div class="circle3 loader-el"></div>
-      </div>
-    </div>
-    <div id="base-conv" class="card" tabindex="0">
-      <span class="fa fa-arrow-circle-left back-btn"></span>
-      <span class="fa fa-calculator"></span>
-      <header>Number Base Converter</header>
-      <div class="loader">
-        <div class="circle1 loader-el"></div>
-        <div class="circle2 loader-el"></div>
-        <div class="circle3 loader-el"></div>
-      </div>
-    </div>
-    <div id="time-conv" class="card" tabindex="0">
-      <span class="fa fa-arrow-circle-left back-btn"></span>
-      <span class="fa fa-clock"></span>
-      <header>Time Converter</header>
-      <div class="loader">
-        <div class="circle1 loader-el"></div>
-        <div class="circle2 loader-el"></div>
-        <div class="circle3 loader-el"></div>
-      </div>
-    </div>
-    <div id="date-conv" class="card" tabindex="0">
-      <span class="fa fa-arrow-circle-left back-btn"></span>
-      <span class="fa fa-calendar"></span>
-      <header>Date Converter</header>
-      <div class="loader">
-        <div class="circle1 loader-el"></div>
-        <div class="circle2 loader-el"></div>
-        <div class="circle3 loader-el"></div>
-      </div>
-    </div>
-    <div id="other" class="card" tabindex="0">
-      <span class="fa fa-arrow-circle-left back-btn"></span>
-      <span class="fa fa-cog"></span>
-      <header>Other Converter</header>
-      <div class="loader">
-        <div class="circle1 loader-el"></div>
-        <div class="circle2 loader-el"></div>
-        <div class="circle3 loader-el"></div>
-      </div>
-    </div>
-    <div class="units-section">
-      <!-- <span class="fa fa-times close-unit-section-btn"></span> -->
-      <!-- <p class="selectable-unit" data-unit="kilogram">Kilogram</p>
-      <p class="selectable-unit" data-unit="gram">Gram</p>
-      <p class="selectable-unit" data-unit="ounce">Ounce</p>
-      <p class="selectable-unit" data-unit="tonne">Tonne</p>
-      <p class="selectable-unit" data-unit="tonne">Gram</p>
-      <p class="selectable-unit" data-unit="tonne">Ounce</p>
-      <p class="selectable-unit" data-unit="tonne">Tonne</p> -->
-      <style>
+            </section>
+        </div>
 
-      </style>
-    </div>
+        <div id="rom-conv" class="card" tabindex="0">
+            <span class="fa fa-arrow-circle-left back-btn"></span>
+            <span class="fa fa-hourglass"></span>
+            <header>Roman Numerals Converter</header>
+            <div class="loader">
+                <div class="circle1 loader-el"></div>
+                <div class="circle2 loader-el"></div>
+                <div class="circle3 loader-el"></div>
+            </div>
+            <section class="section" id="rom-conv-page">
+                <header class="page-title">Roman Numerals Converter</header>
+               
+                <div id="rom-page">
+                    <div class="rom-intro-note">
+                        <p class="rom-note">A Roman numeral is any of the symbols used in a system of numerical notation based on the ancient Roman system. The symbols are I, V, X, L, C, D, and M, standing respectively for 1, 5, 10, 50, 100, 500, and 1,000 in the Hindu-Arabic numeral system.</p>
+                    </div>
+                    <div class="conv-type-wrapper">
+                        <div class="conv-type opacity" data-conv-type="num2Rom">
+                            <span style="font-weight: bold">10 - X</span>
+                            <p>Number to Roman</p>
+                        </div>
+                        <div class="conv-type" data-conv-type="rom2Num">
+                            <span style="font-weight: bold">X - 10</span>
+                            <p>Roman to Number</p>
+                        </div>
+                    </div>
+                    <div class="conversion-section">
+                        <div class="from-unit-wrapper">
+                            <p class="from-unit" data-name="number">Number</p>
+                            <input type="number" data-name="rom-number" min="1" class="conv-value" aria-label="conversion value">
+                        </div>
+                        <div class="switch-conv fa fa-arrow-right"></div>
+                        <div class="to-unit-wrapper">
+                            <p class="to-unit" data-name="roman">Roman Numeral</p>
+                            <input type="text" data-name="rom-roman" class="result-value" aria-label="resultgoeshere" readonly>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div id="base-conv" class="card" tabindex="0">
+            <span class="fa fa-arrow-circle-left back-btn"></span>
+            <span class="fa fa-calculator"></span>
+            <header>Number Base Converter</header>
+            <div class="loader">
+                <div class="circle1 loader-el"></div>
+                <div class="circle2 loader-el"></div>
+                <div class="circle3 loader-el"></div>
+            </div>
+            <section class="section" id="base-conv-page">
+                <header class="page-title">Number Base Converter</header>                
+                <div id="base-page">
+                    <div class="base-intro-note">
+                        <p class="unit-note">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veniam labore fuga iste ut aliquam saepe libero voluptas quam dolorem veritatis!</p>
+                    </div>
+                    <div class="conversion-section">
+                        <div class="from-unit-wrapper">
+                            <p class="from-unit" data-from-name="decimal">decimal
+                                <span class="fa fa-caret-down"></span> </p>
+                            <input type="text" pattern="" title="digits only allowed" min="1" class="conv-value" aria-label="conversion value">
+                        </div>
+                        <div class="switch-conv fa fa-exchange-alt"></div>
+                        <div class="to-unit-wrapper">
+                            <p class="to-unit" data-to-name="binary">binary
+                                <span class="fa fa-caret-down"></span>
+                            </p>
+                            <input type="text"  class="result-value" aria-label="resultgoeshere" readonly>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- <div id="time-conv" class="card" tabindex="0">
+            <span class="fa fa-arrow-circle-left back-btn"></span>
+            <span class="fa fa-clock"></span>
+            <header>Time</header>
+            <div class="loader">
+                <div class="circle1 loader-el"></div>
+                <div class="circle2 loader-el"></div>
+                <div class="circle3 loader-el"></div>
+            </div>
+        </div> -->
+        <div id="date-conv" class="card" tabindex="0">
+            <span class="fa fa-arrow-circle-left back-btn"></span>
+            <span class="fa fa-calendar"></span>
+            <header>Date Converter</header>
+            <div class="loader">
+                <div class="circle1 loader-el"></div>
+                <div class="circle2 loader-el"></div>
+                <div class="circle3 loader-el"></div>
+            </div>
+        </div>
+        <div id="other" class="card" tabindex="0">
+            <span class="fa fa-arrow-circle-left back-btn"></span>
+            <span class="fa fa-gift"></span>
+            <header>Other Apps</header>
+            <div class="loader">
+                <div class="circle1 loader-el"></div>
+                <div class="circle2 loader-el"></div>
+                <div class="circle3 loader-el"></div>
+            </div>
+        </div>
+        <div class="units-section">
+        </div>
 
-  </main>
-  <style>
+    </main>
+    <style>
 
-  </style>
-  <script>
-    //get the id of the clicked card div and increase size n width..
-    //hide the other ones
-    let allCards = document.querySelectorAll('.card');
-    let mainArea = document.getElementById('main');
-    let backBtns = document.querySelectorAll('.back-btn');
-    let unitToSelect = '';
-    let selectedUnitType = '';
+    </style>
+    <script src="./main.js" async type="module"></script>
+    <script src="./data.js" defer type="module"></script>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <!-- <script src="/__/firebase/7.21.0/firebase-app.js"></script> -->
 
-    let toggleSwitch = document.getElementById('toggle-icon');
-
-    let unitsSection = document.querySelector('.units-section');
-    let unitFrom = document.querySelector('.to-unit');
-    let unitTo = document.querySelector('.from-unit');
-
-    unitFrom.addEventListener('click', showListOfUnits);
-    unitTo.addEventListener('click', showListOfUnits);
-
-    toggleSwitch.addEventListener('click', toggleMode);
-
-    let switchCoversionBtn = document.querySelector('.switch-conv');
-    switchCoversionBtn.addEventListener('click', switchConversionUnits);
-    let convData = {
-      length: {
-        name: 'length',
-        desc: 'Length is a measure of distance. It is the term used for identifying the size of an object or distance from one point to to another.',
-        types: ['meter', 'centimeter', 'kilometer', 'nanometer', 'millimeter', 'inches', 'feet', 'mile', 'yard',
-          'micrometer'
-        ],
-        SIUnit: ['m', 'cm', 'km', 'nm', 'mm', 'in', 'ft', 'mi', 'yd', 'μm'],
-      },
-      mass: {
-        name: 'mass',
-        desc: 'Mass is a measure of the amount of matter in an object. It is both a property of a physical body and a measure of its resistance to acceleration (a change in its state of motion) when a net force is applied.',
-        types: ['kilogram', 'gram', 'ounce', 'tonne', 'carat', 'milligram', 'pound', 'stone', 'short ton', 'long ton',
-          'microgram'
-        ],
-        SIUnit: ['kg', 'g', 'oz', 't', 'ct', 'mg', 'lb', 'st', 'sh tn', 'ton', 'μg']
-      },
-      time: {
-        name: 'time',
-        desc: 'Time can be defined as the ongoing and continuous sequence of events that occur in succession, from the past through the present to the future.',
-        types: ['second', 'minute', 'hour', 'day', 'microsecond', 'millisecond', 'week', 'month', 'year', 'decade',
-          'moment', 'jiffy'
-        ],
-        SIUnit: ['s', 'min', 'h', 'd', 'μs', 'ms', 'wk', 'mo', 'yr', 'dec', '', ''],
-      },
-      area: {
-        name: 'area',
-        desc: 'Area is the quantity that expresses the space occupied by a two-dimensional figure or shape ',
-        types: ['acre', 'hectare', 'squareMeter', 'squareKilometer', 'squareFoot', 'squareInch', 'squareYard',
-          'squareMile'
-        ],
-        SIUnit: ['ac', 'ha', 'sq m', 'sq km', 'sq ft', 'sq in', 'sq yd', 'sq mi']
-      },
-      temperature: {
-        name: 'temperature',
-        desc: 'Temperature is a physical quantity that expresses hot and cold. Temperature is measured with a thermometer.',
-        types: ['celcius', 'fahrenheit', 'rankine', 'kelvin', 'delisle', 'newton', 'réaumur'],
-        SIUnit: ['°C', '°F', '°R', 'K', '°De', '°N', '°Ré']
-      },
-      pressure: {
-        name: 'pressure',
-        desc: 'Pressure is the force applied perpendicular to the surface of an object per unit area over which that force is distributed.',
-        types: ['pascal', 'torr', 'bar', 'atmosphere(std)'],
-        SIUnit: ['Pa', 'torr', 'bar', 'atm']
-      },
-      volume: {
-        name: 'volume',
-        desc: 'Volume is the quantity of three-dimensional space enclosed by a closed surface, for example, the space that a substance (solid, liquid, gas, or plasma) or shape occupies or contains. Volume is often quantified numerically using the SI derived unit, the cubic metre.',
-        types: ['cubic-meter', 'litre', 'gallon(imp)', 'millilitre', 'ounce(fluid)', 'cubicfoot', 'cubicInch'],
-        SIUnit: ['m³', 'L', 'gal', 'mL', 'fl oz', 'ft³', 'in³']
-      },
-      energy: {
-        name: 'energy',
-        desc: 'Energy is the quantitative property that must be transferred to an object in order to perform work on, or to heat,',
-        types: ['joule', 'kilojoule', 'gramcalorie', 'kilocalorie', 'electronvolt', 'watthour', 'footpound',
-          'kilowatt-hour'
-        ],
-        SIUnit: ['J', 'kJ', 'gcal', 'kcal', 'eV', 'Wh', 'ft-lb', 'kWh']
-      },
-      storage: {
-        name: 'storage',
-        desc: 'Energy is the quantitative property that must be transferred to an object in order to perform work on, or to heat,',
-        types: ['bit', 'byte', 'kilobit', 'kibibit', 'kilobyte', 'kibibyte', 'megabyte', 'mebibyte', 'gigabyte',
-          'gibibyte', 'terabyte', 'tebibyte', 'petabyte', 'pebibyte'
-        ],
-        SIUnit: ['bit', 'B', 'Kb', 'Kib', 'KB', 'KiB', 'MB', 'MiB', 'GB', 'GiB', 'TB', 'TiB', 'PB', 'PiB']
-      },
-    }
-
-    function growDiv(div) {
-      div.style = `width:100%; height: 97%; display: flex; cursor: unset; pointer-events:none`;
-      // div.children[0].style = 'display:initial; pointer-events:visible';
-      div.children[3].style.display = 'flex';
-      setTimeout(() => {
-        showConversionPage(div)
-      }, 3000);
-    };
-
-    function normalize(div) {
-      div.style = `width:45%; height: 30%; display: flex; cursor:pointer; overflow: hidden;`;
-      div.children[0].style = 'display:none;pointer-events:none';
-      div.children[3].style.display = 'none';
-      // setTimeout(()=>{div.style.flex = 'none'},5000)
-    };
-
-    function shrinkDiv(div) {
-      div.style = `width:0%; height: 0%; display: none; `;
-    };
-
-    function goBack() {
-      selectedUnitType = '';
-      closeUnitSelectionWrapper()
-      hideConversionPage(this.parentElement)
-      allCards.forEach(card => normalize(card));
-      mainArea.style = 'overflow-y:auto;padding:1em 1em 64px 1em';
-      return mainArea.addEventListener('click', selectConverter);
-    };
-
-    backBtns.forEach(btn => btn.addEventListener('click', goBack));
-
-    window.onload = function () {
-      mainArea.addEventListener('click', selectConverter);
-    }
-
-    function selectConverter(event) {
-      let id = event.target.id;
-      console.log(event.target.classList.contains('back-btn'))
-      if (id !== 'main' && !event.target.classList.contains('back-btn')) {
-        allCards.forEach(card => {
-          if (card.id !== id) shrinkDiv(card);
-        });
-        mainArea.removeEventListener('click', selectConverter)
-        return growDiv(document.getElementById(id));
-      }
-    };
-
-    function showConversionPage(div) {
-      mainArea.style = 'padding:0;overflow-y:hidden;';
-      div.children[0].style = 'display:initial; pointer-events:visible';
-      div.children[1].style.display = 'none';
-      div.children[2].style.display = 'none';
-      div.children[3].style.display = 'none';
-      div.style = `width:100%;height:100%;overflow-x:auto; cursor:default`;
-      if (window.matchMedia('(max-width:800px)').matches) {
-        document.querySelector(`#${div.id} .conversion-section`).style.margin = '2em auto 6em auto';
-      }
-      showPageContents(div);
-    }
-
-    function hideConversionPage(div) {
-      div.children[0].style = 'none';
-      div.children[1].style.display = 'initial';
-      div.children[2].style.display = 'block';
-      div.children[3].style.display = 'none';
-      hidePageContents(div);
-    }
-
-    function showPageContents(div) {
-      document.getElementById(`${div.id}-page`).style.display = 'block';
-      if (div.id == 'unit-conv') populateUIWithConvType('length');
-    }
-
-    function hidePageContents(div) {
-      document.getElementById(`${div.id}-page`).style.display = 'none';
-    }
-
-    function toggleMode() {
-      let rootEl = document.querySelector(':root');
-      let toggleSwitch = document.getElementById('toggle-switch');
-      let currentMode = toggleSwitch.classList.contains('fa-toggle-on');
-      if (currentMode) {
-        toggleSwitch.classList.replace('fa-toggle-on', 'fa-toggle-off')
-        return rootEl.style = `--page-title: #000; --text:#fff;
-                --unit-bg:#fff; --unit-text:#000; --bg: #fff;`
-      }
-      toggleSwitch.classList.replace('fa-toggle-off', 'fa-toggle-on')
-      return rootEl.style = `--page-title: #fff;--text:#000;
-            --unit-bg:#611d00;   --unit-text:#fff;      --bg: #000031;`
-    }
-
-    let unitConversonType = document.querySelector('.conv-type-wrapper')
-    unitConversonType.addEventListener('click', (event) => {
-      let convType = event.target.getAttribute('data-conv-type')
-      if (convType !== undefined && convType !== '') {
-        populateUIWithConvType(convType);
-      }
-    })
-
-    function populateUIWithConvType(convType) {
-      let convTypeName = document.querySelector('.unit-intro-note header');
-      let convDefinition = document.querySelector('.unit-note');
-      let convDefaultValue1 = document.querySelector('.from-unit').firstChild;
-      let convDefaultValue2 = document.querySelector('.to-unit').firstChild;
-      let convDefaultValue1SIUnit = document.querySelectorAll('.unit-icon')[0];
-      let convDefaultValue2SIUnit = document.querySelectorAll('.unit-icon')[1];
-      let parentEl = document.querySelector(`[data-conv-type="${convType}"]`).parentElement;
-
-      selectedUnitType = convType;
-      convTypeName.textContent = convType;
-      convDefinition.textContent = convData[convType].desc;
-      convDefaultValue1.replaceWith(convData[convType].types[0]);
-      convDefaultValue2.replaceWith(convData[convType].types[1]);
-      convDefaultValue1SIUnit.textContent = convData[convType].SIUnit[0];
-      convDefaultValue2SIUnit.textContent = convData[convType].SIUnit[1];
-
-      for (let i = 0; i < parentEl.childElementCount; i += 1) {
-        if (parentEl.children[i].getAttribute('data-conv-type') == convType) {
-          parentEl.children[i].classList.add('opacity');
-        } else {
-          parentEl.children[i].classList.remove('opacity');
-        }
-      }
-      createConvTypeUnits(convType);
-    }
-
-    function showListOfUnits(event) {
-      setTimeout(() => {
-        unitsSection.style.bottom = '3em';
-      }, 400);
-      unitsSection.style.display = 'flex';
-      unitToSelect = event.target.classList[0];
-    };
-
-
-    function createConvTypeUnits(convType) {
-      let contents = '';
-      let convTypeData = convData[convType];
-      for (let i = 0; i < convTypeData.types.length; i += 1) {
-        contents +=
-          `<p class="selectable-unit" data-unit="${convTypeData.types[i]}">${convTypeData.types[i]}</p>`
-      }
-      contents += `<span class="fa fa-times close-unit-section-btn" aria-label="close selection"></span>`;
-      unitsSection.innerHTML = contents;
-      setTimeout(() => {
-        let closeUnitSelectionWrapperBtn = document.querySelector('.close-unit-section-btn');
-        let selectableUnits = document.querySelectorAll('.selectable-unit');
-        selectableUnits.forEach(unit => unit.addEventListener('click', (event) => {
-          let el = event.target;
-          let index = convData[selectedUnitType].types.indexOf(`${el.textContent}`);
-          document.querySelector(`.${unitToSelect}`).firstChild.replaceWith(`${el.textContent}`);
-          document.querySelector(`.${unitToSelect}`).parentElement.children[0].textContent =
-            convData[selectedUnitType].SIUnit[index];
-          return closeUnitSelectionWrapper();
-        }))
-        closeUnitSelectionWrapperBtn.addEventListener('click', closeUnitSelectionWrapper)
-      }, 2000);
-    }
-
-    function closeUnitSelectionWrapper() {
-      setTimeout(() => {
-        unitsSection.style.display = 'none';
-      }, 400);
-      unitsSection.style.bottom = '-102%';
-    }
-
-    function switchConversionUnits() {
-      let fromUnit = document.querySelector('.from-unit');
-      let toUnit = document.querySelector('.to-unit');
-      let fromSIUnit = document.querySelectorAll('.unit-icon')[0];
-      let toSIUnit = document.querySelectorAll('.unit-icon')[1];
-
-
-      //switch values
-      let toValue = fromUnit.firstChild.data;
-      let fromValue = toUnit.firstChild.data;
-      let toSIValue = fromSIUnit.textContent;
-      let fromSIValue = toSIUnit.textContent;
-
-      //switch
-      fromUnit.firstChild.replaceWith(fromValue);
-      toUnit.firstChild.replaceWith(toValue);
-      toSIUnit.textContent = toSIValue;
-      fromSIUnit.textContent = fromSIValue;
-
-      //convert unit funtion
-    }
-  </script>
-  <!-- The core Firebase JS SDK is always required and must be listed first -->
-  <!-- <script src="/__/firebase/7.21.0/firebase-app.js"></script> -->
-
-  <!-- TODO: Add SDKs for Firebase products that you want to use
+    <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
-  <!-- <script src="/__/firebase/7.21.0/firebase-analytics.js"></script> -->
+    <!-- <script src="/__/firebase/7.21.0/firebase-analytics.js"></script> -->
 
-  <!-- Initialize Firebase -->
-  <!-- <script src="/__/firebase/init.js"></script> -->
+    <!-- Initialize Firebase -->
+    <!-- <script src="/__/firebase/init.js"></script> -->
 </body>
 
 </html>
