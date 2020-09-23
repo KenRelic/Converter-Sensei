@@ -9,13 +9,13 @@
       padding: 8px;
       justify-content: space-around;
       align-items: center;
-      position: absolute;
+      position: fixed;
       bottom: -1px;
       border-radius: 10px 10px 0 0;
       z-index: 1000;
     }
 
-    .menu-bar-icon-wrapper a {
+    .menu-bar-icon-wrapper > div{
       position: relative;
       width: 40px;
       height: 40px;
@@ -23,8 +23,7 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      color: #ffffffa3;
-      text-decoration: none;
+      color: #ffffffa3 !important;
       cursor: pointer;
     }
 
