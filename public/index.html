@@ -134,10 +134,12 @@
             </div>
             <section class="section" id="rom-conv-page">
                 <header class="page-title">Roman Numerals Converter</header>
-               
+
                 <div id="rom-page">
                     <div class="rom-intro-note">
-                        <p class="rom-note">A Roman numeral is any of the symbols used in a system of numerical notation based on the ancient Roman system. The symbols are I, V, X, L, C, D, and M, standing respectively for 1, 5, 10, 50, 100, 500, and 1,000 in the Hindu-Arabic numeral system.</p>
+                        <p class="rom-note">A Roman numeral is any of the symbols used in a system of numerical notation
+                            based on the ancient Roman system. The symbols are I, V, X, L, C, D, and M, standing
+                            respectively for 1, 5, 10, 50, 100, 500, and 1,000 in the Hindu-Arabic numeral system.</p>
                     </div>
                     <div class="conv-type-wrapper">
                         <div class="conv-type opacity" data-conv-type="num2Rom">
@@ -152,12 +154,14 @@
                     <div class="conversion-section">
                         <div class="from-unit-wrapper">
                             <p class="from-unit" data-name="number">Number</p>
-                            <input type="number" data-name="rom-number" min="1" class="conv-value" aria-label="conversion value">
+                            <input type="number" data-name="rom-number" min="1" class="conv-value"
+                                aria-label="conversion value">
                         </div>
                         <div class="switch-conv fa fa-arrow-right"></div>
                         <div class="to-unit-wrapper">
                             <p class="to-unit" data-name="roman">Roman Numeral</p>
-                            <input type="text" data-name="rom-roman" class="result-value" aria-label="resultgoeshere" readonly>
+                            <input type="text" data-name="rom-roman" class="result-value" aria-label="resultgoeshere"
+                                readonly>
                         </div>
                     </div>
                 </div>
@@ -173,23 +177,25 @@
                 <div class="circle3 loader-el"></div>
             </div>
             <section class="section" id="base-conv-page">
-                <header class="page-title">Number Base Converter</header>                
+                <header class="page-title">Number Base Converter</header>
                 <div id="base-page">
                     <div class="base-intro-note">
-                        <p class="unit-note">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veniam labore fuga iste ut aliquam saepe libero voluptas quam dolorem veritatis!</p>
+                        <p class="unit-note">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veniam labore
+                            fuga iste ut aliquam saepe libero voluptas quam dolorem veritatis!</p>
                     </div>
                     <div class="conversion-section">
                         <div class="from-unit-wrapper">
                             <p class="from-unit" data-from-name="decimal">decimal
                                 <span class="fa fa-caret-down"></span> </p>
-                            <input type="text" pattern="" title="digits only allowed" min="1" class="conv-value" aria-label="conversion value">
+                            <input type="text" pattern="" title="digits only allowed" min="1" class="conv-value"
+                                aria-label="conversion value">
                         </div>
                         <div class="switch-conv fa fa-exchange-alt"></div>
                         <div class="to-unit-wrapper">
                             <p class="to-unit" data-to-name="binary">binary
                                 <span class="fa fa-caret-down"></span>
                             </p>
-                            <input type="text"  class="result-value" aria-label="resultgoeshere" readonly>
+                            <input type="text" class="result-value" aria-label="resultgoeshere" readonly>
                         </div>
                     </div>
                 </div>
@@ -208,12 +214,72 @@
         <div id="date-conv" class="card" tabindex="0">
             <span class="fa fa-arrow-circle-left back-btn"></span>
             <span class="fa fa-calendar"></span>
-            <header>Date Converter</header>
+            <header>Date Calculator</header>
             <div class="loader">
                 <div class="circle1 loader-el"></div>
                 <div class="circle2 loader-el"></div>
                 <div class="circle3 loader-el"></div>
             </div>
+            <section class="section" id="date-conv-page">
+                <header class="page-title">Date Calculator</header>
+                <div class="date-conv-wrapper">
+                    <div class="conv-type opacity" data-conv-type="addDate">
+                        <span class="fa fa-calendar-plus"></span>
+                        <p>Add date</p>
+                    </div>
+                    <div class="conv-type" data-conv-type="subtractDate">
+                        <span class="fa fa-calendar-minus"></span>
+                        <p>Subtract date</p>
+                    </div>
+                    <div class="conv-type" data-conv-type="howLongUntil">
+                        <span class="fa fa-calendar-times"></span>
+                        <p>How long until</p>
+                    </div>
+                    <!-- <div class="conv-type" data-conv-type="time">
+                        <span class="fa fa-clock"></span>
+                        <p>Time</p>
+                    </div> -->
+                </div>
+                <div id="date-page">
+                    <div class="date-intro-note">
+                        <p class="date-note">Know what date it will be when you add year(s), month(s) or day(s) to a
+                            date. Never miss track of date.</p>
+                    </div>
+                    <div class="conversion-section">
+                        <div class="from-unit-wrapper">
+                            <p class="from-unit">Pick date</p>
+                            <input type="date" class="conv-value" aria-label="conversion value">
+                            <div class="date-conv-section">
+                                <header class="to-date-header">Add</header>
+                                <div class="date-add-subtract-section">
+                                    <input type="date" class="howLongInput conv-value" aria-label="conversion value"
+                                        id="to-date">
+                                    <div class="section-parameter">
+                                        <label for="add-year">Year(s)</label>
+                                        <input type="number" id="add-year" min="1" class="conv-value" aria-label="year">
+                                    </div>
+                                    <div class="section-parameter">
+                                        <label for="add-month">Month(s)</label>
+                                        <input type="number" id="add-year" min="1" class="conv-value"
+                                            aria-label="month">
+                                    </div>
+                                    <div class="section-parameter">
+                                        <label for="add-day">Day(s)</label>
+                                        <input type="number" id="add-day" min="1" class="conv-value" aria-label="day">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="switch-conv fa fa-arrow-right"></div>
+                        <div class="to-unit-wrapper">
+                            <p class="to-unit">Result</p>
+                            <input type="text" class="result-value" aria-label="resultgoeshere" readonly>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
         </div>
         <div id="other" class="card" tabindex="0">
             <span class="fa fa-arrow-circle-left back-btn"></span>
@@ -224,6 +290,25 @@
                 <div class="circle2 loader-el"></div>
                 <div class="circle3 loader-el"></div>
             </div>
+            <section class="section" id="other-app-page">
+                <header class="page-title">Other Apps</header>
+                <div id="other-page">
+                    <div class="app-type-wrapper">
+                        <div class="app opacity" data-app-name="appside">
+                            <span class="fa fa-gamepad" style="font-weight: bold"></span>
+                            <p>Appside</p>
+                        </div>
+                        <div class="app" data-app-name="comingSoon">
+                            <span class="fa fa-gamepad" style="font-weight: bold"></span>
+                            <p>Coming soon!</p>
+                        </div>
+                    </div>
+                    <div class="app-intro-note">
+                        <p class="about-app">APPSIDE is an app with a collecton of games like quiz, tictactoe, memory game etc. The games are addictive and most of them are available offline.</p>
+                        <a href="https://appside.com"><button type="button">Goto app <span class="fa fa-arrow-circle-right"></span></button></a>
+                    </div>
+                </div>
+            </section>
         </div>
         <div class="units-section base-color">
         </div>

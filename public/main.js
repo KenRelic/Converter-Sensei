@@ -1,4 +1,4 @@
-import { convData, baseData } from './data.js';
+import { convData, baseData, dateData, otherAppData } from './data.js';
 
 let menuBar = document.getElementById('menu-bar');
 let currentPage = document.getElementById('current-page');
@@ -6,7 +6,8 @@ let menuBgColors = {
   "unit-conv": "#df3f05",
   "rom-conv": "#c40038",
   "base-conv": "#020c72",
-  "other-conv": "",
+  "other": "#065c5b",
+  "date-conv": "#00422b"
 }
 let allCards = document.querySelectorAll('.card');
 let mainArea = document.getElementById('main');
@@ -19,7 +20,9 @@ let baseUnitFrom = document.querySelector('#base-conv .to-unit');
 let baseUnitTo = document.querySelector('#base-conv .from-unit');
 let switchUnitCoversionBtn = document.querySelector('#unit-conv .switch-conv');
 let switchBaseConversionBtn = document.querySelector('#base-conv .switch-conv');
-let unitConversonType = document.querySelector('.conv-type-wrapper');
+let unitConversionType = document.querySelector('.conv-type-wrapper');
+let dateConversionType = document.querySelector('.date-conv-wrapper');
+let appTypeWrapper = document.querySelector('.app-type-wrapper');
 
 let unitToSelect = '';
 let selectedUnitType = '';
@@ -45,17 +48,17 @@ function toggleMode() {
   let rootEl = document.querySelector(':root');
   let toggleSwitch = document.getElementById('toggle-switch');
   let currentMode = toggleSwitch.classList.contains('fa-toggle-on'); //dark mode by default
-  if (currentMode) {    
+  if (currentMode) {
     toggleSwitch.classList.replace('fa-toggle-on', 'fa-toggle-off');
-    unitsSection.classList.replace(unitsSection.classList[1],'light-mode');
+    unitsSection.classList.replace(unitsSection.classList[1], 'light-mode');
 
     return rootEl.style = `--page-title: #fff; --text:#000;
-              --unit-bg:#fff; --rom-bg:#fff;  --base-bg: #fff; --unit-text:#000; --bg: #fff;`
+              --unit-bg:#fff; --rom-bg:#fff;  --date-bg:#fff;  --date-note-bg:#fff;--btn-color: #065c5b; --btn-text:#fff;--app-bg:#fff; --other-app-bg:#fff; --base-bg: #fff; --unit-text:#000; --bg: #fff;`
   }
   toggleSwitch.classList.replace('fa-toggle-off', 'fa-toggle-on');
-  unitsSection.classList.replace('light-mode',`${currentConverter.replace('conv','color')}`);
+  unitsSection.classList.replace('light-mode', `${currentConverter.replace('conv', 'color')}`);
   return rootEl.style = `--page-title: #000;--text:#fff;
-          --unit-bg:#611d00;--rom-bg:#610027;  --base-bg: #002f61;  --unit-text:#fff;      --bg: #000031;`
+          --unit-bg:#611d00;--rom-bg:#610027;  --date-bg:#0b940b; --date-note-bg:#014e26; --btn-color: #fff; --btn-text:#065c5b; --app-bg:#118f83;  --other-app-bg:#065c5b; --base-bg: #002f61;  --unit-text:#fff;      --bg: #000031;`
 };
 
 function goBack() {
@@ -97,9 +100,11 @@ function selectConverter(event) {
     });
     // if(id == 'base-conv') createConvTypeUnits('base-conv');
     mainArea.removeEventListener('click', selectConverter);
-    unitsSection.classList.replace(`${currentConverter.replace('conv','color')}`,`${id.replace('conv','color')}`);
-    currentConverter = id;
-  
+    console.log(id)
+    if (id !== 'other') {
+      unitsSection.classList.replace(`${currentConverter.replace('conv', 'color')}`, `${id.replace('conv', 'color')}`);
+      currentConverter = id;
+    }
     return growDiv(document.getElementById(id));
   }
 };
@@ -112,7 +117,7 @@ function showConversionPage(div) {
   div.children[3].style.display = 'none';
   div.style = `width:100%;height:100%;overflow-x:auto; cursor:default`;
   if (window.matchMedia('(max-width:800px)').matches) {
-    document.querySelector(`#${div.id} .conversion-section`).style.margin = '2em auto 6em auto';
+    if (div.id !== 'other') document.querySelector(`#${div.id} .conversion-section`).style.margin = '2em auto 6em auto';
   }
   showPageContents(div);
 };
@@ -126,23 +131,88 @@ function hideConversionPage(div) {
 };
 
 function showPageContents(div) {
-  document.getElementById(`${div.id}-page`).style.display = 'block';
+  if (div.id !== 'other') document.getElementById(`${div.id}-page`).style.display = 'block';
+  else document.getElementById(`${div.id}-app-page`).style.display = 'block';
   if (div.id == 'unit-conv') populateUIWithConvType('length', div.id);
   else if (div.id == 'base-conv') populateUIWithConvType('base', div.id);
   // else if (div.id == 'rom-conv') switchRomanConvType('');
 };
 
 function hidePageContents(div) {
-  document.getElementById(`${div.id}-page`).style.display = 'none';
+  if (div.id !== 'other') document.getElementById(`${div.id}-page`).style.display = 'none';
+  else document.getElementById(`${div.id}-app-page`).style.display = 'none';
 };
 
-unitConversonType.addEventListener('click', (event) => {
+unitConversionType.addEventListener('click', (event) => {
   let convType = event.target.getAttribute('data-conv-type')
   if (convType !== undefined && convType !== '') {
     // console.log(convType, event.target.parentElement.parentElement.id)
     populateUIWithConvType(convType, event.target.parentElement.parentElement.id);
   }
-})
+});
+
+dateConversionType.addEventListener('click', (event) => {
+  let convType = event.target.getAttribute('data-conv-type')
+  if (convType !== undefined && convType !== '') {
+    switchDateConversionUI(convType);
+  }
+});
+
+appTypeWrapper.addEventListener('click', (event) => {
+  let appIntroSection = document.querySelector('.app-intro-note');
+  let convType = event.target.getAttribute('data-app-name');
+  console.log(convType)
+  if (convType !== undefined && convType !== '') {
+    appIntroSection.children[0].textContent = otherAppData[convType].desc;
+    appIntroSection.children[1].href = otherAppData[convType].url;
+    for (let i = 0; i < appTypeWrapper.childElementCount; i += 1) {
+      if(appTypeWrapper.children[i].getAttribute('data-app-name') === convType){
+        appTypeWrapper.children[i].classList.add('opacity');
+      }else{
+        appTypeWrapper.children[i].classList.remove('opacity');
+      }
+    }
+  }
+});
+
+function switchDateConversionUI(convType) {
+  switch (convType) {
+    case 'subtractDate': populateDateConversionUI(convType, 'Subtract', 'section-parameter');
+      break;
+    case 'howLongUntil': populateDateConversionUI(convType, 'To Date', 'howLongInput');
+      break;
+    case 'addDate': populateDateConversionUI(convType, 'Add', 'section-parameter');
+      break;
+    default: populateDateConversionUI(convType, 'Add', 'section-parameter');
+      break;
+  }
+}
+function populateDateConversionUI(convType, displayedText, className) {
+  let selectedConv = document.querySelector(`[data-conv-type ="${convType}"]`);
+  if (!(selectedConv.classList.contains('opacity'))) {
+    selectedConv.classList.add('opacity');
+    selectedConv.style = 'pointer-events: default; cursor:none';
+
+    document.querySelector('.date-note').textContent = dateData[convType];
+    document.querySelector('.to-date-header').textContent = displayedText;
+    for (let i = 0; i < dateConversionType.childElementCount; i += 1) {
+      if (dateConversionType.children[i].getAttribute('data-conv-type') !== convType) {
+        dateConversionType.children[i].classList.remove('opacity');
+        dateConversionType.children[i].style = 'pointer-events: visible; cursor:pointer';
+      } else {
+        dateConversionType.children[i].style = 'pointer-events: default; cursor:none';
+      }
+    }
+    let allInputElement = document.querySelector('.date-add-subtract-section');
+    for (let i = 0; i < allInputElement.childElementCount; i += 1) {
+      if (allInputElement.children[i].classList.contains(className)) {
+        allInputElement.children[i].style.display = 'block';
+      } else {
+        allInputElement.children[i].style.display = 'none';
+      }
+    }
+  }
+}
 
 function populateUIWithConvType(convType, div) {
   let convTypeName = document.querySelector(`#${div} .unit-intro-note header`) ||
@@ -217,7 +287,7 @@ function createConvTypeUnits(convType) {
     selectableUnits.forEach(unit => unit.addEventListener('click', (event) => {
       let el = event.target;
       let index;
-      
+
       if (convTypeData.name !== 'base') {
         index = convData[selectedUnitType].types.indexOf(`${el.textContent}`);
         document.querySelector(`.${unitToSelect}`).parentElement.children[0].textContent =
@@ -226,7 +296,7 @@ function createConvTypeUnits(convType) {
 
       } else {
         document.querySelector(`#base-conv .${unitToSelect}`).firstChild.replaceWith(`${el.textContent}`);
-        
+
       }
 
       return closeUnitSelectionWrapper();

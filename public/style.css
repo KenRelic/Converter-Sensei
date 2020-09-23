@@ -7,8 +7,15 @@
   --unit-bg: #611d00;
   --rom-bg: #610027;
   --base-bg: #002f61;
+  --date-bg:#0b940b;
+  --date-note-bg:#014e26;
+  --other-app-bg:#065c5b;
+  --app-bg:#118f83;
+  --btn-text:#065c5b;
+  --btn-color: #fff;
   --unit-text: #fff;
   --back-btn: #fff;
+
 }
 
 
@@ -23,7 +30,7 @@ body {
 html {
   width: 100vw;
   font-size: 10px;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: 'Lucida Sans', 'Lucida S499ans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 
   background-color: #000013;
   height: 100vh;
@@ -189,14 +196,14 @@ main {
 
 #date-conv {
   background-color: rgb(94, 255, 0);
-  opacity: 0.2;
-  pointer-events: none;
+  /* opacity: 0.2;
+  pointer-events: none; */
 }
 
 #other {
-  background-color: rgb(0, 255, 251);
-  opacity: 0.2;
-  pointer-events: none;
+  background-color: #00fffb;
+  /* opacity: 0.2;
+  pointer-events: none; */
 }
 
 #rom-conv {
@@ -219,7 +226,9 @@ main {
 
 #unit-conv-page,
 #rom-conv-page,
-#base-conv-page {
+#base-conv-page,
+#other-app-page,
+#date-conv-page {
   width: 100%;
   height: 100%;
   display: block;
@@ -242,7 +251,9 @@ main {
 
 .unit-intro-note,
 .rom-intro-note,
-.base-intro-note {
+.base-intro-note,
+.app-intro-note,
+.date-intro-note {
   background-color: var(--unit-bg);
   color: var(--unit-text);
   padding: 1em;
@@ -264,6 +275,21 @@ main {
   box-shadow: 5px 5px 15px #010c2d5a;
 }
 
+.app-intro-note{
+  background-color: var(--other-app-bg);
+}
+.date-intro-note {
+  background-color:  var(--date-note-bg);
+}
+
+.app-intro-note button{
+  background-color: var(--btn-color);
+  color: var(--btn-text);
+  border: none;
+  padding: 0.5em;
+  border-radius: 1em;
+  margin-top: 2em;
+}
 .unit-intro-note header {
   text-transform: uppercase;
   font-weight: bold;
@@ -306,6 +332,13 @@ main {
   box-shadow: 0 5px 0 #0048c5;
 }
 
+#date-page .from-unit-wrapper {
+  background-color: #0b940b;
+  box-shadow: 0 5px 0 #008004;
+}
+#date-page .from-unit-wrapper input {
+  background-color: #38d3352b;
+}
 #base-page .from-unit-wrapper input {
   background-color: #cae4ff10;
 }
@@ -357,11 +390,21 @@ input[data-name="base-hex"] {
   color: var(--unit-text);
 }
 
+#date-page .from-unit {
+  background-color: var(--date-note-bg);
+}
+#date-page .to-unit {
+  background-color: rgb(179, 255, 200);
+}
+
 #base-page .from-unit {
   background-color: var(--base-bg);
   color: var(--unit-text);
 }
 
+#to-date{
+  display: none;
+}
 .to-unit {
   color: #000;
   background-color: rgb(193, 193, 193);
@@ -415,7 +458,9 @@ input[data-name="base-hex"] {
   color: #000;
 }
 
-.conv-type-wrapper {
+.conv-type-wrapper,
+.date-conv-wrapper,
+.app-type-wrapper {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -425,7 +470,9 @@ input[data-name="base-hex"] {
 
 #unit-conv-page .conv-type,
 #rom-conv-page .conv-type,
-#base-conv-page .conv-type {
+#base-conv-page .conv-type,
+#other .app,
+#date-conv-page .conv-type{
   background-color: var(--unit-bg);
   color: var(--unit-text) !important;
   padding: 1em;
@@ -439,6 +486,48 @@ input[data-name="base-hex"] {
   transition: all 0.3s ease;
 }
 
+#other .app{
+  background-color: var(--app-bg);
+  color: var(--unit-text) !important;
+  min-height: 7em;
+}
+
+.app *, #date-conv-page .conv-type *{
+  pointer-events: none;
+}
+#date-conv-page .conv-type{
+  min-height: 7em;
+  background-color: var(--date-bg);
+}
+#date-conv-page .from-unit{
+ margin: -1em auto 1em auto;
+}
+.date-add-subtract-section{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.date-conv-section {
+  border:3px dashed #0b940b;;
+  border-radius: 1em;
+  padding-top: 1em;
+  margin-top: 2em;
+}
+.date-conv-section header{
+  margin-bottom: 1em;
+  background-color: var(--date-note-bg);
+  color: var(--text);
+  width: fit-content;
+  padding: 0.5em 1.5em;
+  margin: 0 auto 1em auto;
+  border-radius: 1em;
+}
+
+#date-conv .date-add-subtract-section div{
+  width: 30%;
+}
 #rom-conv-page .conv-type {
   background-color: var(--rom-bg);
   color: var(--unit-text) !important;
