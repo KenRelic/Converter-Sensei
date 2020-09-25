@@ -33,8 +33,7 @@ html {
   width: 100vw;
   font-size: 10px;
   font-family: 'Lucida Sans', 'Lucida S499ans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-
-  background-color: #000013;
+  background-color: var(--bg);
   height: 100vh;
   overflow: hidden;
   font-family: 'Montserrat', sans-serif;
@@ -248,8 +247,8 @@ main {
   position: absolute;
   top: -102%;
   padding: 1em;
-  /* width: 100vw; */
-  
+  overflow-x: auto;
+  height: calc(100% - 60px);
 }
 
 .page-title {
@@ -295,6 +294,7 @@ main {
 .history-entries{
   background-color: #0a071f;
   box-shadow: 5px 5px 15px #0003235a;
+font-size: 1.1em;
 
 }
 .app-intro-note{
@@ -316,6 +316,7 @@ main {
 .history-entries button{
   background-color: var(--btn-color-red);
   color: #fff;
+  cursor: pointer;
 }
 .unit-intro-note header {
   text-transform: uppercase;
@@ -417,10 +418,13 @@ input[data-name="base-hex"] {
   color: #fff;
   padding: 0.5em;
   text-align: center;
+  font-size: 1.1em;
+  cursor: none;
+  pointer-events: none;
 }
-.history-entries > div{
-  display: flex;
-  flex-wrap: wrap;
+
+.history *{
+  pointer-events: none;
 }
 .history-entries > div p{
   background-color: var(--entries-bg);
@@ -428,10 +432,14 @@ input[data-name="base-hex"] {
   padding: 1em;
   border-radius: 2em;
   margin-top: 1em;
-  flex: 1;
-  min-width: 30%;
+  width: 100%;
   margin: 1em 0.2em 0.2em 0.2em;
-  display: flex;
+}
+.hidden{
+  display: none !important;
+}
+.show{
+  display: block !important;
 }
 #rom-page .from-unit {
   background-color: var(--rom-bg);

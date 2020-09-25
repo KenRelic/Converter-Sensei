@@ -25,6 +25,8 @@ let switchBaseConversionBtn = document.querySelector('#base-conv .switch-conv');
 let unitConversionType = document.querySelector('.conv-type-wrapper');
 let dateConversionType = document.querySelector('.date-conv-wrapper');
 let appTypeWrapper = document.querySelector('.app-type-wrapper');
+let historyTypeWrapper = document.querySelector('.history-type-wrapper');
+let clearHistoryBtn = document.getElementById('clear-history-btn');
 
 let unitToSelect = '';
 let selectedUnitType = '';
@@ -177,6 +179,43 @@ appTypeWrapper.addEventListener('click', (event) => {
     }
   }
 });
+
+historyTypeWrapper.addEventListener('click', (event) => {
+  let historyEntrySection = document.querySelectorAll('.entries-section');
+  historyEntrySection = Array.from(historyEntrySection);
+  let historyType = event.target.getAttribute('data-history');
+  if (historyType !== undefined && historyType !== '') {
+    for (let i = 0; i < historyTypeWrapper.childElementCount; i += 1) {
+      if (historyTypeWrapper.children[i].getAttribute('data-history') === historyType) {
+        historyTypeWrapper.children[i].classList.add('opacity');
+      } else {
+        historyTypeWrapper.children[i].classList.remove('opacity');
+      }
+    }
+    historyEntrySection.forEach(section => {
+      if (section.id !== historyType + '-history') {
+        // clearHistoryBtn.addEventListener('click', addToHistory)
+        return section.classList.contains('show')? section.classList.replace('show', 'hidden') :
+        section.classList.add('hidden') ;
+      } else {
+        return section.classList.contains('hidden')? section.classList.replace('hidden', 'show') :
+        section.classList.add('show') ;
+      }
+    })
+  }
+});
+
+// function clearHistory(){
+
+// }
+
+// function addToHistory(){
+//   let section = document.getElementById('unit-history')
+//   let p = document.createElement('P');
+//   let pText = document.createTextNode('HERE IS THE ONE');
+//   p.appendChild(pText);
+//   section.appendChild(p);
+// }
 
 function switchDateConversionUI(convType) {
   switch (convType) {
@@ -388,13 +427,13 @@ num2RomanConvOption.addEventListener('click', switchRomanConvType);
 roman2NumConvOption.addEventListener('click', switchRomanConvType);
 
 
-function goToHistoryPage(){
+function goToHistoryPage() {
   mainArea.style.display = 'none';
   historyPage.style = 'display:block; top: 0';
 }
 
 function goHome() {
-  setTimeout(()=>{  window.location.reload()},400)
+  setTimeout(() => { window.location.reload() }, 200)
   // window.open('./index.html', '_self');
 }
 
