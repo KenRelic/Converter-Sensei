@@ -344,38 +344,58 @@
             <header class="page-title">History</header>
             <div>
                 <div class="history-type-wrapper">
-                    <div class="history opacity" data-app-name="unit">
+                    <div class="history opacity" data-history="unit">
                         <span class="fa fa-weight" style="font-weight: bold"></span>
                         <p>Unit conversion <br /> History</p>
                     </div>
-                    <div class="history" data-app-name="romNum">
+                    <div class="history" data-history="romNum">
                         <span class="fa fa-" style="font-weight: bold"></span>
                         <p>Roman Numeral <br /> History</p>
                     </div>
-                    <div class="history" data-app-name="numberBase">
+                    <div class="history" data-history="numBase">
                         <span class="fa fa-" style="font-weight: bold"></span>
                         <p>Number Base <br /> History</p>
                     </div>
                 </div>
                 <div class="history-entries">
                     <p class="">Last 10 results</p>
-                    <div class="unit-entries">
+                    <div class="unit-entries entries-section" id="unit-history">
                         <p>300mg -> 0.3g</p>
                         <p>300g -> 0.3kg</p>
+                        <!-- <p>300mg -> 0.3g</p>
                         <p>300mg -> 0.3g</p>
                         <p>300mg -> 0.3g</p>
                         <p>300mg -> 0.3g</p>
                         <p>300mg -> 0.3g</p>
-                        <p>300mg -> 0.3g</p>
-                        <p>300mg -> 0.3g</p>
+                        <p>300mg -> 0.3g</p> -->
                     </div>
-                    <button type="button">Clear all <span class="fa fa-delete"></span></button>
+                    <div class="rom-entries entries-section hidden"  id="romNum-history">
+                        <p>III -> 3</p>
+                        <p>XIV -> 14</p>
+                        <!-- <p>IV -> 4</p>
+                        <p>234 -> CCXXXIV</p>
+                        <p>10 -> X</p>
+                        <p>100 -> C</p>
+                        <p>MM -> 2000</p>
+                        <p>33 ->XXXIII </p> -->
+                    </div>
+                    <div class="base-entries entries-section hidden"  id="numBase-history">
+                        <p>A (hex) -> 10 (dec)</p>
+                        <p>11 (bin) -> 3(dec)</p>
+                        <!-- <p>A (hex) -> 10 (dec)</p>
+                        <p>11 (bin) -> 3(dec)</p>
+                        <p>A (hex) -> 10 (dec)</p>
+                        <p>11 (bin) -> 3(dec)</p>
+                        <p>A (hex) -> 10 (dec)</p>
+                        <p>11 (bin) -> 3(dec)</p>                       -->
+                    </div>
+                    <button type="button" id="clear-history-btn">Clear all</button>
                 </div>
             </div>
         </section>
         <!-- </div> -->
     </aside>
-    <!-- <script type="module">
+    <script type="module">
       window.addEventListener('load', () => {
       //register service worker
       if ("serviceWorker" in navigator) {
@@ -385,7 +405,7 @@
           });
       }
     })
-    </script> -->
+    </script>
 
     <script src="./main.js" defer type="module"></script>
     <script src="./data.js" defer type="module"></script>
