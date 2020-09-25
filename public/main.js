@@ -1,7 +1,7 @@
 import { convData, baseData, dateData, otherAppData } from './data.js';
 
 let menuBar = document.getElementById('menu-bar');
-let currentPage = document.getElementById('current-page');
+
 let menuBgColors = {
   "unit-conv": "#df3f05",
   "rom-conv": "#c40038",
@@ -9,8 +9,10 @@ let menuBgColors = {
   "other": "#065c5b",
   "date-conv": "#00422b"
 }
+let currentTheme = "#020c72";
 let allCards = document.querySelectorAll('.card');
 let mainArea = document.getElementById('main');
+let historyPage = document.querySelector('.history-page');
 let backBtns = document.querySelectorAll('.back-btn');
 let toggleSwitch = document.getElementById('toggle-icon');
 let unitsSection = document.querySelector('.units-section');
@@ -53,12 +55,12 @@ function toggleMode() {
     unitsSection.classList.replace(unitsSection.classList[1], 'light-mode');
 
     return rootEl.style = `--page-title: #fff; --text:#000;
-              --unit-bg:#fff; --rom-bg:#fff;  --date-bg:#fff;  --date-note-bg:#fff;--btn-color: #065c5b; --btn-text:#fff;--app-bg:#fff; --other-app-bg:#fff; --base-bg: #fff; --unit-text:#000; --bg: #fff;`
+              --unit-bg:#fff; --rom-bg:#fff;  --date-bg:#fff;  --entries-bg:#ffffff;  --date-note-bg:#fff;--btn-color: #065c5b; --btn-text:#fff;--app-bg:#fff; --other-app-bg:#fff; --base-bg: #fff; --unit-text:#000; --bg: #fff;`
   }
   toggleSwitch.classList.replace('fa-toggle-off', 'fa-toggle-on');
   unitsSection.classList.replace('light-mode', `${currentConverter.replace('conv', 'color')}`);
   return rootEl.style = `--page-title: #000;--text:#fff;
-          --unit-bg:#611d00;--rom-bg:#610027;  --date-bg:#0b940b; --date-note-bg:#014e26; --btn-color: #fff; --btn-text:#065c5b; --app-bg:#118f83;  --other-app-bg:#065c5b; --base-bg: #002f61;  --unit-text:#fff;      --bg: #000031;`
+          --unit-bg:#611d00;--rom-bg:#610027;  --date-bg:#0b940b;  --entries-bg:#002f61; --date-note-bg:#014e26; --btn-color: #fff; --btn-text:#065c5b; --app-bg:#118f83;  --other-app-bg:#065c5b; --base-bg: #002f61;  --unit-text:#fff;      --bg: #000031;`
 };
 
 function goBack() {
@@ -91,10 +93,12 @@ function shrinkDiv(div) {
 };
 
 function selectConverter(event) {
+  let currentPage = document.getElementById('current-page');
   let id = event.target.id;
   if (id !== 'main' && !event.target.classList.contains('back-btn')) {
     menuBar.style.backgroundColor = `${menuBgColors[id]}`;
     currentPage.style.color = `${menuBgColors[id]}`;
+    currentTheme = `${menuBgColors[id]}`;
     allCards.forEach(card => {
       if (card.id !== id) shrinkDiv(card);
     });
@@ -146,7 +150,6 @@ function hidePageContents(div) {
 unitConversionType.addEventListener('click', (event) => {
   let convType = event.target.getAttribute('data-conv-type')
   if (convType !== undefined && convType !== '') {
-    // console.log(convType, event.target.parentElement.parentElement.id)
     populateUIWithConvType(convType, event.target.parentElement.parentElement.id);
   }
 });
@@ -166,9 +169,9 @@ appTypeWrapper.addEventListener('click', (event) => {
     appIntroSection.children[0].textContent = otherAppData[convType].desc;
     appIntroSection.children[1].href = otherAppData[convType].url;
     for (let i = 0; i < appTypeWrapper.childElementCount; i += 1) {
-      if(appTypeWrapper.children[i].getAttribute('data-app-name') === convType){
+      if (appTypeWrapper.children[i].getAttribute('data-app-name') === convType) {
         appTypeWrapper.children[i].classList.add('opacity');
-      }else{
+      } else {
         appTypeWrapper.children[i].classList.remove('opacity');
       }
     }
@@ -378,13 +381,61 @@ function switchValues(selectedOption, otherOption, convType) {
     currentRomConv = convType;
   }
 
-
   selectedOption.classList.add('opacity');
   otherOption.classList.remove('opacity');
-
 }
 num2RomanConvOption.addEventListener('click', switchRomanConvType);
 roman2NumConvOption.addEventListener('click', switchRomanConvType);
+
+
+function goToHistoryPage(){
+  mainArea.style.display = 'none';
+  historyPage.style = 'display:block; top: 0';
+}
+
+function goHome() {
+  setTimeout(()=>{  window.location.reload()},400)
+  // window.open('./index.html', '_self');
+}
+
+
+
+menuBar.addEventListener('click', moveIconSelection)
+
+function moveIconSelection(event) {
+  // currentPage.style.color = `${menuBgColors[id]}`;
+  let id = event.target.id;
+  if (id !== 'menu-bar') {
+    let menuitems = Array.from(menuBar.children);
+    menuitems.forEach(item => {
+      if (id == item.id) {
+        item.classList.add('current-page');
+        item.children[0].children[0].setAttribute('id', 'current-page');
+        let currentPage = document.getElementById('current-page');
+        currentPage.style.color = currentTheme;
+        return openPage(item.id);
+      } else {
+        item.classList.remove('current-page');
+        item.children[0].children[0].removeAttribute('id');
+        item.children[0].children[0].style.color = "#ffffffa3";
+        //close pages associated
+        return;
+      }
+    });
+  }
+}
+
+function openPage(id) {
+  switch (id) {
+    case 'home-icon': goHome();
+      break;
+    case 'history-icon': goToHistoryPage()
+      break;
+    default:
+      break;
+  }
+}
+
 
 // add the data-name for each input box for beter calculation data-name ='length-meter'
 //split the data value, use the first aprt to get th type of conversion then the second to get the

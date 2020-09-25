@@ -13,6 +13,7 @@
       bottom: -1px;
       border-radius: 10px 10px 0 0;
       z-index: 1000;
+      transition: all 0.3s ease;
     }
 
     .menu-bar-icon-wrapper > div{
@@ -25,21 +26,30 @@
       flex-direction: column;
       color: #ffffffa3 !important;
       cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .menu-bar-icon-wrapper *{
+      pointer-events: none;
     }
 
     .menu-bar-icon-wrapper .current-page {
       display: block;
+      transition: all 0.3s ease;
+
     }
 
     .menu-bar-icon-wrapper span {
       font-size: 10px;
       text-align: center;
       font-family: 'Montserrat', sans-serif;
+      transition: all 0.3s ease;
     }
 
     .menu-icon i {
       font-size: 20px;
       margin-bottom: 4px;
+      transition: all 0.3s ease;
     }
 
     #current-page {
@@ -58,6 +68,7 @@
       box-shadow: 0 5px 15px rgba(2, 14, 46, 0.7);
       position: absolute;
       top: -24px;
+      transition: all 0.3s ease;
     }
 
     #current-page+span {

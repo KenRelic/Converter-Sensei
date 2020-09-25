@@ -2,223 +2,227 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sensei Converter</title>
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="#000013">
-  <meta name="apple-mobile-web-app-title" content="Converter Sensei">
-  <meta name="description" content="Unit converter app with offline functionality (PWA) to convert between units, calculate dates , roman numerals and number base conversion">
-  <meta name="theme-color" content="#000013" />
-  <link rel="apple-touch-icon" sizes="57x57" href="./icons/apple-icon-57x57.png">
-  <link rel="apple-touch-icon" sizes="60x60" href="./icons/apple-icon-60x60.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="./icons/apple-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="./icons/apple-icon-76x76.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="./icons/apple-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="./icons/apple-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="./icons/apple-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="./icons/apple-icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-icon-180x180.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icons/android-icon-192x192.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="./icons/favicon-96x96.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16x16.png">
-  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
-  <link rel="manifest" href="./manifest.json">
-  <meta name="msapplication-TileColor" content="#000031">
-  <meta name="msapplication-TileImage" content="./icons/ms-icon-144x144.png">
-  <link rel="stylesheet" href="./all.css">
-  <link rel="stylesheet" href="./menu-bar.css">
-  <link rel="stylesheet" href="./style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Poppins&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensei Converter</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#000013">
+    <meta name="apple-mobile-web-app-title" content="Converter Sensei">
+    <meta name="description"
+        content="Unit converter app with offline functionality (PWA) to convert between units, calculate dates , roman numerals and number base conversion">
+    <meta name="theme-color" content="#000013" />
+    <link rel="apple-touch-icon" sizes="57x57" href="./icons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="./icons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="./icons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="./icons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="./icons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="./icons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="./icons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="./icons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="./icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="./icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16x16.png">
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="msapplication-TileColor" content="#000031">
+    <meta name="msapplication-TileImage" content="./icons/ms-icon-144x144.png">
+    <link rel="stylesheet" href="./all.css">
+    <link rel="stylesheet" href="./menu-bar.css">
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Poppins&display=swap" rel="stylesheet">
 </head>
 
 <body>
-  <!-- MENU BAR -->
-  <div id="menu-bar">
-    <div class="menu-bar-icon-wrapper" id="pickup-icon">
-      <div>
-        <div class="menu-icon"><i class="fa fa-sign-out-alt"></i></div><span id="pickup-icon-title">Exit</span>
-      </div>
-    </div>
-    <div class="menu-bar-icon-wrapper" id="wallet-icon">
-      <div>
-        <div class="menu-icon"><i class="fa fa-history"></i></div><span id="wallet-icon-title">History</span>
-      </div>
+    <!-- MENU BAR -->
+    <div id="menu-bar">
+        <div class="menu-bar-icon-wrapper" id="exit-icon">
+            <div>
+                <div class="menu-icon"><i class="fa fa-sign-out-alt"></i></div><span id="pickup-icon-title">Exit</span>
+            </div>
+        </div>
+        <div class="menu-bar-icon-wrapper" id="history-icon">
+            <div>
+                <div class="menu-icon"><i class="fa fa-history"></i></div><span id="wallet-icon-title">History</span>
+            </div>
 
-    </div>
-    <div class="menu-bar-icon-wrapper current-page" id="home-icon">
-      <div>
-        <div class="menu-icon" id="current-page"><i class="fa fa-home"></i></div><span id="home-icon-title">Home</span>
-      </div>
+        </div>
+        <div class="menu-bar-icon-wrapper current-page" id="home-icon">
+            <div>
+                <div class="menu-icon" id="current-page"><i class="fa fa-home"></i></div><span
+                    id="home-icon-title">Home</span>
+            </div>
+        </div>
+        <div class="menu-bar-icon-wrapper" id="switch-icon">
+            <div>
+                <div class="menu-icon"><i class="fa fa-exchange-alt"></i></div><span
+                    id="profile-icon-title">Switch</span>
+            </div>
+        </div>
 
+        <div class="menu-bar-icon-wrapper" id="toggle-icon">
+            <div>
+                <div class="menu-icon"><i class="fa fa-toggle-on" id="toggle-switch"></i></div><span
+                    id="signout-icon-title">Mode</span>
+            </div>
+        </div>
     </div>
-    <div class="menu-bar-icon-wrapper" id="profile-icon">
-      <div>
-        <div class="menu-icon"><i class="fa fa-exchange-alt"></i></div><span id="profile-icon-title">Switch</span>
-      </div>
-    </div>
-
-    <div class="menu-bar-icon-wrapper" id="toggle-icon">
-      <div>
-        <div class="menu-icon"><i class="fa fa-toggle-on" id="toggle-switch"></i></div><span
-          id="signout-icon-title">Mode</span>
-      </div>
-    </div>
-  </div>
-  <!-- END OF MENU BAR -->
-  <main id="main">
-    <div id="unit-conv" class="card" tabindex="0">
-      <span class="fa fa-arrow-circle-left back-btn"></span>
-      <span class="fa fa-weight"></span>
-      <header>Unit Converter</header>
-      <div class="loader">
-        <div class="circle1 loader-el"></div>
-        <div class="circle2 loader-el"></div>
-        <div class="circle3 loader-el"></div>
-      </div>
-      <section class="section" id="unit-conv-page">
-        <header class="page-title">Unit Converter</header>
-        <div class="conv-type-wrapper">
-          <div class="conv-type" data-conv-type="length">
-            <span class="fa fa-ruler-horizontal"></span>
-            <p>Length</p>
-          </div>
-          <div class="conv-type" data-conv-type="area">
-            <span class="fa fa-chart-area"></span>
-            <p>Area</p>
-          </div>
-          <div class="conv-type" data-conv-type="volume">
-            <span class="fa fa-flask"></span>
-            <p>Volume</p>
-          </div>
-          <div class="conv-type" data-conv-type="time">
-            <span class="fa fa-clock"></span>
-            <p>Time</p>
-          </div>
-          <div class="conv-type" data-conv-type="mass">
+    <!-- END OF MENU BAR -->
+    <main id="main">
+        <div id="unit-conv" class="card" tabindex="0">
+            <span class="fa fa-arrow-circle-left back-btn"></span>
             <span class="fa fa-weight"></span>
-            <p>Mass</p>
-          </div>
-          <div class="conv-type" data-conv-type="pressure">
-            <span class="fa fa-tachometer-alt"></span>
-            <p>Pressure</p>
-          </div>
-          <div class="conv-type" data-conv-type="temperature">
-            <span class="fa fa-temperature-high"></span>
-            <p>Temperature</p>
-          </div>
-          <div class="conv-type" data-conv-type="energy">
-            <span class="fa fa-sun"></span>
-            <p>Energy</p>
-          </div>
-          <div class="conv-type" data-conv-type="storage">
-            <span class="fa fa-database"></span>
-            <p>Storage</p>
-          </div>
-        </div>
-        <div id="unit-page">
-          <div class="unit-intro-note">
-            <header>MASS</header>
-            <p class="unit-note"></p>
-          </div>
-          <div class="conversion-section">
-            <div class="from-unit-wrapper">
-              <span class="unit-icon">Kg</span>
-              <p class="from-unit" data-from-name="kilogram">Kilogram
-                <span class="fa fa-caret-down"></span></p>
-              <input type="number" min="1" class="conv-value" aria-label="conversion value">
+            <header>Unit Converter</header>
+            <div class="loader">
+                <div class="circle1 loader-el"></div>
+                <div class="circle2 loader-el"></div>
+                <div class="circle3 loader-el"></div>
             </div>
-            <div class="switch-conv fa fa-exchange-alt"></div>
-            <div class="to-unit-wrapper">
-              <span class="unit-icon">g</span>
-              <p class="to-unit" data-to-name="Gram">Gram
-                <span class="fa fa-caret-down"></span></p>
-              <input type="number" class="result-value" aria-label="resultgoeshere" readonly>
-            </div>
-          </div>
+            <section class="section" id="unit-conv-page">
+                <header class="page-title">Unit Converter</header>
+                <div class="conv-type-wrapper">
+                    <div class="conv-type" data-conv-type="length">
+                        <span class="fa fa-ruler-horizontal"></span>
+                        <p>Length</p>
+                    </div>
+                    <div class="conv-type" data-conv-type="area">
+                        <span class="fa fa-chart-area"></span>
+                        <p>Area</p>
+                    </div>
+                    <div class="conv-type" data-conv-type="volume">
+                        <span class="fa fa-flask"></span>
+                        <p>Volume</p>
+                    </div>
+                    <div class="conv-type" data-conv-type="time">
+                        <span class="fa fa-clock"></span>
+                        <p>Time</p>
+                    </div>
+                    <div class="conv-type" data-conv-type="mass">
+                        <span class="fa fa-weight"></span>
+                        <p>Mass</p>
+                    </div>
+                    <div class="conv-type" data-conv-type="pressure">
+                        <span class="fa fa-tachometer-alt"></span>
+                        <p>Pressure</p>
+                    </div>
+                    <div class="conv-type" data-conv-type="temperature">
+                        <span class="fa fa-temperature-high"></span>
+                        <p>Temperature</p>
+                    </div>
+                    <div class="conv-type" data-conv-type="energy">
+                        <span class="fa fa-sun"></span>
+                        <p>Energy</p>
+                    </div>
+                    <div class="conv-type" data-conv-type="storage">
+                        <span class="fa fa-database"></span>
+                        <p>Storage</p>
+                    </div>
+                </div>
+                <div id="unit-page">
+                    <div class="unit-intro-note">
+                        <header>MASS</header>
+                        <p class="unit-note"></p>
+                    </div>
+                    <div class="conversion-section">
+                        <div class="from-unit-wrapper">
+                            <span class="unit-icon">Kg</span>
+                            <p class="from-unit" data-from-name="kilogram">Kilogram
+                                <span class="fa fa-caret-down"></span></p>
+                            <input type="number" min="1" class="conv-value" aria-label="conversion value">
+                        </div>
+                        <div class="switch-conv fa fa-exchange-alt"></div>
+                        <div class="to-unit-wrapper">
+                            <span class="unit-icon">g</span>
+                            <p class="to-unit" data-to-name="Gram">Gram
+                                <span class="fa fa-caret-down"></span></p>
+                            <input type="number" class="result-value" aria-label="resultgoeshere" readonly>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
         </div>
 
-      </section>
-    </div>
+        <div id="rom-conv" class="card" tabindex="0">
+            <span class="fa fa-arrow-circle-left back-btn"></span>
+            <span class="fa fa-hourglass"></span>
+            <header>Roman Numerals Converter</header>
+            <div class="loader">
+                <div class="circle1 loader-el"></div>
+                <div class="circle2 loader-el"></div>
+                <div class="circle3 loader-el"></div>
+            </div>
+            <section class="section" id="rom-conv-page">
+                <header class="page-title">Roman Numerals Converter</header>
 
-    <div id="rom-conv" class="card" tabindex="0">
-      <span class="fa fa-arrow-circle-left back-btn"></span>
-      <span class="fa fa-hourglass"></span>
-      <header>Roman Numerals Converter</header>
-      <div class="loader">
-        <div class="circle1 loader-el"></div>
-        <div class="circle2 loader-el"></div>
-        <div class="circle3 loader-el"></div>
-      </div>
-      <section class="section" id="rom-conv-page">
-        <header class="page-title">Roman Numerals Converter</header>
-
-        <div id="rom-page">
-          <div class="rom-intro-note">
-            <p class="rom-note">A Roman numeral is any of the symbols used in a system of numerical notation
-              based on the ancient Roman system. The symbols are I, V, X, L, C, D, and M, standing
-              respectively for 1, 5, 10, 50, 100, 500, and 1,000 in the Hindu-Arabic numeral system.</p>
-          </div>
-          <div class="conv-type-wrapper">
-            <div class="conv-type opacity" data-conv-type="num2Rom">
-              <span style="font-weight: bold">10 - X</span>
-              <p>Number to Roman</p>
-            </div>
-            <div class="conv-type" data-conv-type="rom2Num">
-              <span style="font-weight: bold">X - 10</span>
-              <p>Roman to Number</p>
-            </div>
-          </div>
-          <div class="conversion-section">
-            <div class="from-unit-wrapper">
-              <p class="from-unit" data-name="number">Number</p>
-              <input type="number" data-name="rom-number" min="1" class="conv-value" aria-label="conversion value">
-            </div>
-            <div class="switch-conv fa fa-arrow-right"></div>
-            <div class="to-unit-wrapper">
-              <p class="to-unit" data-name="roman">Roman Numeral</p>
-              <input type="text" data-name="rom-roman" class="result-value" aria-label="resultgoeshere" readonly>
-            </div>
-          </div>
+                <div id="rom-page">
+                    <div class="rom-intro-note">
+                        <p class="rom-note">A Roman numeral is any of the symbols used in a system of numerical notation
+                            based on the ancient Roman system. The symbols are I, V, X, L, C, D, and M, standing
+                            respectively for 1, 5, 10, 50, 100, 500, and 1,000 in the Hindu-Arabic numeral system.</p>
+                    </div>
+                    <div class="conv-type-wrapper">
+                        <div class="conv-type opacity" data-conv-type="num2Rom">
+                            <span style="font-weight: bold">10 - X</span>
+                            <p>Number to Roman</p>
+                        </div>
+                        <div class="conv-type" data-conv-type="rom2Num">
+                            <span style="font-weight: bold">X - 10</span>
+                            <p>Roman to Number</p>
+                        </div>
+                    </div>
+                    <div class="conversion-section">
+                        <div class="from-unit-wrapper">
+                            <p class="from-unit" data-name="number">Number</p>
+                            <input type="number" data-name="rom-number" min="1" class="conv-value"
+                                aria-label="conversion value">
+                        </div>
+                        <div class="switch-conv fa fa-arrow-right"></div>
+                        <div class="to-unit-wrapper">
+                            <p class="to-unit" data-name="roman">Roman Numeral</p>
+                            <input type="text" data-name="rom-roman" class="result-value" aria-label="resultgoeshere"
+                                readonly>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
-      </section>
-    </div>
-    <div id="base-conv" class="card" tabindex="0">
-      <span class="fa fa-arrow-circle-left back-btn"></span>
-      <span class="fa fa-calculator"></span>
-      <header>Number Base Converter</header>
-      <div class="loader">
-        <div class="circle1 loader-el"></div>
-        <div class="circle2 loader-el"></div>
-        <div class="circle3 loader-el"></div>
-      </div>
-      <section class="section" id="base-conv-page">
-        <header class="page-title">Number Base Converter</header>
-        <div id="base-page">
-          <div class="base-intro-note">
-            <p class="unit-note">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veniam labore
-              fuga iste ut aliquam saepe libero voluptas quam dolorem veritatis!</p>
-          </div>
-          <div class="conversion-section">
-            <div class="from-unit-wrapper">
-              <p class="from-unit" data-from-name="decimal">decimal
-                <span class="fa fa-caret-down"></span> </p>
-              <input type="text" pattern="" title="digits only allowed" min="1" class="conv-value"
-                aria-label="conversion value">
+        <div id="base-conv" class="card" tabindex="0">
+            <span class="fa fa-arrow-circle-left back-btn"></span>
+            <span class="fa fa-calculator"></span>
+            <header>Number Base Converter</header>
+            <div class="loader">
+                <div class="circle1 loader-el"></div>
+                <div class="circle2 loader-el"></div>
+                <div class="circle3 loader-el"></div>
             </div>
-            <div class="switch-conv fa fa-exchange-alt"></div>
-            <div class="to-unit-wrapper">
-              <p class="to-unit" data-to-name="binary">binary
-                <span class="fa fa-caret-down"></span>
-              </p>
-              <input type="text" class="result-value" aria-label="resultgoeshere" readonly>
-            </div>
-          </div>
+            <section class="section" id="base-conv-page">
+                <header class="page-title">Number Base Converter</header>
+                <div id="base-page">
+                    <div class="base-intro-note">
+                        <p class="unit-note">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veniam labore
+                            fuga iste ut aliquam saepe libero voluptas quam dolorem veritatis!</p>
+                    </div>
+                    <div class="conversion-section">
+                        <div class="from-unit-wrapper">
+                            <p class="from-unit" data-from-name="decimal">decimal
+                                <span class="fa fa-caret-down"></span> </p>
+                            <input type="text" pattern="" title="digits only allowed" min="1" class="conv-value"
+                                aria-label="conversion value">
+                        </div>
+                        <div class="switch-conv fa fa-exchange-alt"></div>
+                        <div class="to-unit-wrapper">
+                            <p class="to-unit" data-to-name="binary">binary
+                                <span class="fa fa-caret-down"></span>
+                            </p>
+                            <input type="text" class="result-value" aria-label="resultgoeshere" readonly>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
-      </section>
-    </div>
-    <!-- <div id="time-conv" class="card" tabindex="0">
+        <!-- <div id="time-conv" class="card" tabindex="0">
             <span class="fa fa-arrow-circle-left back-btn"></span>
             <span class="fa fa-clock"></span>
             <header>Time</header>
@@ -228,110 +232,150 @@
                 <div class="circle3 loader-el"></div>
             </div>
         </div> -->
-    <div id="date-conv" class="card" tabindex="0">
-      <span class="fa fa-arrow-circle-left back-btn"></span>
-      <span class="fa fa-calendar"></span>
-      <header>Date Calculator</header>
-      <div class="loader">
-        <div class="circle1 loader-el"></div>
-        <div class="circle2 loader-el"></div>
-        <div class="circle3 loader-el"></div>
-      </div>
-      <section class="section" id="date-conv-page">
-        <header class="page-title">Date Calculator</header>
-        <div class="date-conv-wrapper">
-          <div class="conv-type opacity" data-conv-type="addDate">
-            <span class="fa fa-calendar-plus"></span>
-            <p>Add date</p>
-          </div>
-          <div class="conv-type" data-conv-type="subtractDate">
-            <span class="fa fa-calendar-minus"></span>
-            <p>Subtract date</p>
-          </div>
-          <div class="conv-type" data-conv-type="howLongUntil">
-            <span class="fa fa-calendar-times"></span>
-            <p>How long until</p>
-          </div>
-          <!-- <div class="conv-type" data-conv-type="time">
+        <div id="date-conv" class="card" tabindex="0">
+            <span class="fa fa-arrow-circle-left back-btn"></span>
+            <span class="fa fa-calendar"></span>
+            <header>Date Calculator</header>
+            <div class="loader">
+                <div class="circle1 loader-el"></div>
+                <div class="circle2 loader-el"></div>
+                <div class="circle3 loader-el"></div>
+            </div>
+            <section class="section" id="date-conv-page">
+                <header class="page-title">Date Calculator</header>
+                <div class="date-conv-wrapper">
+                    <div class="conv-type opacity" data-conv-type="addDate">
+                        <span class="fa fa-calendar-plus"></span>
+                        <p>Add date</p>
+                    </div>
+                    <div class="conv-type" data-conv-type="subtractDate">
+                        <span class="fa fa-calendar-minus"></span>
+                        <p>Subtract date</p>
+                    </div>
+                    <div class="conv-type" data-conv-type="howLongUntil">
+                        <span class="fa fa-calendar-times"></span>
+                        <p>How long until</p>
+                    </div>
+                    <!-- <div class="conv-type" data-conv-type="time">
                         <span class="fa fa-clock"></span>
                         <p>Time</p>
                     </div> -->
-        </div>
-        <div id="date-page">
-          <div class="date-intro-note">
-            <p class="date-note">Know what date it will be when you add year(s), month(s) or day(s) to a
-              date. Never miss track of date.</p>
-          </div>
-          <div class="conversion-section">
-            <div class="from-unit-wrapper">
-              <p class="from-unit">Pick date</p>
-              <input type="date" class="conv-value" aria-label="conversion value">
-              <div class="date-conv-section">
-                <header class="to-date-header">Add</header>
-                <div class="date-add-subtract-section">
-                  <input type="date" class="howLongInput conv-value" aria-label="conversion value" id="to-date">
-                  <div class="section-parameter">
-                    <label for="add-year">Year(s)</label>
-                    <input type="number" id="add-year" min="1" class="conv-value" aria-label="enter year">
-                  </div>
-                  <div class="section-parameter">
-                    <label for="add-month">Month(s)</label>
-                    <input type="number" id="add-month" min="1" class="conv-value" aria-label="enter month">
-                  </div>
-                  <div class="section-parameter">
-                    <label for="add-day">Day(s)</label>
-                    <input type="number" id="add-day" min="1" class="conv-value" aria-label="enter day">
-                  </div>
                 </div>
-              </div>
+                <div id="date-page">
+                    <div class="date-intro-note">
+                        <p class="date-note">Know what date it will be when you add year(s), month(s) or day(s) to a
+                            date. Never miss track of date.</p>
+                    </div>
+                    <div class="conversion-section">
+                        <div class="from-unit-wrapper">
+                            <p class="from-unit">Pick date</p>
+                            <input type="date" class="conv-value" aria-label="conversion value">
+                            <div class="date-conv-section">
+                                <header class="to-date-header">Add</header>
+                                <div class="date-add-subtract-section">
+                                    <input type="date" class="howLongInput conv-value" aria-label="conversion value"
+                                        id="to-date">
+                                    <div class="section-parameter">
+                                        <label for="add-year">Year(s)</label>
+                                        <input type="number" id="add-year" min="1" class="conv-value"
+                                            aria-label="enter year">
+                                    </div>
+                                    <div class="section-parameter">
+                                        <label for="add-month">Month(s)</label>
+                                        <input type="number" id="add-month" min="1" class="conv-value"
+                                            aria-label="enter month">
+                                    </div>
+                                    <div class="section-parameter">
+                                        <label for="add-day">Day(s)</label>
+                                        <input type="number" id="add-day" min="1" class="conv-value"
+                                            aria-label="enter day">
+                                    </div>
+                                </div>
+                            </div>
 
-            </div>
-            <div class="switch-conv fa fa-arrow-right"></div>
-            <div class="to-unit-wrapper">
-              <p class="to-unit">Result</p>
-              <input type="text" class="result-value" aria-label="resultgoeshere" readonly>
-            </div>
-          </div>
+                        </div>
+                        <div class="switch-conv fa fa-arrow-right"></div>
+                        <div class="to-unit-wrapper">
+                            <p class="to-unit">Result</p>
+                            <input type="text" class="result-value" aria-label="resultgoeshere" readonly>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
         </div>
-
-      </section>
-    </div>
-    <div id="other" class="card" tabindex="0">
-      <span class="fa fa-arrow-circle-left back-btn"></span>
-      <span class="fa fa-gift"></span>
-      <header>Other Apps</header>
-      <div class="loader">
-        <div class="circle1 loader-el"></div>
-        <div class="circle2 loader-el"></div>
-        <div class="circle3 loader-el"></div>
-      </div>
-      <section class="section" id="other-app-page">
-        <header class="page-title">Other Apps</header>
-        <div id="other-page">
-          <div class="app-type-wrapper">
-            <div class="app opacity" data-app-name="appside">
-              <span class="fa fa-gamepad" style="font-weight: bold"></span>
-              <p>Appside</p>
+        <div id="other" class="card" tabindex="0">
+            <span class="fa fa-arrow-circle-left back-btn"></span>
+            <span class="fa fa-gift"></span>
+            <header>Other Apps</header>
+            <div class="loader">
+                <div class="circle1 loader-el"></div>
+                <div class="circle2 loader-el"></div>
+                <div class="circle3 loader-el"></div>
             </div>
-            <div class="app" data-app-name="comingSoon">
-              <span class="fa fa-gamepad" style="font-weight: bold"></span>
-              <p>Coming soon!</p>
-            </div>
-          </div>
-          <div class="app-intro-note">
-            <p class="about-app">APPSIDE is an app with a collecton of games like quiz, tictactoe, memory game etc. The
-              games are addictive and most of them are available offline.</p>
-            <a href="https://appside.com"><button type="button">Goto app <span
-                  class="fa fa-arrow-circle-right"></span></button></a>
-          </div>
+            <section class="section" id="other-app-page">
+                <header class="page-title">Other Apps</header>
+                <div id="other-page">
+                    <div class="app-type-wrapper">
+                        <div class="app opacity" data-app-name="appside">
+                            <span class="fa fa-gamepad" style="font-weight: bold"></span>
+                            <p>Appside</p>
+                        </div>
+                        <div class="app" data-app-name="comingSoon">
+                            <span class="fa fa-gamepad" style="font-weight: bold"></span>
+                            <p>Coming soon!</p>
+                        </div>
+                    </div>
+                    <div class="app-intro-note">
+                        <p class="about-app">APPSIDE is an app with a collecton of games like quiz, tictactoe, memory
+                            game etc. The
+                            games are addictive and most of them are available offline.</p>
+                        <a href="https://appside.com"><button type="button">Goto app <span
+                                    class="fa fa-arrow-circle-right"></span></button></a>
+                    </div>
+                </div>
+            </section>
         </div>
-      </section>
-    </div>
-    <div class="units-section base-color">
-    </div>
-
-  </main>
-  <script type="module">
+        <div class="units-section base-color">
+        </div>
+    </main>
+    <aside class="history-page">
+        <section class="section" id="history-page-content">
+            <header class="page-title">History</header>
+            <div>
+                <div class="history-type-wrapper">
+                    <div class="history opacity" data-app-name="unit">
+                        <span class="fa fa-weight" style="font-weight: bold"></span>
+                        <p>Unit conversion <br /> History</p>
+                    </div>
+                    <div class="history" data-app-name="romNum">
+                        <span class="fa fa-" style="font-weight: bold"></span>
+                        <p>Roman Numeral <br /> History</p>
+                    </div>
+                    <div class="history" data-app-name="numberBase">
+                        <span class="fa fa-" style="font-weight: bold"></span>
+                        <p>Number Base <br /> History</p>
+                    </div>
+                </div>
+                <div class="history-entries">
+                    <p class="">Last 10 results</p>
+                    <div class="unit-entries">
+                        <p>300mg -> 0.3g</p>
+                        <p>300g -> 0.3kg</p>
+                        <p>300mg -> 0.3g</p>
+                        <p>300mg -> 0.3g</p>
+                        <p>300mg -> 0.3g</p>
+                        <p>300mg -> 0.3g</p>
+                        <p>300mg -> 0.3g</p>
+                        <p>300mg -> 0.3g</p>
+                    </div>
+                    <button type="button">Clear all <span class="fa fa-delete"></span></button>
+                </div>
+            </div>
+        </section>
+        <!-- </div> -->
+    </aside>
+    <!-- <script type="module">
       window.addEventListener('load', () => {
       //register service worker
       if ("serviceWorker" in navigator) {
@@ -341,19 +385,19 @@
           });
       }
     })
-    </script>
-    
-  <script src="./main.js" defer type="module"></script>
-  <script src="./data.js" defer type="module"></script>
-  <!-- The core Firebase JS SDK is always required and must be listed first -->
-  <!-- <script src="/__/firebase/7.21.0/firebase-app.js"></script> -->
+    </script> -->
 
-  <!-- TODO: Add SDKs for Firebase products that you want to use
+    <script src="./main.js" defer type="module"></script>
+    <script src="./data.js" defer type="module"></script>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <!-- <script src="/__/firebase/7.21.0/firebase-app.js"></script> -->
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
-  <!-- <script src="/__/firebase/7.21.0/firebase-analytics.js"></script> -->
+    <!-- <script src="/__/firebase/7.21.0/firebase-analytics.js"></script> -->
 
-  <!-- Initialize Firebase -->
-  <!-- <script src="/__/firebase/init.js"></script> -->
+    <!-- Initialize Firebase -->
+    <!-- <script src="/__/firebase/init.js"></script> -->
 </body>
 
 </html>
