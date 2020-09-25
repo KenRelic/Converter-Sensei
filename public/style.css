@@ -15,7 +15,9 @@
   --btn-color: #fff;
   --unit-text: #fff;
   --back-btn: #fff;
-
+  --history-bg: #2b2459;
+  --entries-bg:#002f61;
+  --btn-color-red:#e10034;
 }
 
 
@@ -37,6 +39,7 @@ html {
   overflow: hidden;
   font-family: 'Montserrat', sans-serif;
   font-family: 'Poppins', sans-serif;
+  /* position: relative; */
 }
 
 main {
@@ -228,7 +231,8 @@ main {
 #rom-conv-page,
 #base-conv-page,
 #other-app-page,
-#date-conv-page {
+#date-conv-page,
+.history-page {
   width: 100%;
   height: 100%;
   display: block;
@@ -237,6 +241,15 @@ main {
   transition: all 0.3s ease;
   /* overflow: auto; */
   display: none;
+}
+
+.history-page{
+  display: block;
+  position: absolute;
+  top: -102%;
+  padding: 1em;
+  /* width: 100vw; */
+  
 }
 
 .page-title {
@@ -248,12 +261,17 @@ main {
   border-radius: 2em;
   transition: all 0.3s ease;
 }
+#history-page-content .page-title {
+  color: #fff;
+  background-color: #2b2459;;
+}
 
 .unit-intro-note,
 .rom-intro-note,
 .base-intro-note,
 .app-intro-note,
-.date-intro-note {
+.date-intro-note,
+.history-entries {
   background-color: var(--unit-bg);
   color: var(--unit-text);
   padding: 1em;
@@ -266,7 +284,7 @@ main {
 .rom-intro-note {
   background-color: var(--rom-bg);
   color: var(--unit-text) !important;
-  box-shadow: 5px 5px 15px #2d12015a;
+  box-shadow: 5px 5px 0 #2d12015a;
 }
 
 .base-intro-note {
@@ -274,7 +292,11 @@ main {
   color: var(--unit-text) !important;
   box-shadow: 5px 5px 15px #010c2d5a;
 }
+.history-entries{
+  background-color: #0a071f;
+  box-shadow: 5px 5px 15px #0003235a;
 
+}
 .app-intro-note{
   background-color: var(--other-app-bg);
 }
@@ -282,13 +304,18 @@ main {
   background-color:  var(--date-note-bg);
 }
 
-.app-intro-note button{
+.app-intro-note button,
+.history-entries button{
   background-color: var(--btn-color);
   color: var(--btn-text);
   border: none;
   padding: 0.5em;
   border-radius: 1em;
   margin-top: 2em;
+}
+.history-entries button{
+  background-color: var(--btn-color-red);
+  color: #fff;
 }
 .unit-intro-note header {
   text-transform: uppercase;
@@ -376,7 +403,8 @@ input[data-name="base-hex"] {
 }
 
 .from-unit,
-.to-unit {
+.to-unit,
+.history-entries > p {
   cursor: pointer;
   background-color: var(--unit-bg);
   color: var(--unit-text);
@@ -384,7 +412,27 @@ input[data-name="base-hex"] {
   border-radius: 1em;
   line-height: 1.5;
 }
-
+.history-entries > p {
+  background-color: #2b2459;
+  color: #fff;
+  padding: 0.5em;
+  text-align: center;
+}
+.history-entries > div{
+  display: flex;
+  flex-wrap: wrap;
+}
+.history-entries > div p{
+  background-color: var(--entries-bg);
+  color: var(--unit-text);
+  padding: 1em;
+  border-radius: 2em;
+  margin-top: 1em;
+  flex: 1;
+  min-width: 30%;
+  margin: 1em 0.2em 0.2em 0.2em;
+  display: flex;
+}
 #rom-page .from-unit {
   background-color: var(--rom-bg);
   color: var(--unit-text);
@@ -460,7 +508,8 @@ input[data-name="base-hex"] {
 
 .conv-type-wrapper,
 .date-conv-wrapper,
-.app-type-wrapper {
+.app-type-wrapper,
+.history-type-wrapper {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -472,7 +521,8 @@ input[data-name="base-hex"] {
 #rom-conv-page .conv-type,
 #base-conv-page .conv-type,
 #other .app,
-#date-conv-page .conv-type{
+#date-conv-page .conv-type,
+.history-type-wrapper .history{
   background-color: var(--unit-bg);
   color: var(--unit-text) !important;
   padding: 1em;
@@ -486,12 +536,16 @@ input[data-name="base-hex"] {
   transition: all 0.3s ease;
 }
 
-#other .app{
+#other .app,
+.history-type-wrapper .history{
   background-color: var(--app-bg);
   color: var(--unit-text) !important;
   min-height: 7em;
 }
 
+.history-type-wrapper .history{
+  background-color:  var(--entries-bg);;
+}
 .app *, #date-conv-page .conv-type *{
   pointer-events: none;
 }
