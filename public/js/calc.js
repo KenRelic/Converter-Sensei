@@ -1,5 +1,8 @@
+import { units, sIUnits, roman_num_data, roman_num_data_2 } from '../data.js'
+
 //NUMBER METHOD TO CHECK NEGATIVE NUMBERS//
 Number.prototype.isNegative = e => (/^\-/).test(e.toString());
+let result;
 
 let direction_pad = document.getElementById("direction-pad");
 let calc_direction_pad = direction_pad;
@@ -12,8 +15,8 @@ let cursorPositionIndex = 0;
 let blinkingCursor = document.getElementById('blinking-cursor');
 
 let switchCalcBtn = document.getElementById('switch-calc');
-switchCalcBtn.addEventListener('click',()=>{
-  window.open('./index.html','_self');
+switchCalcBtn.addEventListener('click', () => {
+  window.open('./index.html', '_self');
 })
 
 direction_pad.forEach(direction => {
@@ -40,8 +43,6 @@ direction_pad.forEach(direction => {
   });
 });
 
-
-
 function directionPadAnimation(outerBoxShadow, innerBoxShadow) {
   calc_direction_pad.style.boxShadow = outerBoxShadow;
   inner_pad.style.boxShadow = innerBoxShadow;
@@ -49,7 +50,7 @@ function directionPadAnimation(outerBoxShadow, innerBoxShadow) {
     calc_direction_pad.style.boxShadow = "";
     inner_pad.style.boxShadow = "0 0 20px 1px black";
   }, 300);
-}
+};
 
 //BUTTONS ON CLICK ANIMATION//
 let keys = document.querySelectorAll(".key");
@@ -60,7 +61,6 @@ keys.forEach(key => button_effect(key));
 function button_effect(e) {
   e.addEventListener("click", () => {
     if (e.id !== "color-mode") {
-      // e.innerHTML !== '=' && 
       window.clearInterval(date_conv_interval);
     }
     e.style.animation = "button 0.3s linear running infinite";
@@ -68,7 +68,7 @@ function button_effect(e) {
       e.style.animationPlayState = "paused";
     }, 300);
   });
-}
+};
 
 //POWER BUTTON CODE//
 //turns on if on and turns off is on
@@ -145,20 +145,16 @@ function screenVariables() {
 
 function moveCursor() {
   let displayed_text = screenVariables().get_input_area().innerHTML;
-  let units = [
-    "sqft"
-  ];
-
   return {
     left: () => {
       // let movLeftOverSubSuperscript = () => (screenVariables().get_input_area()).removeChild((screenVariables().get_input_area()).lastElementChild);
       // let moveLeftOverUnits = (i) => displayed_text.slice(0, displayed_text.length - units[i].length);
       // let moveLeftOnce = () => displayed_text.slice(0, displayed_text.length - 1);
       // lookAhead(moveLeftOverUnits, movLeftOverSubSuperscript, moveLeftOnce, units, displayed_text)
-      moveBlinkingCursor('left', displayed_text, units)
+      moveBlinkingCursor('left', displayed_text, sIUnits)
     },
     right: () => {
-      moveBlinkingCursor('right', displayed_text, units)
+      moveBlinkingCursor('right', displayed_text, sIUnits)
     },
     down: () => {
 
@@ -169,16 +165,15 @@ function moveCursor() {
   }
 }
 
-function moveBlinkingCursor(direction, displayed_text, units) {
+function moveBlinkingCursor(direction, displayed_text, sIUnits) {
   // issue is from the cursorpositionindex, it doesnt subtract on the first left click it 
-
   let displayedInnerText = screenVariables().get_input_area().innerText;
   cursorPositionIndex = cursorPositionIndex == 0 && cursorPosition == ""
     ? displayedInnerText.length : cursorPositionIndex;
   let isLastOrFirst;
   switch (direction) {
     case 'left':
-      debugger
+      // debugger
 
       isLastOrFirst = blinkingCursor.style.right === "" && cursorPositionIndex === 0 ? false
         : cursorPositionIndex === displayedInnerText.length
@@ -187,12 +182,12 @@ function moveBlinkingCursor(direction, displayed_text, units) {
       switch (isLastOrFirst) {
         case true:
           let i;
-          for (i = 0; i < units.length; i += 1) {
-            if (displayed_text.endsWith(units[i])) {
+          for (i = 0; i < sIUnits.length; i += 1) {
+            if (displayed_text.endsWith(sIUnits[i])) {
               console.log(cursorPosition);
-              cursorPosition = cursorPosition ? (+(cursorPosition.replace('px', '')) + (units[i].length * 8.8)) + 'px'
-                : (cursorPosition + (units[i].length * 8.8)) + 'px';
-              cursorPositionIndex -= units[i].length;
+              cursorPosition = cursorPosition ? (+(cursorPosition.replace('px', '')) + (sIUnits[i].length * 8.8)) + 'px'
+                : (cursorPosition + (sIUnits[i].length * 8.8)) + 'px';
+              cursorPositionIndex -= sIUnits[i].length;
               blinkingCursor.style.right = cursorPosition;
               console.log(cursorPositionIndex, cursorPosition)
               break;
@@ -229,11 +224,11 @@ function moveBlinkingCursor(direction, displayed_text, units) {
       switch (isLastOrFirst) {
         case true:
           let i;
-          for (i = 0; i < units.length; i += 1) {
-            if (displayed_text.endsWith(units[i])) {
-              cursorPosition = cursorPosition ? (+(cursorPosition.replace('px', '')) - (units[i].length * 8.8)) + 'px'
-                : (cursorPosition - (units[i].length * 8.8)) + 'px';
-              cursorPositionIndex += units[i].length;
+          for (i = 0; i < sIUnits.length; i += 1) {
+            if (displayed_text.endsWith(sIUnits[i])) {
+              cursorPosition = cursorPosition ? (+(cursorPosition.replace('px', '')) - (sIUnits[i].length * 8.8)) + 'px'
+                : (cursorPosition - (sIUnits[i].length * 8.8)) + 'px';
+              cursorPositionIndex += sIUnits[i].length;
               blinkingCursor.style.right = cursorPosition;
               console.log(cursorPositionIndex, cursorPosition)
               break;
@@ -262,7 +257,7 @@ function moveBlinkingCursor(direction, displayed_text, units) {
           break;
         default:
           //do nothing
-          break
+          break;
       }
       break;
   }
@@ -371,7 +366,6 @@ function batteryStatus() {
 };
 
 
-
 function input_handler() {
   let inputed_data;
 
@@ -386,68 +380,7 @@ function input_handler() {
 
 function erase_input() {
   let displayed_text = screenVariables().get_input_area().innerHTML;
-  let units = [
-    "sqft",
-    "sqm",
-    "sqcm",
-    "sqmile",
-    "sqmm",
-    "mg",
-    "µs",
-    "ms",
-    "min",
-    "hr",
-    "wk",
-    "day",
-    "mth",
-    "yr",
-    "dec",
-    "cen",
-    "now",
-    "mm",
-    "km",
-    "cm",
-    "mile",
-    "ft",
-    "yrd",
-    "in",
-    "nm",
-    "nmi",
-    "hm",
-    "µm",
-    "Acre",
-    "kj",
-    "gcal",
-    "kcal",
-    "KWh",
-    "Wh",
-    "eV",
-    "ft.lb",
-    "Ha",
-    "sqkm",
-    "sqYrd",
-    "sqIn",
-    "kg",
-    "dg",
-    "g",
-    "oz",
-    "lb",
-    "st",
-    "carat",
-    "j",
-    "s.ton",
-    "l.ton",
-    "ton",
-    "ROM",
-    "°K",
-    "°F",
-    "°C",
-    "<sub>2</sub>",
-    "<sub>8</sub>",
-    "<sub>10</sub>",
-    "<sub>16</sub>"
-  ];
-
+  debugger
   let eraseSubSuperScripts = () => {
     // if ends with >
     let n = (displayed_text.match(/<[\w]+>[\w]+<\/[\w]+>/gi)[displayed_text.match(/<[\w]+>[\w]+<\/[\w]+>/gi)
@@ -458,11 +391,11 @@ function erase_input() {
     return (screenVariables().get_input_area()).removeChild((screenVariables().get_input_area()).lastElementChild);
   };
   let eraseUnitsAbove2 = (i) => {
-    cursorPositionIndex -= units[i].length;
-    cursorPosition = cursorPosition ? (+(cursorPosition.replace('px', '')) - (units[i].length * 8.8)) + 'px'
-      : (cursorPosition - (units[i].length * 8.8)) + 'px';
-    cursorPositionIndex -= units[i].length
-    return displayed_text.slice(0, displayed_text.length - units[i].length)
+    cursorPositionIndex -= sIUnits[i].length;
+    cursorPosition = cursorPosition ? (+(cursorPosition.replace('px', '')) - (sIUnits[i].length * 8.8)) + 'px'
+      : (cursorPosition - (sIUnits[i].length * 8.8)) + 'px';
+    cursorPositionIndex -= sIUnits[i].length
+    return displayed_text.slice(0, displayed_text.length - sIUnits[i].length)
   };
   let eraseSingleUnit = () => {
     cursorPositionIndex -= 1;
@@ -472,14 +405,14 @@ function erase_input() {
     return displayed_text.slice(0, displayed_text.length - 1);
   };
 
-  lookAhead(eraseUnitsAbove2, eraseSubSuperScripts, eraseSingleUnit, units, displayed_text);
+  lookAhead(eraseUnitsAbove2, eraseSubSuperScripts, eraseSingleUnit, sIUnits, displayed_text);
 }
 
 
-function lookAhead(action1, action2, action3, units, displayed_text) {
+function lookAhead(action1, action2, action3, sIUnits, displayed_text) {
   let i;
-  for (i = 0; i < units.length; i += 1) {
-    if (displayed_text.endsWith(units[i])) {
+  for (i = 0; i < sIUnits.length; i += 1) {
+    if (displayed_text.endsWith(sIUnits[i])) {
       return (screenVariables().get_input_area().innerHTML = action1(i));
     };
   };
@@ -538,75 +471,9 @@ function mode_switch() {
   }
 }
 
-//clear recent input
-let clear_btn = document.getElementById("clear-recent-input");
-clear_btn.addEventListener("click", clear);
-
-function clear() {
-  let operators = ["-", "+", "/", "×"];
-  let inputed_data = screenVariables().get_input_area().innerHTML;
-  let last_operator;
-
-  last_operator = operators.reduce((last, op) => {
-    return (last =
-      inputed_data.lastIndexOf(last) > inputed_data.lastIndexOf(op)
-        ? last
-        : op);
-  });
-  if (inputed_data.lastIndexOf(last_operator) !== -1) {
-    let start_index = inputed_data.lastIndexOf(last_operator);
-    if (inputed_data.endsWith(">")) return
-    return (screenVariables().get_input_area().innerHTML = inputed_data.slice(
-      0,
-      start_index + 1
-    ));
-  }
-}
-
 //CALCULATE PROBLEM CODE
 let equal_btn = document.getElementById("equals-btn");
 let arranged_data;
-let roman_num_data = {
-  1: "I",
-  4: "IV",
-  5: "V",
-  9: "IX",
-  10: "X",
-  40: "XL",
-  50: "L",
-  90: "XC",
-  100: "C",
-  400: "CD",
-  500: "D",
-  900: "CM",
-  1000: "M"
-};
-let roman_num_data_2 = {
-  1: "I",
-  2: "II",
-  3: "III",
-  4: "IV",
-  5: "V",
-  9: "IX",
-  10: "X",
-  20: "XX",
-  30: "XXX",
-  40: "XL",
-  50: "L",
-  90: "XC",
-  100: "C",
-  200: "CC",
-  300: "CCC",
-  400: "CD",
-  500: "D",
-  900: "CM",
-  1000: "M",
-  2000: "MM",
-  3000: "MMM"
-};
-
-
-
 function roman_numerals_conversion() {
   let input = (screenVariables().get_input_area().innerText).replace(/\s/g, '');
   let output = screenVariables().get_result_area();
@@ -738,12 +605,8 @@ function roman_numerals_conversion() {
   } else {
     return output.innerHTML = 'syntaxError'
   }
-
   return;
 }
-
-//NUMBERS PARSE FUNCTION 
-//Changes every string to number or math object.
 
 /// Numbr base code
 
@@ -850,308 +713,13 @@ function date_conversion() {
 
 }
 
-//UNIT CONVERSION CODE////
-
 String.prototype.reverseValue = () => {
   let objects = {
-
   }
 
   return {
     get_similar: (input) => console.log(objects[input])
   }
-}
-
-let units = {
-
-  µs: {
-    µs: 1,
-    ms: 0.001,
-    s: 1e-6,
-    min: 1.6667e-8,
-    hr: 2.7778e-10,
-    day: 1.1574e-11,
-    wk: 1.6534e-12,
-    mth: 3.8052e-13,
-    yr: 3.171e-14,
-    dec: 3.171e-15,
-    cen: 3.171e-16
-  },
-  ms: {
-    µs: 1000,
-    ms: 1,
-    s: 0.001,
-    min: 1.6667e-5,
-    hr: 2.7778e-7,
-    day: 1.1574e-8,
-    wk: 1.6534e-9,
-    mth: 3.8052e-10,
-    yr: 3.171e-11,
-    dec: 3.171e-12,
-    cen: 3.171e-13
-  },
-  s: {
-    µs: 1e+6,
-    ms: 1000,
-    s: 1,
-    min: 0.0166667,
-    hr: 0.000277778,
-    day: 1.1574e-5,
-    wk: 1.6534e-6,
-    mth: 3.8052e-7,
-    yr: 3.171e-8,
-    dec: 3.171e-9,
-    cen: 3.171e-10
-  },
-  min: {
-    µs: 6e+7,
-    ms: 60000,
-    s: 60,
-    min: 1,
-    hr: 0.0166667,
-    day: 6.9444e-4,
-    wk: 9.9206e-5,
-    mth: 2.2931e-5,
-    yr: 1.9026e-6,
-    dec: 1.9026e-7,
-    cen: 1.9026e-8
-  },
-  hr: {
-    µs: 3.6e+9,
-    ms: 3.6e+6,
-    s: 3600,
-    min: 60,
-    hr: 1,
-    day: 1 / 24,
-    wk: 1 / 168,
-    mth: 1 / 730,
-    yr: 1 / 8760,
-    dec: 1 / 87600,
-    cen: 1 / 876000
-  },
-  day: {
-    µs: 8.64e+10,
-    ms: 8.64e+7,
-    s: 86400,
-    min: 1440,
-    hr: 24,
-    day: 1,
-    wk: 1 / 7,
-    mth: 1 / 30.417,
-    yr: 1 / 365,
-    dec: 1 / 3650,
-    cen: 1 / 36500
-  },
-  wk: {
-    µs: 6.048e+11,
-    ms: 6.048e+8,
-    s: 604800,
-    min: 10080,
-    hr: 168,
-    day: 7,
-    wk: 1,
-    mth: 1 / 4.345,
-    yr: 1 / 52.143,
-    dec: 1 / 521,
-    cen: 1 / 5214
-  },
-  mth: {
-    µs: 2.628e+12,
-    ms: 2.628e+9,
-    s: 2.628e+6,
-    min: 43800,
-    hr: 730.001,
-    day: 30.4167,
-    wk: 4.34524,
-    mth: 1,
-    yr: 1 / 12,
-    dec: 1 / 120,
-    cen: 1 / 1200
-  },
-  yr: {
-    µs: 3.154e+13,
-    ms: 3.154e+10,
-    s: 3.154e+7,
-    min: 525600,
-    hr: 8760,
-    day: 365,
-    wk: 52.1429,
-    mth: 12,
-    yr: 1,
-    dec: 1 / 10,
-    cen: 1 / 100
-  },
-  dec: {
-    µs: 3.154e+14,
-    ms: 3.154e+11,
-    s: 3.154e+8,
-    min: 5256000,
-    hr: 87600,
-    day: 3650,
-    wk: 521.429,
-    mth: 120,
-    yr: 10,
-    dec: 1,
-    cen: 0.1
-  },
-  cen: {
-    µs: 3.154e+15,
-    ms: 3.154e+12,
-    s: 3.154e+9,
-    min: 52560000,
-    hr: 876000,
-    day: 36500,
-    wk: 5214.29,
-    mth: 1200,
-    yr: 100,
-    dec: 10,
-    cen: 1
-  },
-
-  //CONVERSION UNITS FOR LENGTH
-  nm: {
-    nm: 1,
-    µm: 0.001,
-    mm: 1e-6,
-    cm: 1e-7,
-    m: 1e-9,
-    hm: 1e-11,
-    km: 1e-12,
-    yrd: 1.0936e-9,
-    mile: 6.2137e-13,
-    ft: 3.2808e-9,
-    in: 3.937e-8,
-  },
-  µm: {
-    nm: 1000,
-    µm: 1,
-    mm: 0.001,
-    cm: 1e-4,
-    m: 1e-6,
-    hm: 1e-8,
-    km: 1e-9,
-    yrd: 1.0936e-6,
-    mile: 6.2137e-10,
-    ft: 3.2808e-6,
-    in: 3.937e-5,
-  },
-  mm: {
-    nm: 1e+6,
-    µm: 1000,
-    mm: 1,
-    cm: 0.1,
-    m: 1e-3,
-    hm: 1e-5,
-    km: 1e-6,
-    yrd: 1.0936e-3,
-    mile: 6.2137e-7,
-    ft: 3.2808e-3,
-    in: 3.937e-2,
-  },
-  cm: {
-    nm: 1e+7,
-    µm: 10000,
-    mm: 10,
-    cm: 1,
-    m: 1e-2,
-    hm: 1e-4,
-    km: 1e-5,
-    yrd: 1.0936e-2,
-    mile: 6.2137e-6,
-    ft: 3.2808e-2,
-    in: 0.393701,
-  },
-  m: {
-    nm: 1e+9,
-    µm: 1e+6,
-    mm: 1000,
-    cm: 100,
-    m: 1,
-    hm: 1e-2,
-    km: 1e-3,
-    yrd: 1.0936,
-    mile: 6.2137e-4,
-    ft: 3.28084,
-    in: 39.3701,
-  },
-  hm: {
-    nm: 1e+11,
-    µm: 1e+8,
-    mm: 1e+5,
-    cm: 1e+4,
-    m: 100,
-    hm: 1,
-    km: 0.1,
-    yrd: 109.361,
-    mile: 6.21371e-2,
-    ft: 328.084,
-    in: 3937.01,
-  },
-  km: {
-    nm: 1e+12,
-    µm: 1e+9,
-    mm: 1e+6,
-    cm: 1e+5,
-    m: 1000,
-    hm: 10,
-    km: 1,
-    yrd: 1093.61,
-    mile: 0.621371,
-    ft: 3280.84,
-    in: 39370.1,
-  },
-  yrd: {
-    nm: 9.144e+8,
-    µm: 914400,
-    mm: 914.4,
-    cm: 91.44,
-    m: 0.9144,
-    hm: 0.009144,
-    km: 0.0009144,
-    yrd: 1,
-    mile: 0.000568182,
-    ft: 3,
-    in: 36,
-  },
-  mile: {
-    nm: 1.609e+12,
-    µm: 1.609e+9,
-    mm: 1.609e+6,
-    cm: 160934,
-    m: 1609.34,
-    hm: 16.0934,
-    km: 1.60934,
-    yrd: 1760,
-    mile: 1,
-    ft: 5280,
-    in: 63360,
-  },
-  ft: {
-    nm: 3.048e+8,
-    µm: 3.048e+5,
-    mm: 304.8,
-    cm: 30.48,
-    m: 0.3048,
-    hm: 0.003048,
-    km: 0.0003048,
-    yrd: 0.333333,
-    mile: 0.000189394,
-    ft: 1,
-    in: 12,
-  },
-  in: {
-    nm: 2.54e+7,
-    µm: 25400,
-    mm: 25.4,
-    cm: 2.54,
-    m: 0.0254,
-    hm: 0.000254,
-    km: 2.54e-5,
-    yrd: 0.0277778,
-    mile: 1.5783e-5,
-    ft: 1 / 12,
-    in: 1,
-  },
 }
 
 function unit_conversion() {
@@ -1209,19 +777,16 @@ function unit_conversion() {
       'error message': 'Check your inputs'
     }
   }
-
 }
 
 equal_btn.addEventListener('click', select_calculation);
 
 function base_conversion() {
-  // debugger;
   let input = screenVariables().get_input_area();
   let input_nodes = Array.from(input.childNodes);
   let output = '';
   let number_of_elem = input_nodes.length;
   let base_of_result = '';
-  console.log(input_nodes)
 
   if (input.innerText.includes('→')) {
     base_of_result = input.innerText.slice((input.innerText.indexOf('N')) + 1);
@@ -1235,7 +800,6 @@ function base_conversion() {
   });
   try {
     for (i = 0; i < number_of_elem; i += 1) {
-      // debugger
       if (input_nodes[i].constructor == Text) {
         switch ((input_nodes[i].textContent).charAt(0)) {
           case '/': output += '/'
@@ -1250,7 +814,6 @@ function base_conversion() {
             break;
         }
         if (number_of_elem - 1 > i && input_nodes[i + 1].constructor === HTMLElement) {
-          console.log(input_nodes[i + 1])
           output += parseInt((input_nodes[i].textContent).replace(/[\-\+\×\/N]/gi, ''), input_nodes[i + 1].textContent);
           i += 1;
         } else {
@@ -1258,37 +821,68 @@ function base_conversion() {
         }
       }
     }
-    //EVAL OPENS DOOR TO SECURITY ISSUES... but the code running has zero user input influence
-    //if a malicious code is passed, it woulnt reach the eval code.
-    output = Array.from(output)
-    // output = eval(output);
-    console.log(output.split(/[\/\+\-\*]/gi))
-    output = (eval(output)).toString() == 'NaN' ? 'syntaxError' : eval(output);
-    output == 'syntaxError' ? base_of_result = '' : '';
 
-    output = output.toString(base_of_result || 10);
-    base_of_result === "16" ? output = output.toUpperCase() : output;
-    output = `${output}<sub style='color:rebeccapurple'>${base_of_result}</sub>`;
-    // screenVariables().get_result_area().innerHTML = eval(output) == NaN ? 'syntaxError' : eval(output);
+    let str = output;
+    let digits = str.split(/[\/\-\+\*]/gi);
+    let ops = str.split(/[0-9\s]+/gi).filter(e => e !== "");
+    let newArr = [];
 
-    screenVariables().get_result_area().innerHTML = output;
+    for (let i = 0; i < digits.length; i += 1) {
+      if (ops[i]) newArr.push(digits[i], ops[i]);
+      else newArr.push(digits[i]);
+    };
+    calculate(newArr);
+    result == 'syntaxError' ? base_of_result = '' : '';
+
+    result = result.toString(base_of_result || 10);
+    base_of_result === "16" ? result = result.toUpperCase() : result;
+    result = `${result}<sub style='color:rebeccapurple'>${base_of_result}</sub>`;
+    screenVariables().get_result_area().innerHTML = result;
+
   } catch (error) {
+    console.log(error)
     return (screenVariables().get_result_area().innerHTML == "" ? "" :
       screenVariables().get_result_area().innerHTML = 'syntaxError');
   }
+}
 
+function calculate(newArr) {
+  if (newArr.includes('/')) bodmas('/');
+  if (newArr.includes('*')) bodmas('*');
+  if (newArr.includes('+')) bodmas('+');
+  if (newArr.includes('-')) bodmas('-');
 
-  // let digits_array = output.split(/\+|\-|\*|\//gi);
-  // let operators = output.split(/[0-9]+/); //// you can search for multiple splitter;
-  // let result = 0;
+  if (newArr.length == 1) {
+    return result = newArr[0];
+  };
 
-  // //BODMAS// DIVISION --MULTIPLICATION -- ADDITION -- SUBTRACTION
-  // for (let j = 0; j < operators.length; j += 1) {
-  //   operators.includes('/')?digits_array[] 
-  // }
+  function bodmas(op) {
+    while (newArr.includes(op)) {
+      let opIndex = newArr.findIndex(e => e == op);
+      let output = 0;
+      if (!isNaN(newArr[opIndex - 1]) && !isNaN(newArr[opIndex + 1]) && opIndex > 0 && opIndex < newArr.length - 1) {
+        switch (op) {
+          case '/': output = Number(newArr[opIndex - 1]) / Number(newArr[opIndex + 1]);
+            break;
+          case '*': output = Number(newArr[opIndex - 1]) * Number(newArr[opIndex + 1]);
+            break;
+          case '+': output = Number(newArr[opIndex - 1]) + Number(newArr[opIndex + 1]);
+            break;
+          case '-': output = Number(newArr[opIndex - 1]) - Number(newArr[opIndex + 1]);
+            break;
+          default: ;
+            break;
+        };
 
-  //EVAL OPENS DOOR TO SECURITY ISSUES... but the code running has zero user input influence
-  //if a malicious code is passed, it woulnt reach the eval code.
+        newArr[opIndex - 1] = "";
+        newArr[opIndex + 1] = "";
+        newArr[opIndex] = output;
+        newArr = newArr.filter(e => e !== "");
+      } else {
+        result = 'syntax error';
+      };
+    };
+  }
 }
 
 function romToNum() {
@@ -1299,7 +893,6 @@ function romToNum() {
 
     let numArray = Object.keys(roman_num_data);
     let romArray = Object.values(roman_num_data);
-
     let result = 0;
 
     for (let i = 0; i < romanInput.length; i += 1) {
@@ -1337,7 +930,9 @@ function select_calculation() {
       break;
     case 'conv': unit_conversion();
       break;
-    default: date_conv_interval = setInterval(date_conversion, 1000)
+    case 'date': date_conv_interval = setInterval(date_conversion, 1000)
+      break;
+    default:
       break;
   }
 }
