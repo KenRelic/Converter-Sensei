@@ -380,7 +380,7 @@ function input_handler() {
 
 function erase_input() {
   let displayed_text = screenVariables().get_input_area().innerHTML;
-  debugger
+  // debugger
   let eraseSubSuperScripts = () => {
     // if ends with >
     let n = (displayed_text.match(/<[\w]+>[\w]+<\/[\w]+>/gi)[displayed_text.match(/<[\w]+>[\w]+<\/[\w]+>/gi)
@@ -410,14 +410,14 @@ function erase_input() {
 
 
 function lookAhead(action1, action2, action3, sIUnits, displayed_text) {
-  let i;
+  let i; 
+  if (screenVariables().get_input_area().innerHTML.endsWith('>')) {
+    return action2();
+  };
   for (i = 0; i < sIUnits.length; i += 1) {
     if (displayed_text.endsWith(sIUnits[i])) {
       return (screenVariables().get_input_area().innerHTML = action1(i));
     };
-  };
-  if (screenVariables().get_input_area().innerHTML.endsWith('>')) {
-    return action2();
   };
   return (screenVariables().get_input_area().innerHTML = action3());
 };
