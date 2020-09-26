@@ -437,6 +437,9 @@ function goHome() {
   // window.open('./index.html', '_self');
 }
 
+function switchCalc() {
+  setTimeout(() => { window.open('./calc.html','_self') }, 200);
+}
 
 
 menuBar.addEventListener('click', moveIconSelection)
@@ -468,7 +471,9 @@ function openPage(id) {
   switch (id) {
     case 'home-icon': goHome();
       break;
-    case 'history-icon': goToHistoryPage()
+    case 'history-icon': goToHistoryPage();
+      break;
+      case 'switch-icon': switchCalc();
       break;
     default:
       break;
