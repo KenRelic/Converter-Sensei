@@ -410,7 +410,7 @@ function erase_input() {
 
 
 function lookAhead(action1, action2, action3, sIUnits, displayed_text) {
-  let i; 
+  let i;
   if (screenVariables().get_input_area().innerHTML.endsWith('>')) {
     return action2();
   };
@@ -727,10 +727,60 @@ function unit_conversion() {
     let input = (screenVariables().get_input_area().innerHTML).trim();
     let inValue = +(input.match(/[0-9]+/gi)[0]);
     let outValue = +(input.match(/[0-9]+/gi)[1]);
-    let inUnit = input.match(/[A-Za-zµ]+/gi)[0];
-    let outUnit = input.match(/[A-Za-zµ]+/gi)[1]
-    let value1_inUnit = inValue * units[inUnit][outUnit];
-    let value2_outUnit = outValue * units[outUnit][inUnit];
+    let inUnit = input.match(/[A-Za-zµ°]+/gi)[0];
+    let outUnit = input.match(/[A-Za-zµ°]+/gi)[1]
+
+    let value1_inUnit;
+    let value2_outUnit;
+
+    if (inUnit == "°C" || inUnit == "°F" || inUnit == "°R" || inUnit == "K" || inUnit == "°De") {
+      if (outUnit == "°C" || outUnit == "°F" || outUnit == "°R" || outUnit == "K" || outUnit == "°De") {
+        let units = {
+          in: {
+            "°F": {
+              "°F": inValue,
+              "°C": (inValue - 32) * 5 / 9,
+              "K": (inValue - 32) * 5 / 9 + 273.15
+            },
+            "°C": {
+              "°F": (inValue * 9 / 5) + 32,
+              "°C": inValue ,
+              "K": inValue + 273.15
+            },
+            "K": {
+              "°F": (inValue - 273.15) * 9 / 5 + 32,
+              "°C": inValue - 273.15,
+              "K": inValue
+            },
+          },
+          out: {
+            "°F": {
+              "°F": outValue,
+              "°C": (outValue - 32) * 5 / 9,
+              "K": (outValue - 32) * 5 / 9 + 273.15
+            },
+            "°C": {
+              "°F": (outValue * 9 / 5) + 32,
+              "°C": outValue,
+              "K": outValue + 273.15
+            },
+            "K": {
+              "°F": (outValue - 273.15) * 9 / 5 + 32,
+              "°C": outValue - 273.15,
+              "K": outValue
+            },
+          }
+
+        }
+
+        value1_inUnit = units.in[inUnit][outUnit];
+        value2_outUnit = units.out[outUnit][inUnit];
+        console.log(value1_inUnit, value2_outUnit)
+      }
+    } else {
+      value1_inUnit = inValue * units[inUnit][outUnit];
+      value2_outUnit = outValue * units[outUnit][inUnit];
+    }
 
     let output1
     let output2;
