@@ -214,6 +214,16 @@ main {
   color: #000;
 }
 
+#memory-btn, #clear-memory-btn{
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+color: #fff !important;
+}
+#clear-memory-btn{
+  background-color: #ff2f00 !important;
+}
+#memory-btn{
+  background-color: #2600e3 !important;
+}
 #modes p {
   font-size: 0.75em;
 }

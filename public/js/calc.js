@@ -725,8 +725,8 @@ String.prototype.reverseValue = () => {
 function unit_conversion() {
   try {
     let input = (screenVariables().get_input_area().innerHTML).trim();
-    let inValue = +(input.match(/[0-9]+/gi)[0]);
-    let outValue = +(input.match(/[0-9]+/gi)[1]);
+    let inValue = +(input.match(/[\d]+[\.?][\d]+/gi)[0]);
+    let outValue = +(input.match(/[\d]+[\.?][\d]+/gi)[1]);
     let inUnit = input.match(/[A-Za-zµ°]+/gi)[0];
     let outUnit = input.match(/[A-Za-zµ°]+/gi)[1]
 
