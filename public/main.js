@@ -433,12 +433,12 @@ function goToHistoryPage() {
 }
 
 function goHome() {
-  setTimeout(() => { window.location.reload() }, 200)
+  setTimeout(() => { window.location.reload() })
   // window.open('./index.html', '_self');
 }
 
 function switchCalc() {
-  setTimeout(() => { window.open('./calc.html','_self') }, 200);
+  setTimeout(() => { window.open('./calc.html','_self') });
 }
 
 
