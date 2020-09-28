@@ -485,13 +485,14 @@ function roman_numerals_conversion() {
   if (input.split(/→/g)[1] == 'NROM') {
     if (+value) {
       value = +value;
-      if (value < 3999) {
+      if (value < 4000) {
         for (let i = digits.length - 1; i >= 0; i -= 1) {
           while (value >= digits[i]) {
             result += roman_numerals[i];
             value -= digits[i];
           }
         }
+        saveToLocalStorage(input, result)
         return output.innerHTML = result;
       } else {
         return output.innerHTML = 'Max number is 3999'
@@ -524,8 +525,6 @@ function roman_numerals_conversion() {
             let nextRomNum = +numArray[romArray.indexOf(input[i + 1])];
             let nextTwoROM = input[i] + input[i + 1];
             let nextThreeROM = input[i] + input[i + 1] + input[i + 2];
-
-            console.log(currentRomNum, nextRomNum, nextTwoROM, nextThreeROM);
 
             if (romArray.includes(nextThreeROM) || romArray.includes(nextTwoROM)) {
               let romanValue = romArray.includes(nextThreeROM) ? nextThreeROM : nextTwoROM;
@@ -593,6 +592,7 @@ function roman_numerals_conversion() {
             return output.innerHTML = 'syntaxError'
           }
         }
+        saveToLocalStorage(input, result);
         return output.innerHTML = result;
       } catch (error) {
         return output.innerHTML = 'syntaxError'
@@ -660,7 +660,8 @@ function date_conversion() {
     if (input.match(/\→/g).length == 2) {
       output_format = input.match(/µ?[a-z]+$/gi)[0];
       if (output_format == 'µs') {
-        return output.innerHTML = `${result}${output_format} ${is_to_date_passed ? 'ago' : ''}`;
+        let returnValue = `${result}${output_format} ${is_to_date_passed ? 'ago' : ''}`;
+        return output.innerHTML = returnValue;
       } else {
         let idx = keys.indexOf(output_format);
         let remainder = result % values[idx];
@@ -668,6 +669,7 @@ function date_conversion() {
         let output_value = `${first_value >= 1 ? first_value + (first_value > 1 ?
           ((/[s]$/).test(keys[idx])) ? keys[idx] : keys[idx] + 's' : '') : ''}`;
         let thereIsRemainder = false;
+        let check;
 
         values.reduce((remainder, value, i) => {
           if (idx + 1 === i) {
@@ -681,8 +683,8 @@ function date_conversion() {
           }
           return remainder;;
         }, remainder);
-
-        return output.innerHTML = `${output_value} ${is_to_date_passed ? 'ago' : ''}`;
+        let returnValue = `${output_value} ${is_to_date_passed ? 'ago' : ''}`;
+        return output.innerHTML = returnValue;
       }
 
     } else {
@@ -694,7 +696,7 @@ function date_conversion() {
       min = Math.floor((((((result % (31536000000)) % (2.628e+9)) % (6.048e+8)) % 8.64e+7) % 3.6e+6) / 60000);
       sec = Math.floor(((((((result % (31536000000)) % (2.628e+9)) % (6.048e+8)) % 8.64e+7) % 3.6e+6) % 60000) / 1000)
 
-      return output.innerHTML = `${year >= 1 ? year + (year > 1 ? 'yrs' : 'yr')
+      let returnValue = `${year >= 1 ? year + (year > 1 ? 'yrs' : 'yr')
         : ''} ${month >= 1 ? month + (month > 1 ? 'mths' : 'mth')
           : ''} ${week >= 1 ? week + (week > 1 ? 'wks' : 'wk')
             : ''} ${day >= 1 ? day + (day > 1 ? 'dys' : 'dy')
@@ -702,15 +704,19 @@ function date_conversion() {
                 : ''} ${min >= 1 ? min + (min > 1 ? 'mins' : 'min')
                   : ''} ${sec >= 1 ? sec + 's'
                     : ''} ${is_to_date_passed ? 'ago' : ''}`;
-
+      if ((/\d+|\w+/gi).test(returnValue)) {
+        output.innerHTML = returnValue;
+      } else {
+        output.innerHTML = 'From date comes first';
+        return window.clearInterval(date_conv_interval);
+      }  
     }
   } catch (error) {
     console.log(error.message);
+    window.clearInterval(date_conv_interval);
     return (screenVariables().get_result_area().innerHTML == "" ? "" :
       screenVariables().get_result_area().innerHTML = 'syntaxError');
-    window.clearInterval(date_conv_interval);
   }
-
 }
 
 String.prototype.reverseValue = () => {
@@ -744,7 +750,7 @@ function unit_conversion() {
             },
             "°C": {
               "°F": (inValue * 9 / 5) + 32,
-              "°C": inValue ,
+              "°C": inValue,
               "K": inValue + 273.15
             },
             "K": {
@@ -775,7 +781,6 @@ function unit_conversion() {
 
         value1_inUnit = units.in[inUnit][outUnit];
         value2_outUnit = units.out[outUnit][inUnit];
-        console.log(value1_inUnit, value2_outUnit)
       }
     } else {
       value1_inUnit = inValue * units[inUnit][outUnit];
@@ -812,13 +817,15 @@ function unit_conversion() {
     }
 
     if (input.match(/[–|+|×|\/|→]/gi).join() === '→') {
-      return screenVariables().get_result_area().innerHTML = output1 + outUnit;
+      let returnValue = output1 + outUnit;
+      saveToLocalStorage(input, returnValue);
+      return screenVariables().get_result_area().innerHTML = returnValue;
     }
     output1 = output1.toString().length > 5 ? output1.toExponential(2) : output1.toLocaleString();
     output2 = output2.toString().length > 5 ? output2.toExponential(2) : output2.toLocaleString();
-    return inUnit == outUnit ? screenVariables().get_result_area().innerHTML = output1 + outUnit
-      : screenVariables().get_result_area().innerHTML = output1 + outUnit + ' or ' + output2 + inUnit;
-
+    let returnValue = inUnit == outUnit ? output1 + outUnit : output1 + outUnit + ' or ' + output2 + inUnit;
+    saveToLocalStorage(input, returnValue);
+    return screenVariables().get_result_area().innerHTML = returnValue;
   } catch (error) {
     screenVariables().get_result_area().innerHTML == "" ? "" :
       screenVariables().get_result_area().innerHTML = 'syntaxError';
@@ -876,11 +883,12 @@ function base_conversion() {
     let digits = str.split(/[\/\-\+\*]/gi);
     let ops = str.split(/[0-9\s]+/gi).filter(e => e !== "");
     let newArr = [];
-
+    // debugger
     for (let i = 0; i < digits.length; i += 1) {
       if (ops[i]) newArr.push(digits[i], ops[i]);
       else newArr.push(digits[i]);
     };
+
     calculate(newArr);
     result == 'syntaxError' ? base_of_result = '' : '';
 
@@ -888,12 +896,26 @@ function base_conversion() {
     base_of_result === "16" ? result = result.toUpperCase() : result;
     result = `${result}<sub style='color:rebeccapurple'>${base_of_result}</sub>`;
     screenVariables().get_result_area().innerHTML = result;
-
+    return saveToLocalStorage(input.innerHTML, result);
   } catch (error) {
     console.log(error)
     return (screenVariables().get_result_area().innerHTML == "" ? "" :
       screenVariables().get_result_area().innerHTML = 'syntaxError');
   }
+}
+
+function saveToLocalStorage(input, result) {
+  if (localStorage.hasOwnProperty('savedConv')) {
+    let savedConv = JSON.parse(localStorage.getItem('savedConv'));
+    if (savedConv.length == 10) {
+      savedConv.shift();
+    }
+    savedConv.push([input, result]);
+    return localStorage.setItem('savedConv', JSON.stringify(savedConv));
+  }
+  let savedConv = [];
+  savedConv.push([input, result]);
+  return localStorage.setItem('savedConv', JSON.stringify(savedConv));
 }
 
 function calculate(newArr) {
@@ -903,7 +925,7 @@ function calculate(newArr) {
   if (newArr.includes('-')) bodmas('-');
 
   if (newArr.length == 1) {
-    return result = newArr[0];
+    return result = Number(newArr[0]);
   };
 
   function bodmas(op) {
@@ -974,11 +996,14 @@ function select_calculation() {
   let calc_mode = screenVariables().get_calc_mode().innerHTML;
   // let conv_mode = screenVariables().get_conv_mode().innerHTML;
   switch (calc_mode) {
-    case 'base': base_conversion();
+    case 'base':
+      base_conversion();
       break;
-    case 'rom': roman_numerals_conversion();
+    case 'rom':
+      roman_numerals_conversion();
       break;
-    case 'conv': unit_conversion();
+    case 'conv':
+      unit_conversion();
       break;
     case 'date': date_conv_interval = setInterval(date_conversion, 1000)
       break;
@@ -987,3 +1012,30 @@ function select_calculation() {
   }
 }
 
+const showMemoryBtn = document.getElementById('memory-btn');
+const clearMemoryBtn = document.getElementById('clear-memory-btn');
+const historyScrollDownBtn = document.getElementById('scroll-down-btn');
+const historyScrollUpBtn = document.getElementById('scroll-up-btn');
+
+showMemoryBtn.addEventListener('click', showHistory);
+clearMemoryBtn.addEventListener('click', clearHistory);
+
+function showHistory() {
+  if (localStorage.hasOwnProperty('savedConv')) {
+    let savedConv = JSON.parse(localStorage.getItem('savedConv'));
+
+    if (savedConv.length > 0) {
+      historyScrollDownBtn.style.display = 'block';
+    }
+  }
+}
+
+function clearHistory() {
+  if (localStorage.hasOwnProperty('savedConv')) {
+    localStorage.removeItem('savedConv');
+  }
+}
+
+function displayHistoryEntry() {
+
+}

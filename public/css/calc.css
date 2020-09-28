@@ -102,6 +102,7 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
 }
 
 #top-screen {
@@ -118,6 +119,18 @@ main {
   color: #000;
   font-size: 0.7em;
   font-family: 'Times New Roman', Times, serif;
+}
+
+.nav-icon{
+  position: absolute;
+  display: none;  
+  right:0.5em;
+}
+#scroll-up-btn{
+top:0;
+}
+#scroll-down-btn{
+bottom: -0.3em;
 }
 
 #conversion-mode {
