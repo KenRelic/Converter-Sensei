@@ -1,46 +1,103 @@
-//NUMBER METHOD TO CHECK NEGATIVE NUMBERS//
-Number.prototype.isNegative = e => (/^\-/).test(e.toString());
+import { units, sIUnits, roman_num_data, roman_num_data_2 } from '../data.js'
 
+// POWER & CONTROL-----------------------------------------------------------------------------
+const power_btn = document.getElementById("power-btn");
 let direction_pad = document.getElementById("direction-pad");
 let calc_direction_pad = direction_pad;
 let inner_pad = document.querySelector("#direction-pad > div");
 direction_pad = Array.from(direction_pad.children);
-let date_conv_interval = undefined;
+
+let keys = document.querySelectorAll(".key");
+keys = Array.from(keys);
+//BUTTONS ON CLICK ANIMATION//
+keys.forEach(key => button_effect(key));
 
 let cursorPosition = 0;
 let cursorPositionIndex = 0;
 let blinkingCursor = document.getElementById('blinking-cursor');
-
 let switchCalcBtn = document.getElementById('switch-calc');
-switchCalcBtn.addEventListener('click',()=>{
-  window.open('./index.html','_self');
-})
 
-direction_pad.forEach(direction => {
-  direction.addEventListener("click", () => {
-    // this code is responisble for the display of the shadow from each direction
-    //button pressed on the direction keypad.//
-    switch (direction.id) {
-      case "up-btn":
-        directionPadAnimation("0 3px 0 1px #2f2f2f", "inset 0 2px 0 2px #1f1f1f, 0 0 20px 1px black");
-      case "right-btn":
-        directionPadAnimation("-3px 0 0 1px #2f2f2f", "inset -2px 0 0 2px #1f1f1f, 0 0 20px 1px black");
-        moveCursor().right();;
-        break;
-      case "down-btn":
-        directionPadAnimation("0 -3px 0 1px #2f2f2f", "inset 0 -2px 0 2px #1f1f1f, 0 0 20px 1px black");
-        break;
-      case "left-btn":
-        directionPadAnimation("3px 0 0 1px #2f2f2f", "inset 2px 0 0 2px #1f1f1f, 0 0 20px 1px black");
-        moveCursor().left();;
-        break;
-      default:
-        break;
-    }
-  });
+switchCalcBtn.addEventListener('click', () => {
+  window.open('./index.html', '_self');
 });
 
+// SCREEN --------------------------------------------------------------------------------------------------
+let input_area = document.getElementById("input-area");
+let result_area = document.querySelector("#result>p");
+let calc_screen = document.getElementById("screen");
+let top_screen_area = document.getElementById("top-screen");
+let cursor = document.getElementById("blinking-cursor");
+let conversion_mode = document.getElementById("conversion-mode");
+let calc_mode = document.getElementById("calc-mode");
 
+
+//NUMBER METHOD TO CHECK NEGATIVE NUMBERS//
+Number.prototype.isNegative = e => (/^\-/).test(e.toString());
+
+// CALCULATION PROCESS ----------------------------------------------------------------------------------------
+let equal_btn = document.getElementById("equals-btn");
+let result;
+let date_conv_interval = undefined;
+
+// HISTORY ------------------------------------------------------------------------------------
+let savedConversions = JSON.parse(localStorage.getItem('savedConv')) || undefined;
+let count = savedConversions ? savedConversions.length - 1 : 0;
+const showMemoryBtn = document.getElementById('memory-btn');
+const clearMemoryBtn = document.getElementById('clear-memory-btn');
+const historyScrollDownBtn = document.getElementById('scroll-down-btn');
+const historyScrollUpBtn = document.getElementById('scroll-up-btn');
+let isMemoryViewed = false;
+
+showMemoryBtn.addEventListener('click', showHistory);
+clearMemoryBtn.addEventListener('click', clearHistory);
+// ------------------------------------------------------------------------------------------------------
+
+
+// POWER & CONTROL CODES
+//set the power state to OFF on load.
+window.onload = function () {
+  batteryStatus();
+  let localStorage = window.localStorage;
+  localStorage.setItem("power_state", "OFF");
+
+  //set screen default values to off.
+  input_area.innerHTML = "";
+  result_area.style.visibility = "hidden";
+  calc_screen.style.backgroundColor = "#222f38";
+  calc_screen.style.boxShadow =
+    "inset 0 2px 10px 1px #111";
+  top_screen_area.style.visibility = "hidden";
+  cursor.style.visibility = "hidden";
+
+  //listen for keypress and pass it into the input area//
+  key_press_active();
+  mode_switch();
+};
+
+direction_pad.forEach(direction => direction.addEventListener('click', directionPadeffect));
+function directionPadeffect() {
+  // this code is responisble for the display of the shadow from each direction
+  //button pressed on the direction keypad.//
+  switch (this.id) {
+    case "up-btn":
+      directionPadAnimation("0 3px 0 1px #2f2f2f", "inset 0 2px 0 2px #1f1f1f, 0 0 20px 1px black");
+      scrollHstory();
+    case "right-btn":
+      directionPadAnimation("-3px 0 0 1px #2f2f2f", "inset -2px 0 0 2px #1f1f1f, 0 0 20px 1px black");
+      // moveBlinkingCursor("right");
+      break;
+    case "down-btn":
+      directionPadAnimation("0 -3px 0 1px #2f2f2f", "inset 0 -2px 0 2px #1f1f1f, 0 0 20px 1px black");
+      scrollHstory("down-btn");
+      break;
+    case "left-btn":
+      directionPadAnimation("3px 0 0 1px #2f2f2f", "inset 2px 0 0 2px #1f1f1f, 0 0 20px 1px black");
+      // moveBlinkingCursor("left");
+      break;
+    default:
+      break;
+  }
+};
 
 function directionPadAnimation(outerBoxShadow, innerBoxShadow) {
   calc_direction_pad.style.boxShadow = outerBoxShadow;
@@ -49,18 +106,11 @@ function directionPadAnimation(outerBoxShadow, innerBoxShadow) {
     calc_direction_pad.style.boxShadow = "";
     inner_pad.style.boxShadow = "0 0 20px 1px black";
   }, 300);
-}
-
-//BUTTONS ON CLICK ANIMATION//
-let keys = document.querySelectorAll(".key");
-keys = Array.from(keys);
-
-keys.forEach(key => button_effect(key));
+};
 
 function button_effect(e) {
   e.addEventListener("click", () => {
     if (e.id !== "color-mode") {
-      // e.innerHTML !== '=' && 
       window.clearInterval(date_conv_interval);
     }
     e.style.animation = "button 0.3s linear running infinite";
@@ -68,118 +118,58 @@ function button_effect(e) {
       e.style.animationPlayState = "paused";
     }, 300);
   });
-}
-
-//POWER BUTTON CODE//
-//turns on if on and turns off is on
-//clear everything on the screen and reset the mode to NUM
-//change the screen color to dark grey.
-
-//set the power state to OFF on load.
-window.onload = function () {
-  batteryStatus();
-  let localStorage = window.localStorage;
-  localStorage.setItem("power_state", "OFF");
-
-  //set screen default values to off.
-  screenVariables().get_input_area().innerHTML = "";
-  screenVariables().get_result_area().style.visibility = "hidden";
-  screenVariables().get_calc_screen().style.backgroundColor = "#222f38";
-  screenVariables().get_calc_screen().style.boxShadow =
-    "inset 0 2px 10px 1px #111";
-  screenVariables().get_top_screen().style.visibility = "hidden";
-  screenVariables().get_cursor().style.visibility = "hidden";
-
-  //listen for keypress and pass it into the input area//
-  key_press_active();
-  mode_switch();
 };
-
-//add a power toggle event to the power btn
-const power_btn = document.getElementById("power-btn");
 
 power_btn.addEventListener("click", () => {
   localStorage.power_state = localStorage.power_state == "OFF" ? "ON" : "OFF";
   let state_data = { ON: ["visible", "aqua"], OFF: ["hidden", "#333"] };
 
-  screenVariables().get_input_area().innerHTML = "";
-  screenVariables().get_result_area().style.visibility = "visible";
-  screenVariables().get_result_area().innerHTML = 0;
-  screenVariables().get_calc_screen().style.backgroundColor =
+  input_area.innerHTML = "";
+  result_area.style.visibility = "visible";
+  result_area.innerHTML = 0;
+  calc_screen.style.backgroundColor =
     state_data[localStorage.power_state][1];
-  screenVariables().get_top_screen().style.visibility =
+  top_screen_area.style.visibility =
     state_data[localStorage.power_state][0];
-  screenVariables().get_cursor().style.visibility =
+  cursor.style.visibility =
     state_data[localStorage.power_state][0];
-  screenVariables().get_result_area().style.visibility =
+  result_area.style.visibility =
     state_data[localStorage.power_state][0];
 
   resetCusor();
+  closeMemoryView()
   if (localStorage.power_state == 'OFF') {
-    screenVariables().get_conv_mode().style.visibility = 'hidden';
-    screenVariables().get_calc_mode().innerHTML = 'date';
+    conversion_mode.style.visibility = 'hidden';
+    calc_mode.innerHTML = 'date';
   }
   window.clearInterval(date_conv_interval);
 });
 
-//SCREEN VARIABLES //
-function screenVariables() {
-  let input_area = document.getElementById("input-area");
-  let result_area = document.querySelector("#result>p");
-  let calc_screen = document.getElementById("screen");
-  let top_screen_area = document.getElementById("top-screen");
-  let cursor = document.getElementById("blinking-cursor");
-  let conversion_mode = document.getElementById("conversion-mode");
-  let calc_mode = document.getElementById("calc-mode");
-
-  return {
-    get_input_area: () => input_area,
-    get_result_area: () => result_area,
-    get_calc_screen: () => calc_screen,
-    get_top_screen: () => top_screen_area,
-    get_cursor: () => cursor,
-    get_conv_mode: () => conversion_mode,
-    get_calc_mode: () => calc_mode
-  };
-}
-
 function moveCursor() {
-  let displayed_text = screenVariables().get_input_area().innerHTML;
-  let units = [
-    "sqft"
-  ];
-
+  let displayed_text = input_area.innerHTML;
   return {
     left: () => {
-      // let movLeftOverSubSuperscript = () => (screenVariables().get_input_area()).removeChild((screenVariables().get_input_area()).lastElementChild);
+      // let movLeftOverSubSuperscript = () => (input_area).removeChild((input_area).lastElementChild);
       // let moveLeftOverUnits = (i) => displayed_text.slice(0, displayed_text.length - units[i].length);
       // let moveLeftOnce = () => displayed_text.slice(0, displayed_text.length - 1);
       // lookAhead(moveLeftOverUnits, movLeftOverSubSuperscript, moveLeftOnce, units, displayed_text)
-      moveBlinkingCursor('left', displayed_text, units)
+      moveBlinkingCursor('left', displayed_text, sIUnits)
     },
     right: () => {
-      moveBlinkingCursor('right', displayed_text, units)
-    },
-    down: () => {
-
-    },
-    up: () => {
-
+      moveBlinkingCursor('right', displayed_text, sIUnits)
     }
   }
 }
 
-function moveBlinkingCursor(direction, displayed_text, units) {
+function moveBlinkingCursor(direction) {
   // issue is from the cursorpositionindex, it doesnt subtract on the first left click it 
-
-  let displayedInnerText = screenVariables().get_input_area().innerText;
+  let displayedInnerText = input_area.innerText;
   cursorPositionIndex = cursorPositionIndex == 0 && cursorPosition == ""
     ? displayedInnerText.length : cursorPositionIndex;
   let isLastOrFirst;
   switch (direction) {
     case 'left':
-      debugger
-
+      // debugger
       isLastOrFirst = blinkingCursor.style.right === "" && cursorPositionIndex === 0 ? false
         : cursorPositionIndex === displayedInnerText.length
           ? true : cursorPosition === 0 && cursorPositionIndex !== 0 ? true : cursorPositionIndex !== 0 ? true : false;
@@ -187,12 +177,12 @@ function moveBlinkingCursor(direction, displayed_text, units) {
       switch (isLastOrFirst) {
         case true:
           let i;
-          for (i = 0; i < units.length; i += 1) {
-            if (displayed_text.endsWith(units[i])) {
+          for (i = 0; i < sIUnits.length; i += 1) {
+            if (displayed_text.endsWith(sIUnits[i])) {
               console.log(cursorPosition);
-              cursorPosition = cursorPosition ? (+(cursorPosition.replace('px', '')) + (units[i].length * 8.8)) + 'px'
-                : (cursorPosition + (units[i].length * 8.8)) + 'px';
-              cursorPositionIndex -= units[i].length;
+              cursorPosition = cursorPosition ? (+(cursorPosition.replace('px', '')) + (sIUnits[i].length * 8.8)) + 'px'
+                : (cursorPosition + (sIUnits[i].length * 8.8)) + 'px';
+              cursorPositionIndex -= sIUnits[i].length;
               blinkingCursor.style.right = cursorPosition;
               console.log(cursorPositionIndex, cursorPosition)
               break;
@@ -220,7 +210,7 @@ function moveBlinkingCursor(direction, displayed_text, units) {
           break;
       }
       break;
-    default:
+    case "right":
       //for right direction
       // debugger
       isLastOrFirst = cursorPositionIndex !== displayedInnerText.length
@@ -229,11 +219,11 @@ function moveBlinkingCursor(direction, displayed_text, units) {
       switch (isLastOrFirst) {
         case true:
           let i;
-          for (i = 0; i < units.length; i += 1) {
-            if (displayed_text.endsWith(units[i])) {
-              cursorPosition = cursorPosition ? (+(cursorPosition.replace('px', '')) - (units[i].length * 8.8)) + 'px'
-                : (cursorPosition - (units[i].length * 8.8)) + 'px';
-              cursorPositionIndex += units[i].length;
+          for (i = 0; i < sIUnits.length; i += 1) {
+            if (displayed_text.endsWith(sIUnits[i])) {
+              cursorPosition = cursorPosition ? (+(cursorPosition.replace('px', '')) - (sIUnits[i].length * 8.8)) + 'px'
+                : (cursorPosition - (sIUnits[i].length * 8.8)) + 'px';
+              cursorPositionIndex += sIUnits[i].length;
               blinkingCursor.style.right = cursorPosition;
               console.log(cursorPositionIndex, cursorPosition)
               break;
@@ -262,8 +252,10 @@ function moveBlinkingCursor(direction, displayed_text, units) {
           break;
         default:
           //do nothing
-          break
+          break;
       }
+      break;
+    default:
       break;
   }
 }
@@ -329,12 +321,15 @@ function key_press_active() {
     let el = event.target;
     if (localStorage.power_state === "ON") {
       if (el.dataset.value) {
-        if (el.dataset.value === "Backspace") erase_input();
-        else if (el.dataset.value === "equal") {
+        if (el.dataset.value === "Backspace") {
+          erase_input();
+          closeMemoryView();
+        } else if (el.dataset.value === "equal") {
+          closeMemoryView();
         } else {
-          screenVariables().get_input_area().innerHTML += el.dataset.value;
+          input_area.innerHTML += el.dataset.value;
           input_handler().set_input(el.dataset.value);
-          cursorPositionIndex = screenVariables().get_input_area().innerText.length;
+          cursorPositionIndex = input_area.innerText.length;
         };
       };
     };
@@ -371,7 +366,6 @@ function batteryStatus() {
 };
 
 
-
 function input_handler() {
   let inputed_data;
 
@@ -385,69 +379,8 @@ function input_handler() {
 // ON click of the button, the last innerHTML is removed and put back
 
 function erase_input() {
-  let displayed_text = screenVariables().get_input_area().innerHTML;
-  let units = [
-    "sqft",
-    "sqm",
-    "sqcm",
-    "sqmile",
-    "sqmm",
-    "mg",
-    "µs",
-    "ms",
-    "min",
-    "hr",
-    "wk",
-    "day",
-    "mth",
-    "yr",
-    "dec",
-    "cen",
-    "now",
-    "mm",
-    "km",
-    "cm",
-    "mile",
-    "ft",
-    "yrd",
-    "in",
-    "nm",
-    "nmi",
-    "hm",
-    "µm",
-    "Acre",
-    "kj",
-    "gcal",
-    "kcal",
-    "KWh",
-    "Wh",
-    "eV",
-    "ft.lb",
-    "Ha",
-    "sqkm",
-    "sqYrd",
-    "sqIn",
-    "kg",
-    "dg",
-    "g",
-    "oz",
-    "lb",
-    "st",
-    "carat",
-    "j",
-    "s.ton",
-    "l.ton",
-    "ton",
-    "ROM",
-    "°K",
-    "°F",
-    "°C",
-    "<sub>2</sub>",
-    "<sub>8</sub>",
-    "<sub>10</sub>",
-    "<sub>16</sub>"
-  ];
-
+  let displayed_text = input_area.innerHTML;
+  // debugger
   let eraseSubSuperScripts = () => {
     // if ends with >
     let n = (displayed_text.match(/<[\w]+>[\w]+<\/[\w]+>/gi)[displayed_text.match(/<[\w]+>[\w]+<\/[\w]+>/gi)
@@ -455,14 +388,14 @@ function erase_input() {
     cursorPositionIndex -= n;
     cursorPosition = cursorPosition ? (+(cursorPosition.replace('px', '')) - (n * 8.8)) + 'px' : '';
     cursorPositionIndex -= n;
-    return (screenVariables().get_input_area()).removeChild((screenVariables().get_input_area()).lastElementChild);
+    return (input_area).removeChild((input_area).lastElementChild);
   };
   let eraseUnitsAbove2 = (i) => {
-    cursorPositionIndex -= units[i].length;
-    cursorPosition = cursorPosition ? (+(cursorPosition.replace('px', '')) - (units[i].length * 8.8)) + 'px'
-      : (cursorPosition - (units[i].length * 8.8)) + 'px';
-    cursorPositionIndex -= units[i].length
-    return displayed_text.slice(0, displayed_text.length - units[i].length)
+    cursorPositionIndex -= sIUnits[i].length;
+    cursorPosition = cursorPosition ? (+(cursorPosition.replace('px', '')) - (sIUnits[i].length * 8.8)) + 'px'
+      : (cursorPosition - (sIUnits[i].length * 8.8)) + 'px';
+    cursorPositionIndex -= sIUnits[i].length
+    return displayed_text.slice(0, displayed_text.length - sIUnits[i].length)
   };
   let eraseSingleUnit = () => {
     cursorPositionIndex -= 1;
@@ -472,21 +405,21 @@ function erase_input() {
     return displayed_text.slice(0, displayed_text.length - 1);
   };
 
-  lookAhead(eraseUnitsAbove2, eraseSubSuperScripts, eraseSingleUnit, units, displayed_text);
+  lookAhead(eraseUnitsAbove2, eraseSubSuperScripts, eraseSingleUnit, sIUnits, displayed_text);
 }
 
 
-function lookAhead(action1, action2, action3, units, displayed_text) {
+function lookAhead(action1, action2, action3, sIUnits, displayed_text) {
   let i;
-  for (i = 0; i < units.length; i += 1) {
-    if (displayed_text.endsWith(units[i])) {
-      return (screenVariables().get_input_area().innerHTML = action1(i));
-    };
-  };
-  if (screenVariables().get_input_area().innerHTML.endsWith('>')) {
+  if (input_area.innerHTML.endsWith('>')) {
     return action2();
   };
-  return (screenVariables().get_input_area().innerHTML = action3());
+  for (i = 0; i < sIUnits.length; i += 1) {
+    if (displayed_text.endsWith(sIUnits[i])) {
+      return (input_area.innerHTML = action1(i));
+    };
+  };
+  return (input_area.innerHTML = action3());
 };
 
 //CLEAR EVERYTHING BUTTON CODE
@@ -503,9 +436,10 @@ window.onkeydown = function (event) {
 
 }
 function clear_all() {
-  screenVariables().get_input_area().innerHTML = "";
-  screenVariables().get_result_area().innerHTML = "0";
+  input_area.innerHTML = "";
+  result_area.innerHTML = "0";
   resetCusor();
+  closeMemoryView();
 }
 
 //Display calculation mode//
@@ -519,97 +453,31 @@ function mode_switch() {
     let el = event.target;
     if (localStorage.power_state == "ON") {
       if (el.dataset.value) {
-        screenVariables().get_calc_mode().innerHTML = el.dataset.value;
-        screenVariables().get_calc_mode().style.backgroundColor = el.dataset.value == 'date' ? '#ffd900'
+        calc_mode.innerHTML = el.dataset.value;
+        calc_mode.style.backgroundColor = el.dataset.value == 'date' ? '#ffd900'
           : el.dataset.value == 'base' ? '#ee3fce' : el.dataset.value == 'rom' ? '#009dff'
             : el.dataset.value == 'conv' ? '#00ff91' : '';
         if (el.dataset.value == "conv") {
-          screenVariables().get_conv_mode().innerHTML = conv_units[count];
-          screenVariables().get_conv_mode().style.visibility = "visible";
+          conversion_mode.innerHTML = conv_units[count];
+          conversion_mode.style.visibility = "visible";
           count === conv_units.length - 1 ? (count = 0) : (count += 1);
         } else {
           count = 0;
-          screenVariables().get_conv_mode().style.visibility = "hidden";
+          conversion_mode.style.visibility = "hidden";
         }
       }
     } else {
-      screenVariables().get_conv_mode().style.visibility = 'hidden';
+      conversion_mode.style.visibility = 'hidden';
     }
   }
 }
 
-//clear recent input
-let clear_btn = document.getElementById("clear-recent-input");
-clear_btn.addEventListener("click", clear);
-
-function clear() {
-  let operators = ["-", "+", "/", "×"];
-  let inputed_data = screenVariables().get_input_area().innerHTML;
-  let last_operator;
-
-  last_operator = operators.reduce((last, op) => {
-    return (last =
-      inputed_data.lastIndexOf(last) > inputed_data.lastIndexOf(op)
-        ? last
-        : op);
-  });
-  if (inputed_data.lastIndexOf(last_operator) !== -1) {
-    let start_index = inputed_data.lastIndexOf(last_operator);
-    if (inputed_data.endsWith(">")) return
-    return (screenVariables().get_input_area().innerHTML = inputed_data.slice(
-      0,
-      start_index + 1
-    ));
-  }
-}
-
 //CALCULATE PROBLEM CODE
-let equal_btn = document.getElementById("equals-btn");
-let arranged_data;
-let roman_num_data = {
-  1: "I",
-  4: "IV",
-  5: "V",
-  9: "IX",
-  10: "X",
-  40: "XL",
-  50: "L",
-  90: "XC",
-  100: "C",
-  400: "CD",
-  500: "D",
-  900: "CM",
-  1000: "M"
-};
-let roman_num_data_2 = {
-  1: "I",
-  2: "II",
-  3: "III",
-  4: "IV",
-  5: "V",
-  9: "IX",
-  10: "X",
-  20: "XX",
-  30: "XXX",
-  40: "XL",
-  50: "L",
-  90: "XC",
-  100: "C",
-  200: "CC",
-  300: "CCC",
-  400: "CD",
-  500: "D",
-  900: "CM",
-  1000: "M",
-  2000: "MM",
-  3000: "MMM"
-};
-
-
-
+// let arranged_data;
 function roman_numerals_conversion() {
-  let input = (screenVariables().get_input_area().innerText).replace(/\s/g, '');
-  let output = screenVariables().get_result_area();
+  let userInput = (input_area.innerText).replace(/\s/g, '');
+  let input = (input_area.innerText).replace(/\s/g, '');
+  let output = result_area;
   let result = '';
   let digits = Object.keys(roman_num_data);
   let roman_numerals = Object.values(roman_num_data);
@@ -618,13 +486,14 @@ function roman_numerals_conversion() {
   if (input.split(/→/g)[1] == 'NROM') {
     if (+value) {
       value = +value;
-      if (value < 3999) {
+      if (value < 4000) {
         for (let i = digits.length - 1; i >= 0; i -= 1) {
           while (value >= digits[i]) {
             result += roman_numerals[i];
             value -= digits[i];
           }
         }
+        saveToLocalStorage(userInput, result)
         return output.innerHTML = result;
       } else {
         return output.innerHTML = 'Max number is 3999'
@@ -649,6 +518,7 @@ function roman_numerals_conversion() {
         for (let i = 0; i < input.length; i += 1) {
           // debugger
           if (i > input.length) {
+            saveToLocalStorage(userInput, result)
             return output.innerHTML = result;
           }
 
@@ -657,8 +527,6 @@ function roman_numerals_conversion() {
             let nextRomNum = +numArray[romArray.indexOf(input[i + 1])];
             let nextTwoROM = input[i] + input[i + 1];
             let nextThreeROM = input[i] + input[i + 1] + input[i + 2];
-
-            console.log(currentRomNum, nextRomNum, nextTwoROM, nextThreeROM);
 
             if (romArray.includes(nextThreeROM) || romArray.includes(nextTwoROM)) {
               let romanValue = romArray.includes(nextThreeROM) ? nextThreeROM : nextTwoROM;
@@ -726,6 +594,7 @@ function roman_numerals_conversion() {
             return output.innerHTML = 'syntaxError'
           }
         }
+        saveToLocalStorage(userInput, result);
         return output.innerHTML = result;
       } catch (error) {
         return output.innerHTML = 'syntaxError'
@@ -738,21 +607,17 @@ function roman_numerals_conversion() {
   } else {
     return output.innerHTML = 'syntaxError'
   }
-
   return;
 }
-
-//NUMBERS PARSE FUNCTION 
-//Changes every string to number or math object.
 
 /// Numbr base code
 
 function date_conversion() {
   try {
-    let input = (screenVariables().get_input_area().innerHTML).replace(/\s/g, '');
-    let output = screenVariables().get_result_area();
+    let input = (input_area.innerHTML).replace(/\s/g, '');
+    let output = result_area;
     let result;
-    let conversion_depth = (screenVariables().get_input_area().innerHTML).match(/→/g).length;
+    let conversion_depth = (input_area.innerHTML).match(/→/g).length;
     let date_data = input.match(/[0-9]+/g);
     let conv_sign_idx = input.indexOf(input.match(/\→/g)[0]);
     let output_format = 'yr';
@@ -797,7 +662,8 @@ function date_conversion() {
     if (input.match(/\→/g).length == 2) {
       output_format = input.match(/µ?[a-z]+$/gi)[0];
       if (output_format == 'µs') {
-        return output.innerHTML = `${result}${output_format} ${is_to_date_passed ? 'ago' : ''}`;
+        let returnValue = `${result}${output_format} ${is_to_date_passed ? 'ago' : ''}`;
+        return output.innerHTML = returnValue;
       } else {
         let idx = keys.indexOf(output_format);
         let remainder = result % values[idx];
@@ -805,6 +671,7 @@ function date_conversion() {
         let output_value = `${first_value >= 1 ? first_value + (first_value > 1 ?
           ((/[s]$/).test(keys[idx])) ? keys[idx] : keys[idx] + 's' : '') : ''}`;
         let thereIsRemainder = false;
+        let check;
 
         values.reduce((remainder, value, i) => {
           if (idx + 1 === i) {
@@ -818,8 +685,8 @@ function date_conversion() {
           }
           return remainder;;
         }, remainder);
-
-        return output.innerHTML = `${output_value} ${is_to_date_passed ? 'ago' : ''}`;
+        let returnValue = `${output_value} ${is_to_date_passed ? 'ago' : ''}`;
+        return output.innerHTML = returnValue;
       }
 
     } else {
@@ -831,7 +698,7 @@ function date_conversion() {
       min = Math.floor((((((result % (31536000000)) % (2.628e+9)) % (6.048e+8)) % 8.64e+7) % 3.6e+6) / 60000);
       sec = Math.floor(((((((result % (31536000000)) % (2.628e+9)) % (6.048e+8)) % 8.64e+7) % 3.6e+6) % 60000) / 1000)
 
-      return output.innerHTML = `${year >= 1 ? year + (year > 1 ? 'yrs' : 'yr')
+      let returnValue = `${year >= 1 ? year + (year > 1 ? 'yrs' : 'yr')
         : ''} ${month >= 1 ? month + (month > 1 ? 'mths' : 'mth')
           : ''} ${week >= 1 ? week + (week > 1 ? 'wks' : 'wk')
             : ''} ${day >= 1 ? day + (day > 1 ? 'dys' : 'dy')
@@ -839,330 +706,80 @@ function date_conversion() {
                 : ''} ${min >= 1 ? min + (min > 1 ? 'mins' : 'min')
                   : ''} ${sec >= 1 ? sec + 's'
                     : ''} ${is_to_date_passed ? 'ago' : ''}`;
-
+      if ((/\d+|\w+/gi).test(returnValue)) {
+        output.innerHTML = returnValue;
+      } else {
+        output.innerHTML = 'From date comes first';
+        return window.clearInterval(date_conv_interval);
+      }
     }
   } catch (error) {
     console.log(error.message);
-    return (screenVariables().get_result_area().innerHTML == "" ? "" :
-      screenVariables().get_result_area().innerHTML = 'syntaxError');
     window.clearInterval(date_conv_interval);
+    return (result_area.innerHTML == "" ? "" :
+      result_area.innerHTML = 'syntaxError');
   }
-
-}
-
-//UNIT CONVERSION CODE////
-
-String.prototype.reverseValue = () => {
-  let objects = {
-
-  }
-
-  return {
-    get_similar: (input) => console.log(objects[input])
-  }
-}
-
-let units = {
-
-  µs: {
-    µs: 1,
-    ms: 0.001,
-    s: 1e-6,
-    min: 1.6667e-8,
-    hr: 2.7778e-10,
-    day: 1.1574e-11,
-    wk: 1.6534e-12,
-    mth: 3.8052e-13,
-    yr: 3.171e-14,
-    dec: 3.171e-15,
-    cen: 3.171e-16
-  },
-  ms: {
-    µs: 1000,
-    ms: 1,
-    s: 0.001,
-    min: 1.6667e-5,
-    hr: 2.7778e-7,
-    day: 1.1574e-8,
-    wk: 1.6534e-9,
-    mth: 3.8052e-10,
-    yr: 3.171e-11,
-    dec: 3.171e-12,
-    cen: 3.171e-13
-  },
-  s: {
-    µs: 1e+6,
-    ms: 1000,
-    s: 1,
-    min: 0.0166667,
-    hr: 0.000277778,
-    day: 1.1574e-5,
-    wk: 1.6534e-6,
-    mth: 3.8052e-7,
-    yr: 3.171e-8,
-    dec: 3.171e-9,
-    cen: 3.171e-10
-  },
-  min: {
-    µs: 6e+7,
-    ms: 60000,
-    s: 60,
-    min: 1,
-    hr: 0.0166667,
-    day: 6.9444e-4,
-    wk: 9.9206e-5,
-    mth: 2.2931e-5,
-    yr: 1.9026e-6,
-    dec: 1.9026e-7,
-    cen: 1.9026e-8
-  },
-  hr: {
-    µs: 3.6e+9,
-    ms: 3.6e+6,
-    s: 3600,
-    min: 60,
-    hr: 1,
-    day: 1 / 24,
-    wk: 1 / 168,
-    mth: 1 / 730,
-    yr: 1 / 8760,
-    dec: 1 / 87600,
-    cen: 1 / 876000
-  },
-  day: {
-    µs: 8.64e+10,
-    ms: 8.64e+7,
-    s: 86400,
-    min: 1440,
-    hr: 24,
-    day: 1,
-    wk: 1 / 7,
-    mth: 1 / 30.417,
-    yr: 1 / 365,
-    dec: 1 / 3650,
-    cen: 1 / 36500
-  },
-  wk: {
-    µs: 6.048e+11,
-    ms: 6.048e+8,
-    s: 604800,
-    min: 10080,
-    hr: 168,
-    day: 7,
-    wk: 1,
-    mth: 1 / 4.345,
-    yr: 1 / 52.143,
-    dec: 1 / 521,
-    cen: 1 / 5214
-  },
-  mth: {
-    µs: 2.628e+12,
-    ms: 2.628e+9,
-    s: 2.628e+6,
-    min: 43800,
-    hr: 730.001,
-    day: 30.4167,
-    wk: 4.34524,
-    mth: 1,
-    yr: 1 / 12,
-    dec: 1 / 120,
-    cen: 1 / 1200
-  },
-  yr: {
-    µs: 3.154e+13,
-    ms: 3.154e+10,
-    s: 3.154e+7,
-    min: 525600,
-    hr: 8760,
-    day: 365,
-    wk: 52.1429,
-    mth: 12,
-    yr: 1,
-    dec: 1 / 10,
-    cen: 1 / 100
-  },
-  dec: {
-    µs: 3.154e+14,
-    ms: 3.154e+11,
-    s: 3.154e+8,
-    min: 5256000,
-    hr: 87600,
-    day: 3650,
-    wk: 521.429,
-    mth: 120,
-    yr: 10,
-    dec: 1,
-    cen: 0.1
-  },
-  cen: {
-    µs: 3.154e+15,
-    ms: 3.154e+12,
-    s: 3.154e+9,
-    min: 52560000,
-    hr: 876000,
-    day: 36500,
-    wk: 5214.29,
-    mth: 1200,
-    yr: 100,
-    dec: 10,
-    cen: 1
-  },
-
-  //CONVERSION UNITS FOR LENGTH
-  nm: {
-    nm: 1,
-    µm: 0.001,
-    mm: 1e-6,
-    cm: 1e-7,
-    m: 1e-9,
-    hm: 1e-11,
-    km: 1e-12,
-    yrd: 1.0936e-9,
-    mile: 6.2137e-13,
-    ft: 3.2808e-9,
-    in: 3.937e-8,
-  },
-  µm: {
-    nm: 1000,
-    µm: 1,
-    mm: 0.001,
-    cm: 1e-4,
-    m: 1e-6,
-    hm: 1e-8,
-    km: 1e-9,
-    yrd: 1.0936e-6,
-    mile: 6.2137e-10,
-    ft: 3.2808e-6,
-    in: 3.937e-5,
-  },
-  mm: {
-    nm: 1e+6,
-    µm: 1000,
-    mm: 1,
-    cm: 0.1,
-    m: 1e-3,
-    hm: 1e-5,
-    km: 1e-6,
-    yrd: 1.0936e-3,
-    mile: 6.2137e-7,
-    ft: 3.2808e-3,
-    in: 3.937e-2,
-  },
-  cm: {
-    nm: 1e+7,
-    µm: 10000,
-    mm: 10,
-    cm: 1,
-    m: 1e-2,
-    hm: 1e-4,
-    km: 1e-5,
-    yrd: 1.0936e-2,
-    mile: 6.2137e-6,
-    ft: 3.2808e-2,
-    in: 0.393701,
-  },
-  m: {
-    nm: 1e+9,
-    µm: 1e+6,
-    mm: 1000,
-    cm: 100,
-    m: 1,
-    hm: 1e-2,
-    km: 1e-3,
-    yrd: 1.0936,
-    mile: 6.2137e-4,
-    ft: 3.28084,
-    in: 39.3701,
-  },
-  hm: {
-    nm: 1e+11,
-    µm: 1e+8,
-    mm: 1e+5,
-    cm: 1e+4,
-    m: 100,
-    hm: 1,
-    km: 0.1,
-    yrd: 109.361,
-    mile: 6.21371e-2,
-    ft: 328.084,
-    in: 3937.01,
-  },
-  km: {
-    nm: 1e+12,
-    µm: 1e+9,
-    mm: 1e+6,
-    cm: 1e+5,
-    m: 1000,
-    hm: 10,
-    km: 1,
-    yrd: 1093.61,
-    mile: 0.621371,
-    ft: 3280.84,
-    in: 39370.1,
-  },
-  yrd: {
-    nm: 9.144e+8,
-    µm: 914400,
-    mm: 914.4,
-    cm: 91.44,
-    m: 0.9144,
-    hm: 0.009144,
-    km: 0.0009144,
-    yrd: 1,
-    mile: 0.000568182,
-    ft: 3,
-    in: 36,
-  },
-  mile: {
-    nm: 1.609e+12,
-    µm: 1.609e+9,
-    mm: 1.609e+6,
-    cm: 160934,
-    m: 1609.34,
-    hm: 16.0934,
-    km: 1.60934,
-    yrd: 1760,
-    mile: 1,
-    ft: 5280,
-    in: 63360,
-  },
-  ft: {
-    nm: 3.048e+8,
-    µm: 3.048e+5,
-    mm: 304.8,
-    cm: 30.48,
-    m: 0.3048,
-    hm: 0.003048,
-    km: 0.0003048,
-    yrd: 0.333333,
-    mile: 0.000189394,
-    ft: 1,
-    in: 12,
-  },
-  in: {
-    nm: 2.54e+7,
-    µm: 25400,
-    mm: 25.4,
-    cm: 2.54,
-    m: 0.0254,
-    hm: 0.000254,
-    km: 2.54e-5,
-    yrd: 0.0277778,
-    mile: 1.5783e-5,
-    ft: 1 / 12,
-    in: 1,
-  },
 }
 
 function unit_conversion() {
   try {
-    let input = (screenVariables().get_input_area().innerHTML).trim();
-    let inValue = +(input.match(/[0-9]+/gi)[0]);
-    let outValue = +(input.match(/[0-9]+/gi)[1]);
-    let inUnit = input.match(/[A-Za-zµ]+/gi)[0];
-    let outUnit = input.match(/[A-Za-zµ]+/gi)[1]
-    let value1_inUnit = inValue * units[inUnit][outUnit];
-    let value2_outUnit = outValue * units[outUnit][inUnit];
+    let input = (input_area.innerHTML).trim();
+    console.log(input)
+    let inValue = +(input.match(/[\d]+([\.?][\d]+)?/gi)[0]);
+    let outValue = +(input.match(/[\d]+([\.?][\d]+)?/gi)[1]);
+    let inUnit = input.match(/[A-Za-zµ°]+/gi)[0];
+    let outUnit = input.match(/[A-Za-zµ°]+/gi)[1]
+
+    let value1_inUnit;
+    let value2_outUnit;
+
+    if (inUnit === "°C" || inUnit === "°F" || inUnit === "°R" || inUnit === "K" || inUnit === "°De") {
+      if (outUnit === "°C" || outUnit === "°F" || outUnit === "°R" || outUnit === "K" || outUnit === "°De") {
+        let tempUnits = {
+          in: {
+            "°F": {
+              "°F": inValue,
+              "°C": (inValue - 32) * 5 / 9,
+              "K": (inValue - 32) * 5 / 9 + 273.15
+            },
+            "°C": {
+              "°F": (inValue * 9 / 5) + 32,
+              "°C": inValue,
+              "K": inValue + 273.15
+            },
+            "K": {
+              "°F": (inValue - 273.15) * 9 / 5 + 32,
+              "°C": inValue - 273.15,
+              "K": inValue
+            },
+          },
+          out: {
+            "°F": {
+              "°F": outValue,
+              "°C": (outValue - 32) * 5 / 9,
+              "K": (outValue - 32) * 5 / 9 + 273.15
+            },
+            "°C": {
+              "°F": (outValue * 9 / 5) + 32,
+              "°C": outValue,
+              "K": outValue + 273.15
+            },
+            "K": {
+              "°F": (outValue - 273.15) * 9 / 5 + 32,
+              "°C": outValue - 273.15,
+              "K": outValue
+            },
+          }
+
+        };
+        value1_inUnit = tempUnits.in[inUnit][outUnit];
+        value2_outUnit = tempUnits.out[outUnit][inUnit];
+      }
+    } else {
+      value1_inUnit = inValue * units[inUnit][outUnit];
+      value2_outUnit = outValue * units[outUnit][inUnit];
+      // console.log(value) //here
+    }
 
     let output1
     let output2;
@@ -1194,34 +811,34 @@ function unit_conversion() {
     }
 
     if (input.match(/[–|+|×|\/|→]/gi).join() === '→') {
-      return screenVariables().get_result_area().innerHTML = output1 + outUnit;
+      let returnValue = output1 + outUnit;
+      saveToLocalStorage(input, returnValue);
+      return result_area.innerHTML = returnValue;
     }
     output1 = output1.toString().length > 5 ? output1.toExponential(2) : output1.toLocaleString();
     output2 = output2.toString().length > 5 ? output2.toExponential(2) : output2.toLocaleString();
-    return inUnit == outUnit ? screenVariables().get_result_area().innerHTML = output1 + outUnit
-      : screenVariables().get_result_area().innerHTML = output1 + outUnit + ' or ' + output2 + inUnit;
-
+    let returnValue = inUnit == outUnit ? output1 + outUnit : output1 + outUnit + ' or ' + output2 + inUnit;
+    saveToLocalStorage(input, returnValue);
+    return result_area.innerHTML = returnValue;
   } catch (error) {
-    screenVariables().get_result_area().innerHTML == "" ? "" :
-      screenVariables().get_result_area().innerHTML = 'syntaxError';
+    console.log(error)
+    result_area.innerHTML == "" ? "" :
+      result_area.innerHTML = 'syntaxError';
     return {
       'error name': error.name,
       'error message': 'Check your inputs'
     }
   }
-
 }
 
 equal_btn.addEventListener('click', select_calculation);
 
 function base_conversion() {
-  // debugger;
-  let input = screenVariables().get_input_area();
+  let input = input_area;
   let input_nodes = Array.from(input.childNodes);
   let output = '';
   let number_of_elem = input_nodes.length;
   let base_of_result = '';
-  console.log(input_nodes)
 
   if (input.innerText.includes('→')) {
     base_of_result = input.innerText.slice((input.innerText.indexOf('N')) + 1);
@@ -1235,7 +852,6 @@ function base_conversion() {
   });
   try {
     for (i = 0; i < number_of_elem; i += 1) {
-      // debugger
       if (input_nodes[i].constructor == Text) {
         switch ((input_nodes[i].textContent).charAt(0)) {
           case '/': output += '/'
@@ -1250,7 +866,6 @@ function base_conversion() {
             break;
         }
         if (number_of_elem - 1 > i && input_nodes[i + 1].constructor === HTMLElement) {
-          console.log(input_nodes[i + 1])
           output += parseInt((input_nodes[i].textContent).replace(/[\-\+\×\/N]/gi, ''), input_nodes[i + 1].textContent);
           i += 1;
         } else {
@@ -1258,53 +873,98 @@ function base_conversion() {
         }
       }
     }
-    //EVAL OPENS DOOR TO SECURITY ISSUES... but the code running has zero user input influence
-    //if a malicious code is passed, it woulnt reach the eval code.
-    output = Array.from(output)
-    // output = eval(output);
-    console.log(output.split(/[\/\+\-\*]/gi))
-    output = (eval(output)).toString() == 'NaN' ? 'syntaxError' : eval(output);
-    output == 'syntaxError' ? base_of_result = '' : '';
 
-    output = output.toString(base_of_result || 10);
-    base_of_result === "16" ? output = output.toUpperCase() : output;
-    output = `${output}<sub style='color:rebeccapurple'>${base_of_result}</sub>`;
-    // screenVariables().get_result_area().innerHTML = eval(output) == NaN ? 'syntaxError' : eval(output);
+    let str = output;
+    let digits = str.split(/[\/\-\+\*]/gi);
+    let ops = str.split(/[0-9\s]+/gi).filter(e => e !== "");
+    let newArr = [];
+    // debugger
+    for (let i = 0; i < digits.length; i += 1) {
+      if (ops[i]) newArr.push(digits[i], ops[i]);
+      else newArr.push(digits[i]);
+    };
 
-    screenVariables().get_result_area().innerHTML = output;
+    calculate(newArr);
+    result == 'syntaxError' ? base_of_result = '' : '';
+
+    result = result.toString(base_of_result || 10);
+    base_of_result === "16" ? result = result.toUpperCase() : result;
+    result = `${result}<sub style='color:rebeccapurple'>${base_of_result}</sub>`;
+    result_area.innerHTML = result;
+    return saveToLocalStorage(input.innerHTML, result);
   } catch (error) {
-    return (screenVariables().get_result_area().innerHTML == "" ? "" :
-      screenVariables().get_result_area().innerHTML = 'syntaxError');
+    console.log(error)
+    return (result_area.innerHTML == "" ? "" :
+      result_area.innerHTML = 'syntaxError');
   }
+}
 
+function saveToLocalStorage(input, result) {
+  if (localStorage.hasOwnProperty('savedConv')) {
+    let savedConv = JSON.parse(localStorage.getItem('savedConv'));
+    if (savedConv.length == 10) {
+      savedConv.shift();
+    }
+    savedConv.push([input, result]);
+    return localStorage.setItem('savedConv', JSON.stringify(savedConv));
+  }
+  let savedConv = [];
+  savedConv.push([input, result]);
+  return localStorage.setItem('savedConv', JSON.stringify(savedConv));
+}
 
-  // let digits_array = output.split(/\+|\-|\*|\//gi);
-  // let operators = output.split(/[0-9]+/); //// you can search for multiple splitter;
-  // let result = 0;
+function calculate(newArr) {
+  if (newArr.includes('/')) bodmas('/');
+  if (newArr.includes('*')) bodmas('*');
+  if (newArr.includes('+')) bodmas('+');
+  if (newArr.includes('-')) bodmas('-');
 
-  // //BODMAS// DIVISION --MULTIPLICATION -- ADDITION -- SUBTRACTION
-  // for (let j = 0; j < operators.length; j += 1) {
-  //   operators.includes('/')?digits_array[] 
-  // }
+  if (newArr.length == 1) {
+    return result = Number(newArr[0]);
+  };
 
-  //EVAL OPENS DOOR TO SECURITY ISSUES... but the code running has zero user input influence
-  //if a malicious code is passed, it woulnt reach the eval code.
+  function bodmas(op) {
+    while (newArr.includes(op)) {
+      let opIndex = newArr.findIndex(e => e == op);
+      let output = 0;
+      if (!isNaN(newArr[opIndex - 1]) && !isNaN(newArr[opIndex + 1]) && opIndex > 0 && opIndex < newArr.length - 1) {
+        switch (op) {
+          case '/': output = Number(newArr[opIndex - 1]) / Number(newArr[opIndex + 1]);
+            break;
+          case '*': output = Number(newArr[opIndex - 1]) * Number(newArr[opIndex + 1]);
+            break;
+          case '+': output = Number(newArr[opIndex - 1]) + Number(newArr[opIndex + 1]);
+            break;
+          case '-': output = Number(newArr[opIndex - 1]) - Number(newArr[opIndex + 1]);
+            break;
+          default: ;
+            break;
+        };
+
+        newArr[opIndex - 1] = "";
+        newArr[opIndex + 1] = "";
+        newArr[opIndex] = output;
+        newArr = newArr.filter(e => e !== "");
+      } else {
+        result = 'syntax error';
+      };
+    };
+  }
 }
 
 function romToNum() {
   try {
-    let input = (screenVariables().get_input_area().innerHTML).trim();
+    let input = (input_area.innerHTML).trim();
     let romanInput = input.match(/[0-9]+/gi)[0];
     romanInput = romanInput.split('');
 
     let numArray = Object.keys(roman_num_data);
     let romArray = Object.values(roman_num_data);
-
     let result = 0;
 
     for (let i = 0; i < romanInput.length; i += 1) {
       if (i > romanInput.length) {
-        return screenVariables().get_result_area().innerHTML = result
+        return result_area.innerHTML = result
       }
 
       if (romArray.find(n => n == romanInput[i])) {
@@ -1317,28 +977,108 @@ function romToNum() {
           result += currentRomNum;
         }
       } else {
-        return screenVariables().get_result_area().innerHTML = 'syntaxError';
+        return result_area.innerHTML = 'syntaxError';
       }
     }
 
   } catch (error) {
-    return screenVariables().get_result_area().innerHTML = 'syntaxError';
+    return result_area.innerHTML = 'syntaxError';
   }
 }
 
 //THIS CODE SWITCHES THE FORMULAR THAT CARRIES OU THE CALCUATION
 function select_calculation() {
-  let calc_mode = screenVariables().get_calc_mode().innerHTML;
-  // let conv_mode = screenVariables().get_conv_mode().innerHTML;
-  switch (calc_mode) {
-    case 'base': base_conversion();
+  let mode = calc_mode.innerHTML;
+  // let conv_mode = conversion_mode.innerHTML;
+  switch (mode) {
+    case 'base':
+      base_conversion();
       break;
-    case 'rom': roman_numerals_conversion();
+    case 'rom':
+      roman_numerals_conversion();
       break;
-    case 'conv': unit_conversion();
+    case 'conv':
+      unit_conversion();
       break;
-    default: date_conv_interval = setInterval(date_conversion, 1000)
+    case 'date': date_conv_interval = setInterval(date_conversion, 1000)
+      break;
+    default:
       break;
   }
 }
 
+
+function showHistory() {
+  if (localStorage.hasOwnProperty('savedConv') && localStorage.getItem('power_state') == 'ON') {
+    savedConversions = JSON.parse(localStorage.getItem('savedConv'));
+    count = savedConversions.length - 1;
+    isMemoryViewed = true;
+    if (count > 0) {
+      console.log(count, savedConversions, savedConversions.length - 1)
+      historyScrollDownBtn.style.display = 'block';
+      historyScrollUpBtn.style.display = 'none';
+    } else {
+      hideScrollButtons();
+    }
+    input_area.innerHTML = savedConversions[count][0];
+    result_area.innerHTML = savedConversions[count][1];
+  }
+}
+
+function clearHistory() {
+  if (localStorage.hasOwnProperty('savedConv') && localStorage.getItem('power_state') == 'ON') {
+    // since no way of verifyg users history clear decision//
+    //check if the user is currently viewing the history when the clear btn was pressed
+    if (isMemoryViewed) {
+      localStorage.removeItem('savedConv');
+      input_area.innerHTML = '';
+      result_area.innerHTML = 0;
+      closeMemoryView();
+    }
+  }
+}
+
+function scrollHstory(id) {
+  if (savedConversions && isMemoryViewed) {
+    if (id === "down-btn") {
+      if (count > 0) {
+        count -= 1;
+        input_area.innerHTML = savedConversions[count][0];
+        result_area.innerHTML = savedConversions[count][1];
+      }
+    } else {
+      if (count < savedConversions.length - 1) {
+        count += 1;
+        input_area.innerHTML = savedConversions[count][0];
+        result_area.innerHTML = savedConversions[count][1];
+      }
+    }
+    showOrHideScrollButtons(historyScrollUpBtn, historyScrollDownBtn);
+  }
+}
+
+function showOrHideScrollButtons(upBtn, downBtn) {
+  if (count > 0 && count < savedConversions.length - 1) {
+    upBtn.style.display = 'block';
+    downBtn.style.display = 'block';
+  } else if (count > 0 && count === savedConversions.length - 1) {
+    upBtn.style.display = 'none';
+    downBtn.style.display = 'block';
+  } else if (count === 0 && count < savedConversions.length - 1) {
+    upBtn.style.display = 'block';
+    downBtn.style.display = 'none';
+  } else {
+    upBtn.style.display = 'none';
+    downBtn.style.display = 'none';
+  }
+}
+
+function hideScrollButtons() {
+  historyScrollUpBtn.style.display = 'none';
+  historyScrollDownBtn.style.display = 'none';
+}
+
+function closeMemoryView() {
+  hideScrollButtons();
+  isMemoryViewed = false;
+}

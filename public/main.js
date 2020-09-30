@@ -33,6 +33,10 @@ let selectedUnitType = '';
 let currentRomConv = 'num2Rom';
 let currentConverter = 'base-conv';
 
+let numberBaseInput = document.getElementById('numberBaseInput');
+let numberBaseOutputArea = document.getElementById('numberBaseOutputArea');
+numberBaseInput.addEventListener('change', base_conversion);
+
 unitUnitFrom.addEventListener('click', showListOfUnits);
 unitUnitTo.addEventListener('click', showListOfUnits);
 baseUnitFrom.addEventListener('click', showListOfUnits);
@@ -195,11 +199,11 @@ historyTypeWrapper.addEventListener('click', (event) => {
     historyEntrySection.forEach(section => {
       if (section.id !== historyType + '-history') {
         // clearHistoryBtn.addEventListener('click', addToHistory)
-        return section.classList.contains('show')? section.classList.replace('show', 'hidden') :
-        section.classList.add('hidden') ;
+        return section.classList.contains('show') ? section.classList.replace('show', 'hidden') :
+          section.classList.add('hidden');
       } else {
-        return section.classList.contains('hidden')? section.classList.replace('hidden', 'show') :
-        section.classList.add('show') ;
+        return section.classList.contains('hidden') ? section.classList.replace('hidden', 'show') :
+          section.classList.add('show');
       }
     })
   }
@@ -337,8 +341,22 @@ function createConvTypeUnits(convType) {
         document.querySelector(`.${unitToSelect}`).firstChild.replaceWith(`${el.textContent}`);
 
       } else {
-        document.querySelector(`#base-conv .${unitToSelect}`).firstChild.replaceWith(`${el.textContent}`);
+        let baseEl = document.querySelector(`#base-conv .${unitToSelect}`)
+        baseEl.firstChild.replaceWith(`${el.textContent}`);
+        console.log(unitToSelect)
+        unitToSelect === 'from-unit' ? baseEl.attributes['data-from-name'].value = el.textContent :
+          baseEl.attributes['data-to-name'].value = el.textContent;
+        // el.nextElementSibling ;//add pattern others to the input el
+        // numberBaseInput.removeEventListener('keypress', preventInputDefault);
+        numberBaseInput.addEventListener('keypress', preventInputDefault);
 
+        switch (el.textContent) {
+
+          case 'binary':
+        }
+        function preventInputDefault(e) {
+          if (e.which > 49 && e.which < 58) e.preventDefault()
+        }
       }
 
       return closeUnitSelectionWrapper();
@@ -346,6 +364,8 @@ function createConvTypeUnits(convType) {
     closeUnitSelectionWrapperBtn.addEventListener('click', closeUnitSelectionWrapper)
   }, 2000);
 };
+
+
 
 function closeUnitSelectionWrapper() {
   setTimeout(() => {
@@ -433,12 +453,12 @@ function goToHistoryPage() {
 }
 
 function goHome() {
-  setTimeout(() => { window.location.reload() }, 200)
+  setTimeout(() => { window.location.reload() })
   // window.open('./index.html', '_self');
 }
 
 function switchCalc() {
-  setTimeout(() => { window.open('./calc.html','_self') }, 200);
+  setTimeout(() => { window.open('./calc.html', '_self') });
 }
 
 
@@ -473,7 +493,7 @@ function openPage(id) {
       break;
     case 'history-icon': goToHistoryPage();
       break;
-      case 'switch-icon': switchCalc();
+    case 'switch-icon': switchCalc();
       break;
     default:
       break;
@@ -484,3 +504,43 @@ function openPage(id) {
 // add the data-name for each input box for beter calculation data-name ='length-meter'
 //split the data value, use the first aprt to get th type of conversion then the second to get the
 //value of conversion.
+
+
+function base_conversion() {
+  let userInput = numberBaseInput.value;
+  let output = '';
+  let inputBase = document.querySelector('#base-conv .from-unit').getAttribute('data-from-name');
+  let outputBase = document.querySelector('#base-conv .to-unit').getAttribute('data-to-name');
+
+  switch (outputBase) {
+    case 'decimal': outputBase = 10;
+      console.log(10)
+      break;
+    case 'binary': outputBase = 2;
+      console.log(2)
+      break;
+    case 'hexadecimal': outputBase = 16;
+      console.log(16)
+      break;
+    case 'octal': outputBase = 8;
+      console.log(8)
+      break;
+    default:
+      break;
+  }
+  numberBaseOutputArea.value = (Number(userInput.toString(10))).toString(outputBase);
+}
+
+function saveToLocalStorage(input, result) {
+  if (localStorage.hasOwnProperty('savedConv')) {
+    let savedConv = JSON.parse(localStorage.getItem('savedConv'));
+    if (savedConv.length == 10) {
+      savedConv.shift();
+    }
+    savedConv.push([input, result]);
+    return localStorage.setItem('savedConv', JSON.stringify(savedConv));
+  }
+  let savedConv = [];
+  savedConv.push([input, result]);
+  return localStorage.setItem('savedConv', JSON.stringify(savedConv));
+}

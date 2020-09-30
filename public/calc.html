@@ -24,12 +24,12 @@
   <link rel="icon" type="image/png" sizes="96x96" href="./icons/favicon-96x96.png">
   <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16x16.png">
   <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
-  <link rel="manifest" href="./manifest.json">
+  <link rel="manifest" href="./manifest-real-calc.json">
   <meta name="msapplication-TileColor" content="#000031">
   <meta name="msapplication-TileImage" content="./icons/ms-icon-144x144.png">
   <link rel="stylesheet" href="./all.css">
   <link rel="stylesheet" href="./css/calc.css">
-  <link href="https://fonts.googleapis.com/css?family=VT323&display=swap" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/css?family=VT323&display=swap" rel="stylesheet"> -->
 </head>
 <body>
     <main>
@@ -46,8 +46,10 @@
                     </div>
                 </section>
                 <section id="screen">
+                    <span class="nav-icon" id="scroll-up-btn"><i class="fa fa-caret-up"></i></span>
                     <div id="top-screen">
                         <p id="calc-mode">date</p><span id="conversion-mode">length</span>
+                        <span style="background-color: #60ff34; display: none;" id="history-mode">History</span>
                     </div>
                     <div id="entered-text">
                         <p id="input-area-wrapper"><span id="input-area"></span><span id="blinking-cursor">_</span></p>
@@ -55,6 +57,7 @@
                     <div id="result">
                         <p></p>
                     </div>
+                    <span class="nav-icon" id="scroll-down-btn"><i class="fa fa-caret-down"></i></span>
                 </section>
             </div>
             <div id="keys-and-control-section">
@@ -67,10 +70,10 @@
                         <p class="key" data-value="conv">Conv</p>
                     </div>
                     <div id="direction-pad">
-                        <span id="up-btn"><i class="fa fa-play"></i></span>
-                        <span id="down-btn"><i class="fa fa-play"></i></span>
-                        <span id="left-btn"><i class="fa fa-play"></i></span>
-                        <span id="right-btn"><i class="fa fa-play"></i></span>
+                        <span id="up-btn" class="fa fa-play"></span>
+                        <span id="down-btn" class="fa fa-play"></span>
+                        <span id="left-btn" class="fa fa-play"></span>
+                        <span id="right-btn" class="fa fa-play"></span>
                         <div> </div>
                     </div>
                     <div id="power-section">
@@ -90,29 +93,28 @@
                         <div class="key" data-value="8">8</div>
                         <div class="key" data-value="9">9</div>
                         <div class="key" id="backspace-btn" data-value="Backspace">&larr;</div>
-                        <div class="key" data-value=" &rarr; ">&rarr;</div>
+                        <div class="key" data-value=" → "> → </div>
                         <div class="key rom" data-value="X">X</div>
                         <div class="key rom" data-value="C">C</div>
                         <div class="key" data-value="4">4</div>
                         <div class="key" data-value="5">5</div>
                         <div class="key" data-value="6">6</div>
                         <div class="key" data-value=" + ">+</div>
-                        <div class="key" data-value=" &ndash; ">-</div>
+                        <div class="key" data-value=" – ">-</div>
                         <div class="key rom" data-value="D">D</div>
                         <div class="key rom" data-value="L">L</div>
                         <div class="key" data-value="1">1</div>
                         <div class="key" data-value="2">2</div>
                         <div class="key" data-value="3">3</div>
                         <div class="key" data-value=" × ">×</div>
-                        <div class="key" data-value=" / ">/</div>
+                        <div class="key" data-value="/">/</div>
                         <div class="key rom" data-value="M">M</div>
                         <div class="key rom" data-value="<sub>ROM</sub>">rom</div>
                         <div class="key" data-value=".">.</div>
                         <div class="key" data-value="0">0</div>
-                        <div class="key" data-value="-">&plusmn;</div>
-                        <div class="key" data-value="e">e</div>
                         <div class="key" data-value="N">N</div>
-
+                        <div class="key"  id="memory-btn">MEM</div>
+                        <div class="key"  id="clear-memory-btn">CM</div>
                     </div>
                     <div id="date-time-calc-btns">
                         <div class="key" data-value="µs">µs</div>
@@ -129,24 +131,24 @@
                         <div class="key" data-value="now">now</div>
                     </div>
                     <div id="energy-area-calc-btns">
-                        <div class="key" data-value="&deg;K">&deg;K</div>
-                        <div class="key" data-value="&deg;C">&deg;C</div>
-                        <div class="key" data-value="&deg;F">&deg;F</div>
-                        <div class="key" data-value="j">j</div>
-                        <div class="key" data-value="kj">kj</div>
+                        <div class="key" data-value="K">K</div>
+                        <div class="key" data-value="°C">°C</div>
+                        <div class="key" data-value="°F">°F</div>
+                        <div class="key" data-value="J">J</div>
+                        <div class="key" data-value="kJ">kJ</div>
                         <div class="key" data-value="gcal">gcal</div>
                         <div class="key" data-value="kcal">kcal</div>
                         <div class="key" data-value="Wh">Wh</div>
                         <div class="key" data-value="KWh">KWh</div>
                         <div class="key" data-value="eV">eV</div>
-                        <div class="key" data-value="ft.lb">ft.lb</div>
-                        <div class="key" data-value="Acre">Acre</div>
-                        <div class="key" data-value="Ha">Ha</div>
+                        <div class="key" data-value="ft-lb">ft-lb</div>
+                        <div class="key" data-value="ac">acre</div>
+                        <div class="key" data-value="ha">ha</div>
                         <div class="key" data-value="sqkm">sqkm</div>                   
-                        <div class="key" data-value="sqIn">sqIn</div>
+                        <div class="key" data-value="sqin">sqIn</div>
                         <div class="key" data-value="sqft">sqft</div>
                         <div class="key" data-value="sqm">sqm</div>                   
-                        <div class="key" data-value="sqmile">sqmile</div>                  
+                        <div class="key" data-value="sqmi">sqmi</div>                  
                     </div>
                     <div id="temp-mass-btns">
                         <div class="key" data-value="<sub style='font-size: 0.6em'>2</sub>">BIN</div>
@@ -164,7 +166,7 @@
                         <div class="key" data-value="kg">kg</div>
                         <div class="key" data-value="oz">oz</div>
                         <div class="key" data-value="lb">lb</div>
-                        <div class="key" data-value="ton">ton</div>
+                        <div class="key" data-value="tonne">tonne</div>
                         <div class="key" data-value="st">st</div>
                         <div class="key" data-value="carat">carat</div>                     
                     </div>
@@ -179,7 +181,7 @@
                         <div class="key" data-value="in">in</div>
                         <div class="key" data-value="ft">ft</div>
                         <div class="key" data-value="mile">mile</div>
-                        <div class="key" data-value="yrd">yrd</div>
+                        <div class="key" data-value="yd">yd</div>
                         <div class="key" id="equals-btn" data-value="equal">&equals;</div>
                     </div>
                 </section>
@@ -190,6 +192,17 @@
             </section>
         </div>
     </main>
+      <script type="module">
+      window.addEventListener('load', () => {
+      //register service worker
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register('./service-worker.js')
+          .then((reg) => {
+            console.log('Service worker registered.', reg, reg.scope);
+          });
+      }
+    })
+    </script>
     <script  defer type="module" src="./js/calc.js"></script>
     <script defer src="./js/resource.js" type="module"></script>
 </body>
