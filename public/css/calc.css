@@ -197,7 +197,7 @@ bottom: -0.2em;
   display: flex;
   position: relative;
   border-radius: 0.6em;
-  border: 1px solid #b65151;
+  border: 1px solid #dc8d8d;
   width: calc((89%) / 3);
   flex-wrap: wrap;
   font-size: 0.9em;
@@ -210,7 +210,7 @@ bottom: -0.2em;
 }
 
 #mode-label {
-  color: #b65151;
+  color: #dc8d8d;
   position: absolute;
   font-size: 0.6em;
   top: -0.8em;
@@ -234,7 +234,7 @@ bottom: -0.2em;
 color: #fff !important;
 }
 #clear-memory-btn{
-  background-color: #ff2f00 !important;
+  background-color: #c70000 !important;
 }
 #memory-btn{
   background-color: #2600e3 !important;

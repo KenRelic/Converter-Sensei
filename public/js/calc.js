@@ -50,8 +50,6 @@ let isMemoryViewed = false;
 
 showMemoryBtn.addEventListener('click', showHistory);
 clearMemoryBtn.addEventListener('click', clearHistory);
-historyScrollDownBtn.addEventListener('click', scrollHstory)
-historyScrollUpBtn.addEventListener('click', scrollHstory)
 // ------------------------------------------------------------------------------------------------------
 
 

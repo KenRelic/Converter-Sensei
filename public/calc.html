@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" sizes="96x96" href="./icons/favicon-96x96.png">
   <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16x16.png">
   <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
-  <link rel="manifest" href="./manifest.json">
+  <link rel="manifest" href="./manifest-real-calc.json">
   <meta name="msapplication-TileColor" content="#000031">
   <meta name="msapplication-TileImage" content="./icons/ms-icon-144x144.png">
   <link rel="stylesheet" href="./all.css">
@@ -192,6 +192,17 @@
             </section>
         </div>
     </main>
+      <script type="module">
+      window.addEventListener('load', () => {
+      //register service worker
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register('./service-worker.js')
+          .then((reg) => {
+            console.log('Service worker registered.', reg, reg.scope);
+          });
+      }
+    })
+    </script>
     <script  defer type="module" src="./js/calc.js"></script>
     <script defer src="./js/resource.js" type="module"></script>
 </body>
