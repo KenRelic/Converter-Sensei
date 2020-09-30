@@ -1,47 +1,105 @@
 import { units, sIUnits, roman_num_data, roman_num_data_2 } from '../data.js'
 
-//NUMBER METHOD TO CHECK NEGATIVE NUMBERS//
-Number.prototype.isNegative = e => (/^\-/).test(e.toString());
-let result;
-
+// POWER & CONTROL-----------------------------------------------------------------------------
+const power_btn = document.getElementById("power-btn");
 let direction_pad = document.getElementById("direction-pad");
 let calc_direction_pad = direction_pad;
 let inner_pad = document.querySelector("#direction-pad > div");
 direction_pad = Array.from(direction_pad.children);
-let date_conv_interval = undefined;
+
+let keys = document.querySelectorAll(".key");
+keys = Array.from(keys);
+//BUTTONS ON CLICK ANIMATION//
+keys.forEach(key => button_effect(key));
 
 let cursorPosition = 0;
 let cursorPositionIndex = 0;
 let blinkingCursor = document.getElementById('blinking-cursor');
-
 let switchCalcBtn = document.getElementById('switch-calc');
+
 switchCalcBtn.addEventListener('click', () => {
   window.open('./index.html', '_self');
-})
-
-direction_pad.forEach(direction => {
-  direction.addEventListener("click", () => {
-    // this code is responisble for the display of the shadow from each direction
-    //button pressed on the direction keypad.//
-    switch (direction.id) {
-      case "up-btn":
-        directionPadAnimation("0 3px 0 1px #2f2f2f", "inset 0 2px 0 2px #1f1f1f, 0 0 20px 1px black");
-      case "right-btn":
-        directionPadAnimation("-3px 0 0 1px #2f2f2f", "inset -2px 0 0 2px #1f1f1f, 0 0 20px 1px black");
-        moveCursor().right();;
-        break;
-      case "down-btn":
-        directionPadAnimation("0 -3px 0 1px #2f2f2f", "inset 0 -2px 0 2px #1f1f1f, 0 0 20px 1px black");
-        break;
-      case "left-btn":
-        directionPadAnimation("3px 0 0 1px #2f2f2f", "inset 2px 0 0 2px #1f1f1f, 0 0 20px 1px black");
-        moveCursor().left();;
-        break;
-      default:
-        break;
-    }
-  });
 });
+
+// SCREEN --------------------------------------------------------------------------------------------------
+let input_area = document.getElementById("input-area");
+let result_area = document.querySelector("#result>p");
+let calc_screen = document.getElementById("screen");
+let top_screen_area = document.getElementById("top-screen");
+let cursor = document.getElementById("blinking-cursor");
+let conversion_mode = document.getElementById("conversion-mode");
+let calc_mode = document.getElementById("calc-mode");
+
+
+//NUMBER METHOD TO CHECK NEGATIVE NUMBERS//
+Number.prototype.isNegative = e => (/^\-/).test(e.toString());
+
+// CALCULATION PROCESS ----------------------------------------------------------------------------------------
+let equal_btn = document.getElementById("equals-btn");
+let result;
+let date_conv_interval = undefined;
+
+// HISTORY ------------------------------------------------------------------------------------
+let savedConversions = JSON.parse(localStorage.getItem('savedConv')) || undefined;
+let count = savedConversions ? savedConversions.length - 1 : 0;
+const showMemoryBtn = document.getElementById('memory-btn');
+const clearMemoryBtn = document.getElementById('clear-memory-btn');
+const historyScrollDownBtn = document.getElementById('scroll-down-btn');
+const historyScrollUpBtn = document.getElementById('scroll-up-btn');
+let isMemoryViewed = false;
+
+showMemoryBtn.addEventListener('click', showHistory);
+clearMemoryBtn.addEventListener('click', clearHistory);
+historyScrollDownBtn.addEventListener('click', scrollHstory)
+historyScrollUpBtn.addEventListener('click', scrollHstory)
+// ------------------------------------------------------------------------------------------------------
+
+
+// POWER & CONTROL CODES
+//set the power state to OFF on load.
+window.onload = function () {
+  batteryStatus();
+  let localStorage = window.localStorage;
+  localStorage.setItem("power_state", "OFF");
+
+  //set screen default values to off.
+  input_area.innerHTML = "";
+  result_area.style.visibility = "hidden";
+  calc_screen.style.backgroundColor = "#222f38";
+  calc_screen.style.boxShadow =
+    "inset 0 2px 10px 1px #111";
+  top_screen_area.style.visibility = "hidden";
+  cursor.style.visibility = "hidden";
+
+  //listen for keypress and pass it into the input area//
+  key_press_active();
+  mode_switch();
+};
+
+direction_pad.forEach(direction => direction.addEventListener('click', directionPadeffect));
+function directionPadeffect() {
+  // this code is responisble for the display of the shadow from each direction
+  //button pressed on the direction keypad.//
+  switch (this.id) {
+    case "up-btn":
+      directionPadAnimation("0 3px 0 1px #2f2f2f", "inset 0 2px 0 2px #1f1f1f, 0 0 20px 1px black");
+      scrollHstory();
+    case "right-btn":
+      directionPadAnimation("-3px 0 0 1px #2f2f2f", "inset -2px 0 0 2px #1f1f1f, 0 0 20px 1px black");
+      // moveBlinkingCursor("right");
+      break;
+    case "down-btn":
+      directionPadAnimation("0 -3px 0 1px #2f2f2f", "inset 0 -2px 0 2px #1f1f1f, 0 0 20px 1px black");
+      scrollHstory("down-btn");
+      break;
+    case "left-btn":
+      directionPadAnimation("3px 0 0 1px #2f2f2f", "inset 2px 0 0 2px #1f1f1f, 0 0 20px 1px black");
+      // moveBlinkingCursor("left");
+      break;
+    default:
+      break;
+  }
+};
 
 function directionPadAnimation(outerBoxShadow, innerBoxShadow) {
   calc_direction_pad.style.boxShadow = outerBoxShadow;
@@ -51,12 +109,6 @@ function directionPadAnimation(outerBoxShadow, innerBoxShadow) {
     inner_pad.style.boxShadow = "0 0 20px 1px black";
   }, 300);
 };
-
-//BUTTONS ON CLICK ANIMATION//
-let keys = document.querySelectorAll(".key");
-keys = Array.from(keys);
-
-keys.forEach(key => button_effect(key));
 
 function button_effect(e) {
   e.addEventListener("click", () => {
@@ -70,84 +122,36 @@ function button_effect(e) {
   });
 };
 
-//POWER BUTTON CODE//
-//turns on if on and turns off is on
-//clear everything on the screen and reset the mode to NUM
-//change the screen color to dark grey.
-
-//set the power state to OFF on load.
-window.onload = function () {
-  batteryStatus();
-  let localStorage = window.localStorage;
-  localStorage.setItem("power_state", "OFF");
-
-  //set screen default values to off.
-  screenVariables().get_input_area().innerHTML = "";
-  screenVariables().get_result_area().style.visibility = "hidden";
-  screenVariables().get_calc_screen().style.backgroundColor = "#222f38";
-  screenVariables().get_calc_screen().style.boxShadow =
-    "inset 0 2px 10px 1px #111";
-  screenVariables().get_top_screen().style.visibility = "hidden";
-  screenVariables().get_cursor().style.visibility = "hidden";
-
-  //listen for keypress and pass it into the input area//
-  key_press_active();
-  mode_switch();
-};
-
-//add a power toggle event to the power btn
-const power_btn = document.getElementById("power-btn");
-
 power_btn.addEventListener("click", () => {
   localStorage.power_state = localStorage.power_state == "OFF" ? "ON" : "OFF";
   let state_data = { ON: ["visible", "aqua"], OFF: ["hidden", "#333"] };
 
-  screenVariables().get_input_area().innerHTML = "";
-  screenVariables().get_result_area().style.visibility = "visible";
-  screenVariables().get_result_area().innerHTML = 0;
-  screenVariables().get_calc_screen().style.backgroundColor =
+  input_area.innerHTML = "";
+  result_area.style.visibility = "visible";
+  result_area.innerHTML = 0;
+  calc_screen.style.backgroundColor =
     state_data[localStorage.power_state][1];
-  screenVariables().get_top_screen().style.visibility =
+  top_screen_area.style.visibility =
     state_data[localStorage.power_state][0];
-  screenVariables().get_cursor().style.visibility =
+  cursor.style.visibility =
     state_data[localStorage.power_state][0];
-  screenVariables().get_result_area().style.visibility =
+  result_area.style.visibility =
     state_data[localStorage.power_state][0];
 
   resetCusor();
+  closeMemoryView()
   if (localStorage.power_state == 'OFF') {
-    screenVariables().get_conv_mode().style.visibility = 'hidden';
-    screenVariables().get_calc_mode().innerHTML = 'date';
+    conversion_mode.style.visibility = 'hidden';
+    calc_mode.innerHTML = 'date';
   }
   window.clearInterval(date_conv_interval);
 });
 
-//SCREEN VARIABLES //
-function screenVariables() {
-  let input_area = document.getElementById("input-area");
-  let result_area = document.querySelector("#result>p");
-  let calc_screen = document.getElementById("screen");
-  let top_screen_area = document.getElementById("top-screen");
-  let cursor = document.getElementById("blinking-cursor");
-  let conversion_mode = document.getElementById("conversion-mode");
-  let calc_mode = document.getElementById("calc-mode");
-
-  return {
-    get_input_area: () => input_area,
-    get_result_area: () => result_area,
-    get_calc_screen: () => calc_screen,
-    get_top_screen: () => top_screen_area,
-    get_cursor: () => cursor,
-    get_conv_mode: () => conversion_mode,
-    get_calc_mode: () => calc_mode
-  };
-}
-
 function moveCursor() {
-  let displayed_text = screenVariables().get_input_area().innerHTML;
+  let displayed_text = input_area.innerHTML;
   return {
     left: () => {
-      // let movLeftOverSubSuperscript = () => (screenVariables().get_input_area()).removeChild((screenVariables().get_input_area()).lastElementChild);
+      // let movLeftOverSubSuperscript = () => (input_area).removeChild((input_area).lastElementChild);
       // let moveLeftOverUnits = (i) => displayed_text.slice(0, displayed_text.length - units[i].length);
       // let moveLeftOnce = () => displayed_text.slice(0, displayed_text.length - 1);
       // lookAhead(moveLeftOverUnits, movLeftOverSubSuperscript, moveLeftOnce, units, displayed_text)
@@ -155,26 +159,19 @@ function moveCursor() {
     },
     right: () => {
       moveBlinkingCursor('right', displayed_text, sIUnits)
-    },
-    down: () => {
-
-    },
-    up: () => {
-
     }
   }
 }
 
-function moveBlinkingCursor(direction, displayed_text, sIUnits) {
+function moveBlinkingCursor(direction) {
   // issue is from the cursorpositionindex, it doesnt subtract on the first left click it 
-  let displayedInnerText = screenVariables().get_input_area().innerText;
+  let displayedInnerText = input_area.innerText;
   cursorPositionIndex = cursorPositionIndex == 0 && cursorPosition == ""
     ? displayedInnerText.length : cursorPositionIndex;
   let isLastOrFirst;
   switch (direction) {
     case 'left':
       // debugger
-
       isLastOrFirst = blinkingCursor.style.right === "" && cursorPositionIndex === 0 ? false
         : cursorPositionIndex === displayedInnerText.length
           ? true : cursorPosition === 0 && cursorPositionIndex !== 0 ? true : cursorPositionIndex !== 0 ? true : false;
@@ -215,7 +212,7 @@ function moveBlinkingCursor(direction, displayed_text, sIUnits) {
           break;
       }
       break;
-    default:
+    case "right":
       //for right direction
       // debugger
       isLastOrFirst = cursorPositionIndex !== displayedInnerText.length
@@ -259,6 +256,8 @@ function moveBlinkingCursor(direction, displayed_text, sIUnits) {
           //do nothing
           break;
       }
+      break;
+    default:
       break;
   }
 }
@@ -324,12 +323,15 @@ function key_press_active() {
     let el = event.target;
     if (localStorage.power_state === "ON") {
       if (el.dataset.value) {
-        if (el.dataset.value === "Backspace") erase_input();
-        else if (el.dataset.value === "equal") {
+        if (el.dataset.value === "Backspace") {
+          erase_input();
+          closeMemoryView();
+        } else if (el.dataset.value === "equal") {
+          closeMemoryView();
         } else {
-          screenVariables().get_input_area().innerHTML += el.dataset.value;
+          input_area.innerHTML += el.dataset.value;
           input_handler().set_input(el.dataset.value);
-          cursorPositionIndex = screenVariables().get_input_area().innerText.length;
+          cursorPositionIndex = input_area.innerText.length;
         };
       };
     };
@@ -379,7 +381,7 @@ function input_handler() {
 // ON click of the button, the last innerHTML is removed and put back
 
 function erase_input() {
-  let displayed_text = screenVariables().get_input_area().innerHTML;
+  let displayed_text = input_area.innerHTML;
   // debugger
   let eraseSubSuperScripts = () => {
     // if ends with >
@@ -388,7 +390,7 @@ function erase_input() {
     cursorPositionIndex -= n;
     cursorPosition = cursorPosition ? (+(cursorPosition.replace('px', '')) - (n * 8.8)) + 'px' : '';
     cursorPositionIndex -= n;
-    return (screenVariables().get_input_area()).removeChild((screenVariables().get_input_area()).lastElementChild);
+    return (input_area).removeChild((input_area).lastElementChild);
   };
   let eraseUnitsAbove2 = (i) => {
     cursorPositionIndex -= sIUnits[i].length;
@@ -411,15 +413,15 @@ function erase_input() {
 
 function lookAhead(action1, action2, action3, sIUnits, displayed_text) {
   let i;
-  if (screenVariables().get_input_area().innerHTML.endsWith('>')) {
+  if (input_area.innerHTML.endsWith('>')) {
     return action2();
   };
   for (i = 0; i < sIUnits.length; i += 1) {
     if (displayed_text.endsWith(sIUnits[i])) {
-      return (screenVariables().get_input_area().innerHTML = action1(i));
+      return (input_area.innerHTML = action1(i));
     };
   };
-  return (screenVariables().get_input_area().innerHTML = action3());
+  return (input_area.innerHTML = action3());
 };
 
 //CLEAR EVERYTHING BUTTON CODE
@@ -436,9 +438,10 @@ window.onkeydown = function (event) {
 
 }
 function clear_all() {
-  screenVariables().get_input_area().innerHTML = "";
-  screenVariables().get_result_area().innerHTML = "0";
+  input_area.innerHTML = "";
+  result_area.innerHTML = "0";
   resetCusor();
+  closeMemoryView();
 }
 
 //Display calculation mode//
@@ -452,31 +455,31 @@ function mode_switch() {
     let el = event.target;
     if (localStorage.power_state == "ON") {
       if (el.dataset.value) {
-        screenVariables().get_calc_mode().innerHTML = el.dataset.value;
-        screenVariables().get_calc_mode().style.backgroundColor = el.dataset.value == 'date' ? '#ffd900'
+        calc_mode.innerHTML = el.dataset.value;
+        calc_mode.style.backgroundColor = el.dataset.value == 'date' ? '#ffd900'
           : el.dataset.value == 'base' ? '#ee3fce' : el.dataset.value == 'rom' ? '#009dff'
             : el.dataset.value == 'conv' ? '#00ff91' : '';
         if (el.dataset.value == "conv") {
-          screenVariables().get_conv_mode().innerHTML = conv_units[count];
-          screenVariables().get_conv_mode().style.visibility = "visible";
+          conversion_mode.innerHTML = conv_units[count];
+          conversion_mode.style.visibility = "visible";
           count === conv_units.length - 1 ? (count = 0) : (count += 1);
         } else {
           count = 0;
-          screenVariables().get_conv_mode().style.visibility = "hidden";
+          conversion_mode.style.visibility = "hidden";
         }
       }
     } else {
-      screenVariables().get_conv_mode().style.visibility = 'hidden';
+      conversion_mode.style.visibility = 'hidden';
     }
   }
 }
 
 //CALCULATE PROBLEM CODE
-let equal_btn = document.getElementById("equals-btn");
-let arranged_data;
+// let arranged_data;
 function roman_numerals_conversion() {
-  let input = (screenVariables().get_input_area().innerText).replace(/\s/g, '');
-  let output = screenVariables().get_result_area();
+  let userInput = (input_area.innerText).replace(/\s/g, '');
+  let input = (input_area.innerText).replace(/\s/g, '');
+  let output = result_area;
   let result = '';
   let digits = Object.keys(roman_num_data);
   let roman_numerals = Object.values(roman_num_data);
@@ -492,7 +495,7 @@ function roman_numerals_conversion() {
             value -= digits[i];
           }
         }
-        saveToLocalStorage(input, result)
+        saveToLocalStorage(userInput, result)
         return output.innerHTML = result;
       } else {
         return output.innerHTML = 'Max number is 3999'
@@ -517,6 +520,7 @@ function roman_numerals_conversion() {
         for (let i = 0; i < input.length; i += 1) {
           // debugger
           if (i > input.length) {
+            saveToLocalStorage(userInput, result)
             return output.innerHTML = result;
           }
 
@@ -592,7 +596,7 @@ function roman_numerals_conversion() {
             return output.innerHTML = 'syntaxError'
           }
         }
-        saveToLocalStorage(input, result);
+        saveToLocalStorage(userInput, result);
         return output.innerHTML = result;
       } catch (error) {
         return output.innerHTML = 'syntaxError'
@@ -612,10 +616,10 @@ function roman_numerals_conversion() {
 
 function date_conversion() {
   try {
-    let input = (screenVariables().get_input_area().innerHTML).replace(/\s/g, '');
-    let output = screenVariables().get_result_area();
+    let input = (input_area.innerHTML).replace(/\s/g, '');
+    let output = result_area;
     let result;
-    let conversion_depth = (screenVariables().get_input_area().innerHTML).match(/→/g).length;
+    let conversion_depth = (input_area.innerHTML).match(/→/g).length;
     let date_data = input.match(/[0-9]+/g);
     let conv_sign_idx = input.indexOf(input.match(/\→/g)[0]);
     let output_format = 'yr';
@@ -709,39 +713,31 @@ function date_conversion() {
       } else {
         output.innerHTML = 'From date comes first';
         return window.clearInterval(date_conv_interval);
-      }  
+      }
     }
   } catch (error) {
     console.log(error.message);
     window.clearInterval(date_conv_interval);
-    return (screenVariables().get_result_area().innerHTML == "" ? "" :
-      screenVariables().get_result_area().innerHTML = 'syntaxError');
-  }
-}
-
-String.prototype.reverseValue = () => {
-  let objects = {
-  }
-
-  return {
-    get_similar: (input) => console.log(objects[input])
+    return (result_area.innerHTML == "" ? "" :
+      result_area.innerHTML = 'syntaxError');
   }
 }
 
 function unit_conversion() {
   try {
-    let input = (screenVariables().get_input_area().innerHTML).trim();
-    let inValue = +(input.match(/[\d]+[\.?][\d]+/gi)[0]);
-    let outValue = +(input.match(/[\d]+[\.?][\d]+/gi)[1]);
+    let input = (input_area.innerHTML).trim();
+    console.log(input)
+    let inValue = +(input.match(/[\d]+([\.?][\d]+)?/gi)[0]);
+    let outValue = +(input.match(/[\d]+([\.?][\d]+)?/gi)[1]);
     let inUnit = input.match(/[A-Za-zµ°]+/gi)[0];
     let outUnit = input.match(/[A-Za-zµ°]+/gi)[1]
 
     let value1_inUnit;
     let value2_outUnit;
 
-    if (inUnit == "°C" || inUnit == "°F" || inUnit == "°R" || inUnit == "K" || inUnit == "°De") {
-      if (outUnit == "°C" || outUnit == "°F" || outUnit == "°R" || outUnit == "K" || outUnit == "°De") {
-        let units = {
+    if (inUnit === "°C" || inUnit === "°F" || inUnit === "°R" || inUnit === "K" || inUnit === "°De") {
+      if (outUnit === "°C" || outUnit === "°F" || outUnit === "°R" || outUnit === "K" || outUnit === "°De") {
+        let tempUnits = {
           in: {
             "°F": {
               "°F": inValue,
@@ -777,14 +773,14 @@ function unit_conversion() {
             },
           }
 
-        }
-
-        value1_inUnit = units.in[inUnit][outUnit];
-        value2_outUnit = units.out[outUnit][inUnit];
+        };
+        value1_inUnit = tempUnits.in[inUnit][outUnit];
+        value2_outUnit = tempUnits.out[outUnit][inUnit];
       }
     } else {
       value1_inUnit = inValue * units[inUnit][outUnit];
       value2_outUnit = outValue * units[outUnit][inUnit];
+      // console.log(value) //here
     }
 
     let output1
@@ -819,16 +815,17 @@ function unit_conversion() {
     if (input.match(/[–|+|×|\/|→]/gi).join() === '→') {
       let returnValue = output1 + outUnit;
       saveToLocalStorage(input, returnValue);
-      return screenVariables().get_result_area().innerHTML = returnValue;
+      return result_area.innerHTML = returnValue;
     }
     output1 = output1.toString().length > 5 ? output1.toExponential(2) : output1.toLocaleString();
     output2 = output2.toString().length > 5 ? output2.toExponential(2) : output2.toLocaleString();
     let returnValue = inUnit == outUnit ? output1 + outUnit : output1 + outUnit + ' or ' + output2 + inUnit;
     saveToLocalStorage(input, returnValue);
-    return screenVariables().get_result_area().innerHTML = returnValue;
+    return result_area.innerHTML = returnValue;
   } catch (error) {
-    screenVariables().get_result_area().innerHTML == "" ? "" :
-      screenVariables().get_result_area().innerHTML = 'syntaxError';
+    console.log(error)
+    result_area.innerHTML == "" ? "" :
+      result_area.innerHTML = 'syntaxError';
     return {
       'error name': error.name,
       'error message': 'Check your inputs'
@@ -839,7 +836,7 @@ function unit_conversion() {
 equal_btn.addEventListener('click', select_calculation);
 
 function base_conversion() {
-  let input = screenVariables().get_input_area();
+  let input = input_area;
   let input_nodes = Array.from(input.childNodes);
   let output = '';
   let number_of_elem = input_nodes.length;
@@ -895,12 +892,12 @@ function base_conversion() {
     result = result.toString(base_of_result || 10);
     base_of_result === "16" ? result = result.toUpperCase() : result;
     result = `${result}<sub style='color:rebeccapurple'>${base_of_result}</sub>`;
-    screenVariables().get_result_area().innerHTML = result;
+    result_area.innerHTML = result;
     return saveToLocalStorage(input.innerHTML, result);
   } catch (error) {
     console.log(error)
-    return (screenVariables().get_result_area().innerHTML == "" ? "" :
-      screenVariables().get_result_area().innerHTML = 'syntaxError');
+    return (result_area.innerHTML == "" ? "" :
+      result_area.innerHTML = 'syntaxError');
   }
 }
 
@@ -959,7 +956,7 @@ function calculate(newArr) {
 
 function romToNum() {
   try {
-    let input = (screenVariables().get_input_area().innerHTML).trim();
+    let input = (input_area.innerHTML).trim();
     let romanInput = input.match(/[0-9]+/gi)[0];
     romanInput = romanInput.split('');
 
@@ -969,7 +966,7 @@ function romToNum() {
 
     for (let i = 0; i < romanInput.length; i += 1) {
       if (i > romanInput.length) {
-        return screenVariables().get_result_area().innerHTML = result
+        return result_area.innerHTML = result
       }
 
       if (romArray.find(n => n == romanInput[i])) {
@@ -982,20 +979,20 @@ function romToNum() {
           result += currentRomNum;
         }
       } else {
-        return screenVariables().get_result_area().innerHTML = 'syntaxError';
+        return result_area.innerHTML = 'syntaxError';
       }
     }
 
   } catch (error) {
-    return screenVariables().get_result_area().innerHTML = 'syntaxError';
+    return result_area.innerHTML = 'syntaxError';
   }
 }
 
 //THIS CODE SWITCHES THE FORMULAR THAT CARRIES OU THE CALCUATION
 function select_calculation() {
-  let calc_mode = screenVariables().get_calc_mode().innerHTML;
-  // let conv_mode = screenVariables().get_conv_mode().innerHTML;
-  switch (calc_mode) {
+  let mode = calc_mode.innerHTML;
+  // let conv_mode = conversion_mode.innerHTML;
+  switch (mode) {
     case 'base':
       base_conversion();
       break;
@@ -1012,30 +1009,78 @@ function select_calculation() {
   }
 }
 
-const showMemoryBtn = document.getElementById('memory-btn');
-const clearMemoryBtn = document.getElementById('clear-memory-btn');
-const historyScrollDownBtn = document.getElementById('scroll-down-btn');
-const historyScrollUpBtn = document.getElementById('scroll-up-btn');
-
-showMemoryBtn.addEventListener('click', showHistory);
-clearMemoryBtn.addEventListener('click', clearHistory);
 
 function showHistory() {
-  if (localStorage.hasOwnProperty('savedConv')) {
-    let savedConv = JSON.parse(localStorage.getItem('savedConv'));
-
-    if (savedConv.length > 0) {
+  if (localStorage.hasOwnProperty('savedConv') && localStorage.getItem('power_state') == 'ON') {
+    savedConversions = JSON.parse(localStorage.getItem('savedConv'));
+    count = savedConversions.length - 1;
+    isMemoryViewed = true;
+    if (count > 0) {
+      console.log(count, savedConversions, savedConversions.length - 1)
       historyScrollDownBtn.style.display = 'block';
+      historyScrollUpBtn.style.display = 'none';
+    } else {
+      hideScrollButtons();
     }
+    input_area.innerHTML = savedConversions[count][0];
+    result_area.innerHTML = savedConversions[count][1];
   }
 }
 
 function clearHistory() {
-  if (localStorage.hasOwnProperty('savedConv')) {
-    localStorage.removeItem('savedConv');
+  if (localStorage.hasOwnProperty('savedConv') && localStorage.getItem('power_state') == 'ON') {
+    // since no way of verifyg users history clear decision//
+    //check if the user is currently viewing the history when the clear btn was pressed
+    if (isMemoryViewed) {
+      localStorage.removeItem('savedConv');
+      input_area.innerHTML = '';
+      result_area.innerHTML = 0;
+      closeMemoryView();
+    }
   }
 }
 
-function displayHistoryEntry() {
+function scrollHstory(id) {
+  if (savedConversions && isMemoryViewed) {
+    if (id === "down-btn") {
+      if (count > 0) {
+        count -= 1;
+        input_area.innerHTML = savedConversions[count][0];
+        result_area.innerHTML = savedConversions[count][1];
+      }
+    } else {
+      if (count < savedConversions.length - 1) {
+        count += 1;
+        input_area.innerHTML = savedConversions[count][0];
+        result_area.innerHTML = savedConversions[count][1];
+      }
+    }
+    showOrHideScrollButtons(historyScrollUpBtn, historyScrollDownBtn);
+  }
+}
 
+function showOrHideScrollButtons(upBtn, downBtn) {
+  if (count > 0 && count < savedConversions.length - 1) {
+    upBtn.style.display = 'block';
+    downBtn.style.display = 'block';
+  } else if (count > 0 && count === savedConversions.length - 1) {
+    upBtn.style.display = 'none';
+    downBtn.style.display = 'block';
+  } else if (count === 0 && count < savedConversions.length - 1) {
+    upBtn.style.display = 'block';
+    downBtn.style.display = 'none';
+  } else {
+    upBtn.style.display = 'none';
+    downBtn.style.display = 'none';
+  }
+}
+
+function hideScrollButtons() {
+  historyScrollUpBtn.style.display = 'none';
+  historyScrollDownBtn.style.display = 'none';
+}
+
+function closeMemoryView() {
+  hideScrollButtons();
+  isMemoryViewed = false;
 }
