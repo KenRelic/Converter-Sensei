@@ -348,15 +348,41 @@ function createConvTypeUnits(convType) {
           baseEl.attributes['data-to-name'].value = el.textContent;
         // el.nextElementSibling ;//add pattern others to the input el
         // numberBaseInput.removeEventListener('keypress', preventInputDefault);
-        numberBaseInput.addEventListener('keypress', preventInputDefault);
+        // numberBaseInput.addEventListener('keypress', preventInputDefault);
 
         switch (el.textContent) {
+          case 'binary': //numberBaseInput.removeEventListener('keypress', allowHexaDecimalNumbers);
+            // numberBaseInput.removeEventListener('keypress', allowOctalNumbers);
+            numberBaseInput.addEventListener('keypress', allowBinaryNumbers);
+            console.log(el.textContent)
+            break;
+            case 'octal':// numberBaseInput.removeEventListener('keypress',allowHexaDecimalNumbers);
+            //numberBaseInput.removeEventListener('keypress',allowBinaryNumbers);
+            // numberBaseInput.addEventListener('keypress',allowOctalNumbers);
+            console.log(el.textContent)
+            break;
+            case 'hexadecimal': //numberBaseInput.removeEventListener('keypress',allowBinaryNumbers);
+           // numberBaseInput.removeEventListener('keypress',allowOctalNumbers);
+            // numberBaseInput.addEventListener('keypress',allowHexaDecimalNumbers);
+            console.log(el.textContent)
+            break;
+            default: //numberBaseInput.removeEventListener('keypress',allowHexaDecimalNumbers);
+            // numberBaseInput.removeEventListener('keypress',allowBinaryNumbers);
+            // numberBaseInput.removeEventListener('keypress',allowOctalNumbers);
+            console.log(el.textContent)
+            
+            break;
+        }
+        function allowBinaryNumbers(e) {
+          if (e.which !== 49 || e.which !== 58) e.preventDefault()
+        }
+        function allowOctalNumbers(e) {
+          if (e.which > 49 && e.which < 58) console.log(e.which)
+        }
+        function allowHexaDecimalNumbers(e) {
+          if (e.which > 49 && e.which < 58) console.log(e.which)
+        }
 
-          case 'binary':
-        }
-        function preventInputDefault(e) {
-          if (e.which > 49 && e.which < 58) e.preventDefault()
-        }
       }
 
       return closeUnitSelectionWrapper();
