@@ -32,6 +32,7 @@ let unitToSelect = '';
 let selectedUnitType = '';
 let currentRomConv = 'num2Rom';
 let currentConverter = 'base-conv';
+let currentKeypressEvent;
 
 let numberBaseInput = document.getElementById('numberBaseInput');
 let numberBaseOutputArea = document.getElementById('numberBaseOutputArea');
@@ -261,19 +262,17 @@ function populateDateConversionUI(convType, displayedText, className) {
 }
 
 function populateUIWithConvType(convType, div) {
-  let convTypeName = document.querySelector(`#${div} .unit-intro-note header`) ||
-    '';
+  let convTypeName = document.querySelector(`#${div} .unit-intro-note header`) || '';
   let convDefinition = document.querySelector(`#${div} .unit-note`) || '';
   let convDefaultValue1 = document.querySelector(`#${div} .from-unit`).firstChild;
   let convDefaultValue2 = document.querySelector(`#${div} .to-unit`).firstChild;
-  let convDefaultValue1SIUnit = document.querySelectorAll(`#${div} .unit-icon`)[0] || '';  //
-  let convDefaultValue2SIUnit = document.querySelectorAll(`#${div} .unit-icon`)[1] || '';   //
-  let el = document.querySelector(`[data-conv-type="${convType}"]`) ||
-    '';
+  let convDefaultValue1SIUnit = document.querySelectorAll(`#${div} .unit-icon`)[0] || '';
+  let convDefaultValue2SIUnit = document.querySelectorAll(`#${div} .unit-icon`)[1] || '';
+  let el = document.querySelector(`[data-conv-type="${convType}"]`) || '';
 
   selectedUnitType = convType;
   convTypeName ? convTypeName.textContent = convType : '';
-  convDefinition ? div == 'base-conv' ? convDefinition.textContent = baseData[convType].desc :
+  convDefinition ? div === 'base-conv' ? convDefinition.textContent = baseData[convType].desc :
     convDefinition.textContent = convData[convType].desc : '';
 
   if (div == 'base-conv') {
@@ -296,7 +295,7 @@ function populateUIWithConvType(convType, div) {
   if (el) {
     let parentEl = el.parentElement;
     for (let i = 0; i < parentEl.childElementCount; i += 1) {
-      if (parentEl.children[i].getAttribute('data-conv-type') == convType) {
+      if (parentEl.children[i].getAttribute('data-conv-type') === convType) {
         parentEl.children[i].classList.add('opacity');
         parentEl.children[i].style = `pointer-events:default;cursor:none;`;
       } else {
@@ -346,52 +345,60 @@ function createConvTypeUnits(convType) {
         console.log(unitToSelect)
         unitToSelect === 'from-unit' ? baseEl.attributes['data-from-name'].value = el.textContent :
           baseEl.attributes['data-to-name'].value = el.textContent;
-        // el.nextElementSibling ;//add pattern others to the input el
-        // numberBaseInput.removeEventListener('keypress', preventInputDefault);
-        // numberBaseInput.addEventListener('keypress', preventInputDefault);
+          numberBaseInput.value = '';
+          numberBaseOutputArea.innerHTML = '';          
+        if (unitToSelect === 'from-unit') {
+          formatBaseInputElem(el.textContent, baseEl.nextElementSibling)
+        } else {
 
-        switch (el.textContent) {
-          case 'binary': //numberBaseInput.removeEventListener('keypress', allowHexaDecimalNumbers);
-            // numberBaseInput.removeEventListener('keypress', allowOctalNumbers);
-            numberBaseInput.addEventListener('keypress', allowBinaryNumbers);
-            console.log(el.textContent)
-            break;
-            case 'octal':// numberBaseInput.removeEventListener('keypress',allowHexaDecimalNumbers);
-            //numberBaseInput.removeEventListener('keypress',allowBinaryNumbers);
-            // numberBaseInput.addEventListener('keypress',allowOctalNumbers);
-            console.log(el.textContent)
-            break;
-            case 'hexadecimal': //numberBaseInput.removeEventListener('keypress',allowBinaryNumbers);
-           // numberBaseInput.removeEventListener('keypress',allowOctalNumbers);
-            // numberBaseInput.addEventListener('keypress',allowHexaDecimalNumbers);
-            console.log(el.textContent)
-            break;
-            default: //numberBaseInput.removeEventListener('keypress',allowHexaDecimalNumbers);
-            // numberBaseInput.removeEventListener('keypress',allowBinaryNumbers);
-            // numberBaseInput.removeEventListener('keypress',allowOctalNumbers);
-            console.log(el.textContent)
-            
-            break;
-        }
-        function allowBinaryNumbers(e) {
-          if (e.which !== 49 || e.which !== 58) e.preventDefault()
-        }
-        function allowOctalNumbers(e) {
-          if (e.which > 49 && e.which < 58) console.log(e.which)
-        }
-        function allowHexaDecimalNumbers(e) {
-          if (e.which > 49 && e.which < 58) console.log(e.which)
         }
 
       }
-
       return closeUnitSelectionWrapper();
     }))
     closeUnitSelectionWrapperBtn.addEventListener('click', closeUnitSelectionWrapper)
-  }, 2000);
+  });
 };
 
+function allowBinaryNumbers(e) {
+  if (e.which !== 49 && e.which !== 48) e.preventDefault();
+  currentKeypressEvent = allowBinaryNumbers;
+}
+function allowOctalNumbers(e) {
+  if (e.which < 47 || e.which > 55) e.preventDefault()
+  currentKeypressEvent = allowOctalNumbers;
+}
+function allowHexaDecimalNumbers(e) {
+  let n = e.which || e.keyCode;
+  if (e.which > 47 && e.which < 57) {
+  } else if (e.which > 96 && e.which < 103) {
+  } else { e.preventDefault() };
+  currentKeypressEvent = allowHexaDecimalNumbers;
+};
 
+function formatBaseInputElem(convType, el) {
+  switch (convType) {
+    case 'binary': el.attributes["type"].value = "number";
+      numberBaseInput.removeEventListener('keypress', currentKeypressEvent);
+      numberBaseInput.addEventListener('keypress', allowBinaryNumbers);
+      console.log(convType);
+      break;
+    case 'octal': el.attributes["type"].value = "number";
+      numberBaseInput.removeEventListener('keypress', currentKeypressEvent);
+      numberBaseInput.addEventListener('keypress', allowOctalNumbers);
+      console.log(convType);
+      break;
+    case 'hexadecimal': el.attributes["type"].value = "text";
+      numberBaseInput.removeEventListener('keypress', currentKeypressEvent);
+      numberBaseInput.addEventListener('keypress', allowHexaDecimalNumbers);
+      console.log(convType)
+      break;
+    default: el.attributes["type"].value = "number";
+      numberBaseInput.removeEventListener('keypress', currentKeypressEvent);
+      console.log(convType);
+      break;
+  }
+}
 
 function closeUnitSelectionWrapper() {
   setTimeout(() => {
@@ -554,6 +561,7 @@ function base_conversion() {
     default:
       break;
   }
+  if (inputBase === 'hexadecimal') userInput = parseInt(userInput, 16);
   numberBaseOutputArea.value = (Number(userInput.toString(10))).toString(outputBase);
 }
 
