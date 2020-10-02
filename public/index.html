@@ -129,7 +129,7 @@
                             <span class="unit-icon">Kg</span>
                             <p class="from-unit" data-from-name="kilogram">Kilogram
                                 <span class="fa fa-caret-down"></span></p>
-                            <input type="number" min="1" class="conv-value" aria-label="conversion value">
+                            <input type="number" autocomplete="off" min="1" class="conv-value" aria-label="conversion value">
                         </div>
                         <div class="switch-conv fa fa-exchange-alt"></div>
                         <div class="to-unit-wrapper">
@@ -175,7 +175,7 @@
                     <div class="conversion-section">
                         <div class="from-unit-wrapper">
                             <p class="from-unit" data-name="number">Number</p>
-                            <input type="number" data-name="rom-number" min="1" class="conv-value"
+                            <input type="number" autocomplete="off" data-name="rom-number" min="1" class="conv-value"
                                 aria-label="conversion value">
                         </div>
                         <div class="switch-conv fa fa-arrow-right"></div>
@@ -208,7 +208,7 @@
                         <div class="from-unit-wrapper">
                             <p class="from-unit" data-from-name="decimal">decimal
                                 <span class="fa fa-caret-down"></span> </p>
-                            <input type="text" pattern="" title="digits only allowed" min="1" class="conv-value"
+                            <input type="number" autocomplete="off" min="1" class="conv-value"
                                 aria-label="conversion value" id="numberBaseInput">
                         </div>
                         <div class="switch-conv fa fa-exchange-alt"></div>
@@ -255,25 +255,25 @@
                     <div class="conversion-section">
                         <div class="from-unit-wrapper">
                             <p class="from-unit">Pick date</p>
-                            <input type="date" class="conv-value" aria-label="conversion value">
+                            <input type="date" autocomplete="off" class="conv-value" aria-label="conversion value">
                             <div class="date-conv-section">
                                 <header class="to-date-header">Add</header>
                                 <div class="date-add-subtract-section">
-                                    <input type="date" class="howLongInput conv-value" aria-label="conversion value"
+                                    <input type="date" autocomplete="off" class="howLongInput conv-value" aria-label="conversion value"
                                         id="to-date">
                                     <div class="section-parameter">
                                         <label for="add-year">Year(s)</label>
-                                        <input type="number" id="add-year" min="1" class="conv-value"
+                                        <input type="number" autocomplete="off" id="add-year" min="1" class="conv-value"
                                             aria-label="enter year">
                                     </div>
                                     <div class="section-parameter">
                                         <label for="add-month">Month(s)</label>
-                                        <input type="number" id="add-month" min="1" class="conv-value"
+                                        <input type="number"  autocomplete="off" id="add-month" min="1" class="conv-value"
                                             aria-label="enter month">
                                     </div>
                                     <div class="section-parameter">
                                         <label for="add-day">Day(s)</label>
-                                        <input type="number" id="add-day" min="1" class="conv-value"
+                                        <input type="number" autocomplete="off" id="add-day" min="1" class="conv-value"
                                             aria-label="enter day">
                                     </div>
                                 </div>
