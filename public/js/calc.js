@@ -473,7 +473,7 @@ function mode_switch() {
 }
 
 //CALCULATE PROBLEM CODE
-// let arranged_data;
+
 function roman_numerals_conversion() {
   let userInput = (input_area.innerText).replace(/\s/g, '');
   let input = (input_area.innerText).replace(/\s/g, '');
@@ -610,8 +610,6 @@ function roman_numerals_conversion() {
   return;
 }
 
-/// Numbr base code
-
 function date_conversion() {
   try {
     let input = (input_area.innerHTML).replace(/\s/g, '');
@@ -642,7 +640,8 @@ function date_conversion() {
     if (input.slice(0, conv_sign_idx) == 'now') {
       from_date = new Date().getTime();
       to_date = new Date(`${date_data[1]}-${date_data[0]}-${date_data[2]}`).getTime();
-    } else if ((input.slice(conv_sign_idx + 1, conv_sign_idx + 4) == 'now') && (input.slice(conv_sign_idx + 1) == "") && conversion_depth == 1) {
+    } else if ((input.slice(conv_sign_idx + 1, conv_sign_idx + 4) == 'now')) {
+    // } else if ((input.slice(conv_sign_idx + 1, conv_sign_idx + 4) == 'now') && (input.slice(conv_sign_idx + 1) == "") && conversion_depth == 1) {
       to_date = new Date().getTime();
       from_date = new Date(`${date_data[1]}-${date_data[0]}-${date_data[2]}`).getTime();
     } else {

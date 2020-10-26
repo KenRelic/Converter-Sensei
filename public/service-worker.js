@@ -12,17 +12,17 @@ const filesToCache = [
 ];
 
 
-self.addEventListener('fetch', function (event) {
-  event.respondWith(
-    caches.open('converter-sensei-cache-v1').then(function (cache) {
-      return cache.match(event.request).then(function (response) {
-        let fetchPromise = fetch(event.request).then(function (networkResponse) {
-          cache.put(event.request, networkResponse.clone());
-          return networkResponse;
-        })
-        if (response) console.log('found ' + response.url + ' in cache')
-        return response || fetchPromise;
-      })
-    })
-  );
-});
+// self.addEventListener('fetch', function (event) {
+//   event.respondWith(
+//     caches.open('converter-sensei-cache-v1').then(function (cache) {
+//       return cache.match(event.request).then(function (response) {
+//         let fetchPromise = fetch(event.request).then(function (networkResponse) {
+//           cache.put(event.request, networkResponse.clone());
+//           return networkResponse;
+//         })
+//         if (response) console.log('found ' + response.url + ' in cache')
+//         return response || fetchPromise;
+//       })
+//     })
+//   );
+// });

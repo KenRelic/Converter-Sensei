@@ -85,11 +85,11 @@ let dateData = {
 let otherAppData = {
   'appside': {
     desc: 'APPSIDE is an app with a collecton of games like quiz, tictactoe, memory game etc. The games are addictive and most of them are available offline.',
-    url: 'https://appside.com'
+    url: 'https://appside.netlify.app'
   },
   'comingSoon': {
     desc: 'COMING SOON Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veniam labore fuga iste ut aliquam saepe libero voluptas quam dolorem veritatis!',
-    url: 'https://comingSoon.com'
+    url: '#'
   }
 }
 
@@ -734,7 +734,7 @@ let sIUnits = [
   "nmi",
   "hm",
   "µm",
-  "acre",
+  "ac",
   "kJ",
   "gcal",
   "kcal",
