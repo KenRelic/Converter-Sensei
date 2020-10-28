@@ -511,13 +511,13 @@ function roman_numerals_conversion() {
 
         let numArray = Object.keys(roman_num_data_2);
         let romArray = Object.values(roman_num_data_2);
+        // debugger
+        if (i > input.length) {
 
-        let result = 0;
-        let previousNumber = 0;
+          let result = 0;
+          let previousNumber = 0;
 
-        for (let i = 0; i < input.length; i += 1) {
-          // debugger
-          if (i > input.length) {
+          for (let i = 0; i < input.length; i += 1) {
             saveToLocalStorage(userInput, result)
             return output.innerHTML = result;
           }
@@ -641,7 +641,7 @@ function date_conversion() {
       from_date = new Date().getTime();
       to_date = new Date(`${date_data[1]}-${date_data[0]}-${date_data[2]}`).getTime();
     } else if ((input.slice(conv_sign_idx + 1, conv_sign_idx + 4) == 'now')) {
-    // } else if ((input.slice(conv_sign_idx + 1, conv_sign_idx + 4) == 'now') && (input.slice(conv_sign_idx + 1) == "") && conversion_depth == 1) {
+      // } else if ((input.slice(conv_sign_idx + 1, conv_sign_idx + 4) == 'now') && (input.slice(conv_sign_idx + 1) == "") && conversion_depth == 1) {
       to_date = new Date().getTime();
       from_date = new Date(`${date_data[1]}-${date_data[0]}-${date_data[2]}`).getTime();
     } else {

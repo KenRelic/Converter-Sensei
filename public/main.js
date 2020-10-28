@@ -1,4 +1,6 @@
-import { convData, baseData, dateData, otherAppData } from './data.js';
+import { convData, baseData, dateData, otherAppData, roman_num_data, roman_num_data_2 } from './data.js';
+//NUMBER METHOD TO CHECK NEGATIVE NUMBERS//
+Number.prototype.isNegative = e => (/^\-/).test(e.toString());
 
 let menuBar = document.getElementById('menu-bar');
 
@@ -9,6 +11,7 @@ let menuBgColors = {
   "other": "#065c5b",
   "date-conv": "#00422b"
 }
+
 let currentTheme = "#020c72";
 let allCards = document.querySelectorAll('.card');
 let mainArea = document.getElementById('main');
@@ -28,11 +31,28 @@ let appTypeWrapper = document.querySelector('.app-type-wrapper');
 let historyTypeWrapper = document.querySelector('.history-type-wrapper');
 let clearHistoryBtn = document.getElementById('clear-history-btn');
 
+let inputRom = document.querySelector('#rom-page .conv-value');
+let romOutputEl = document.querySelector('#rom-page .result-value');
+let dateCalculationType = 'addDate'
+let inputDate = document.querySelector('#date-page .conv-value');
+let toDate = document.querySelector('#date-page #to-date');
+let year = document.querySelector('#date-page #add-year')
+let month = document.querySelector('#date-page #add-month')
+let day = document.querySelector('#date-page #add-day');
+
+inputRom.addEventListener('change', romanNumConversion);
+inputDate.addEventListener('change', dateConversion);
+toDate.addEventListener('change', dateConversion);
+year.addEventListener('keyup', dateConversion)
+month.addEventListener('keyup', dateConversion)
+day.addEventListener('keyup', dateConversion)
+
 let unitToSelect = '';
 let selectedUnitType = '';
 let currentRomConv = 'num2Rom';
 let currentConverter = 'base-conv';
 let currentKeypressEvent;
+let romanConversionType = 'num2Rom';
 
 let numberBaseInput = document.getElementById('numberBaseInput');
 let numberBaseOutputArea = document.getElementById('numberBaseOutputArea');
@@ -72,6 +92,7 @@ function toggleMode() {
 
 function goBack() {
   selectedUnitType = '';
+  resetRomValues();
   closeUnitSelectionWrapper()
   hideConversionPage(this.parentElement)
   allCards.forEach(card => normalize(card));
@@ -164,6 +185,8 @@ unitConversionType.addEventListener('click', (event) => {
 dateConversionType.addEventListener('click', (event) => {
   let convType = event.target.getAttribute('data-conv-type')
   if (convType !== undefined && convType !== '') {
+    resetDateValues();
+    dateCalculationType = convType;
     switchDateConversionUI(convType);
   }
 });
@@ -345,8 +368,8 @@ function createConvTypeUnits(convType) {
         console.log(unitToSelect)
         unitToSelect === 'from-unit' ? baseEl.attributes['data-from-name'].value = el.textContent :
           baseEl.attributes['data-to-name'].value = el.textContent;
-          numberBaseInput.value = '';
-          numberBaseOutputArea.innerHTML = '';          
+        numberBaseInput.value = '';
+        numberBaseOutputArea.innerHTML = '';
         if (unitToSelect === 'from-unit') {
           formatBaseInputElem(el.textContent, baseEl.nextElementSibling)
         } else {
@@ -442,8 +465,10 @@ function switchRomanConvType() {
   let convType = this ? this.getAttribute('data-conv-type') : '' || '';
   switch (convType) {
     case 'rom2Num': switchValues(roman2NumConvOption, num2RomanConvOption, convType)
+      romanConversionType = convType;
       break;
     case 'num2Rom': switchValues(num2RomanConvOption, roman2NumConvOption, convType);
+      romanConversionType = convType;
       break;
     default:
       break;
@@ -577,4 +602,208 @@ function saveToLocalStorage(input, result) {
   let savedConv = [];
   savedConv.push([input, result]);
   return localStorage.setItem('savedConv', JSON.stringify(savedConv));
+}
+
+
+function dateConversion() {
+  let output = document.querySelector('#date-page .result-value');
+  try {
+    let result;
+
+    if (dateCalculationType === 'howLongUntil') {
+      getDateDifference();
+    } else {
+      let yr = year.value || 0;
+      let mth = month.value || 0;
+      let dy = day.value || 0;
+
+      let date = (new Date(inputDate.value)).getTime();
+      yr = Number(yr) * 365 * 24 * 60 * 60 * 1000;
+      mth = Number(mth) * 30 * 24 * 60 * 60 * 1000;
+      dy = Number(dy) * 1 * 24 * 60 * 60 * 1000;
+
+      if (dateCalculationType === 'addDate') {
+        return addTodate(date, yr, mth, dy, result, output);
+      } else {
+        return subtractFromdate(date, yr, mth, dy, result, output);
+      }
+    }
+  } catch (error) {
+    output.value = '';
+  }
+}
+
+function addTodate(date, year, month, day, result, output) {
+  result = new Date(date + year + month + day).toDateString();
+  document.querySelector('#date-page .result-value').value = result;
+}
+
+function subtractFromdate(date, year, month, day, result, output) {
+  result = new Date(date - year - month - day).toDateString();
+  document.querySelector('#date-page .result-value').value = result;
+}
+function getDateDifference() {
+  let year, month, week, day;
+  let result = new Date(toDate.value).getTime() - new Date(inputDate.value).getTime();
+
+  if (!isNaN(result)) {
+    //check if result is a negative value// then insert ago after the output// 
+    let is_to_date_passed;
+    if (Number.prototype.isNegative(result)) {
+      result = -(result);
+      is_to_date_passed = true;
+    }
+    let resultInDays = result / 86400000;
+    year = Math.floor(result / 31536000000);
+    month = Math.floor((result % (31536000000)) / (2.628e+9));
+    week = Math.floor(((result % (31536000000)) % (2.628e+9)) / (6.048e+8));
+    day = Math.floor((((result % (31536000000)) % (2.628e+9)) % (6.048e+8)) / 8.64e+7);
+
+
+    let output = `${year >= 1 ? year + (year > 1 ? 'yrs' : 'yr')
+      : ''} ${month >= 1 ? month + (month > 1 ? 'mths' : 'mth')
+        : ''} ${week >= 1 ? week + (week > 1 ? 'wks' : 'wk')
+          : ''} ${day >= 1 ? day + (day > 1 ? 'dys' : 'dy')
+            : ''} ${is_to_date_passed ? 'ago' : ''} ${resultInDays > 6 ? '(' + resultInDays + 'days)' : ''}`;
+
+    document.querySelector('#date-page .result-value').value = output.replace(/\s+/gi, ' ');
+  }
+}
+
+
+
+function romanNumConversion() {
+  let value = inputRom.value;
+  let result = ''
+  let digits = Object.keys(roman_num_data);
+  let roman_numerals = Object.values(roman_num_data);
+
+  if (romanConversionType === 'num2Rom') {
+    if (+inputRom.value) {
+      value = +inputRom.value;
+      if (value < 4000) {
+        for (let i = digits.length - 1; i >= 0; i -= 1) {
+          while (value >= digits[i]) {
+            result += roman_numerals[i];
+            value -= digits[i];
+          }
+        }
+        // saveToLocalStorage(userInput, result)
+        return romOutputEl.value = result;
+      } else {
+        return romOutputEl.value = 'Max number is 3999'
+      }
+    } else {
+      return romOutputEl.value = 'syntaxError'
+    }
+
+  } else {
+    if (typeof value == "string") {
+      try {
+        // debugger
+        let input = (inputRom.value).toUpperCase();
+        input = input.split('');
+        let result = 0;
+        let previousNumber = 0;
+
+        let numArray = Object.keys(roman_num_data_2);
+        let romArray = Object.values(roman_num_data_2);
+        // debugger
+        for (let i = 0; i < input.length; i += 1) {
+          if (romArray.find(n => n == input[i])) {
+            let currentRomNum = +numArray[romArray.indexOf(input[i])];
+            let nextRomNum = +numArray[romArray.indexOf(input[i + 1])];
+            let nextTwoROM = input[i] + input[i + 1];
+            let nextThreeROM = input[i] + input[i + 1] + input[i + 2];
+
+            if (romArray.includes(nextThreeROM) || romArray.includes(nextTwoROM)) {
+              let romanValue = romArray.includes(nextThreeROM) ? nextThreeROM : nextTwoROM;
+              let roman2Num = +(numArray[romArray.indexOf(romanValue)]);
+              if (previousNumber !== 0 && previousNumber < roman2Num) return romOutputEl.value = '---';
+
+              result += roman2Num;
+              previousNumber = currentRomNum;
+
+              romArray.splice(romArray.indexOf(nextThreeROM), 1);
+              numArray.splice(romArray.indexOf(nextThreeROM), 1);
+              romArray.splice(romArray.indexOf(nextTwoROM), 1);
+              numArray.splice(romArray.indexOf(nextTwoROM), 1);
+              romArray.splice(romArray.indexOf(input[i]), 1);
+              numArray.splice(romArray.indexOf(input[i]), 1);
+
+              if (romanValue.length == 2) {
+                i += 1;
+              } else {
+                i += 2;
+              }
+
+            } else {
+              if (currentRomNum <= nextRomNum) {
+                if (romArray.includes(nextTwoROM)) {
+                  if (previousNumber) {
+                    if (previousNumber > currentRomNum && previousNumber > (nextRomNum - currentRomNum)) {
+                      result += (nextRomNum - currentRomNum);
+                      previousNumber = nextRomNum - currentRomNum;
+                      romArray.splice(romArray.indexOf(nextTwoROM), 1);
+                      numArray.splice(romArray.indexOf(nextTwoROM), 1);
+                      i += 1;
+                    } else {
+                      return romOutputEl.value = "---";
+                    }
+                  } else {
+                    result += (nextRomNum - currentRomNum);
+                    previousNumber = nextRomNum - currentRomNum;
+                    romArray.splice(romArray.indexOf(nextTwoROM), 1);
+                    numArray.splice(romArray.indexOf(nextTwoROM), 1);
+                  }
+                } else {
+                  return romOutputEl.value = '---';
+                }
+              } else {
+                // the current is bigger than the next
+                if (previousNumber) {
+                  if (previousNumber > currentRomNum) {
+                    result += currentRomNum;
+                    previousNumber = currentRomNum;
+                    romArray.splice(romArray.indexOf(input[i]), 1);
+                    numArray.splice(romArray.indexOf(input[i]), 1);
+                  } else {
+                    return romOutputEl.value = '---';
+                  }
+                } else {
+                  result += currentRomNum;
+                  previousNumber = currentRomNum;
+                  romArray.splice(romArray.indexOf(input[i]), 1);
+                  numArray.splice(romArray.indexOf(input[i]), 1);
+                }
+              }
+            }
+          } else {
+            return romOutputEl.value = '---'
+          }
+        }
+        // saveToLocalStorage(userInput, result);
+        return romOutputEl.value = result;
+      } catch (error) {
+        return romOutputEl.value = '---'
+      }
+
+    } else {
+      return romOutputEl.value = '---'
+    }
+  }
+}
+
+function resetDateValues() {
+  inputDate.value = "";
+  year.value = ""
+  month.value = "";
+  day.value = "";
+  document.querySelector('#date-page .result-value').value = "";
+}
+
+function resetRomValues(){
+  inputRom.value = "";
+  romOutputEl.value =  "";
+  romanConversionType = "num2Rom";
 }
